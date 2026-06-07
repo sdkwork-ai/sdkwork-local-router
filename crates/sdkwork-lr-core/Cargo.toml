@@ -9,7 +9,7 @@ bytes.workspace = true
 parking_lot.workspace = true
 rand = "0.8"
 regex.workspace = true
-sdkwork-lr-observability = { path = "../sdkwork-lr-observability" }
+sdkwork-lr-observability.workspace = true
 serde.workspace = true
 serde_json.workspace = true
 tracing.workspace = true

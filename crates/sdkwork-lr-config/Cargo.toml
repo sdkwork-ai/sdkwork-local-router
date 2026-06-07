@@ -10,5 +10,5 @@ serde_json.workspace = true
 toml.workspace = true
 regex.workspace = true
 tracing.workspace = true
-sdkwork-lr-core = { path = "../sdkwork-lr-core" }
-sdkwork-lr-plugin = { path = "../sdkwork-lr-plugin" }
+sdkwork-lr-core.workspace = true
+sdkwork-lr-plugin.workspace = true

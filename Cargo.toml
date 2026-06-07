@@ -44,3 +44,11 @@ tracing = "0.1"
 tracing-subscriber = { version = "0.3", features = ["env-filter", "fmt", "json"] }
 uuid = { version = "1", features = ["v4"] }
 urlencoding = "2"
+
+# SDKWork workspace members - declared once at workspace root
+sdkwork-lr-config = { path = "crates/sdkwork-lr-config" }
+sdkwork-lr-core = { path = "crates/sdkwork-lr-core" }
+sdkwork-lr-plugin = { path = "crates/sdkwork-lr-plugin" }
+sdkwork-lr-proxy = { path = "crates/sdkwork-lr-proxy" }
+sdkwork-lr-transform = { path = "crates/sdkwork-lr-transform" }
+sdkwork-lr-observability = { path = "crates/sdkwork-lr-observability" }
