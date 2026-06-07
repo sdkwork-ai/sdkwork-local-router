@@ -1,0 +1,43 @@
+{
+  "name": "@sdkwork/local-api-proxy",
+  "private": true,
+  "version": "0.1.0",
+  "type": "module",
+  "description": "SDKWork Local Router PC facade with capability-driven routing, storage definitions, host integration, and diagnostics surfaces.",
+  "exports": {
+    ".": {
+      "types": "./src/index.ts",
+      "import": "./src/index.ts",
+      "default": "./src/index.ts"
+    }
+  },
+  "files": [
+    "src",
+    "native",
+    "README.md"
+  ],
+  "scripts": {
+    "typecheck": "tsc --noEmit"
+  },
+  "peerDependencies": {
+    "@sdkwork/core-pc-react": "*",
+    "@sdkwork/ui-pc-react": "*",
+    "react": ">=18.2.0 <20.0.0",
+    "react-dom": ">=18.2.0 <20.0.0"
+  },
+  "peerDependenciesMeta": {
+    "@sdkwork/core-pc-react": {
+      "optional": true
+    },
+    "@sdkwork/ui-pc-react": {
+      "optional": true
+    }
+  },
+  "sdkwork": {
+    "workspace": "sdkwork-local-router",
+    "architecture": "pc-react",
+    "domain": "device",
+    "capability": "local-router",
+    "status": "ready"
+  }
+}

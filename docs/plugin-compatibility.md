@@ -21,10 +21,10 @@ implementations live in `sdkwork-lr-transform`.
 
 Any generated SDK for `sdkwork-local-router` open, app, or backend APIs must
 follow the SDKWork standards in
-`D:\javasource\spring-ai-plus\spring-ai-plus-business\specs\SDK_SPEC.md` and
-`D:\javasource\spring-ai-plus\spring-ai-plus-business\specs\SDK_WORKSPACE_GENERATION_SPEC.md`.
+`../sdkwork-specs/SDK_SPEC.md` and
+`../sdkwork-specs/SDK_WORKSPACE_GENERATION_SPEC.md`.
 The only standard HTTP SDK generator is
-`D:\javasource\spring-ai-plus\sdk\sdkwork-sdk-generator`
+`..\sdkwork-sdk-generator`
 (`@sdkwork/sdk-generator` / `sdkgen`), using OpenAPI authority documents and
 derived `*.sdkgen.yaml` inputs. Local-router SDK generation commands,
 manifests, and release notes must record that generator path or resolved
