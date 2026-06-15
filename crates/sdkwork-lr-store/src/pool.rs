@@ -35,29 +35,29 @@ impl Store {
         encryption: KeyEncryption,
     ) -> Result<Self, StoreError> {
         // Use sdkwork-pool for unified pool creation
-        let pool_config = sdkwork_pool_config::DatabaseConfig {
+        let pool_config = sdkwork_database_config::DatabaseConfig {
             engine: if database_url.starts_with("postgres://") || database_url.starts_with("postgresql://") {
-                sdkwork_pool_config::DatabaseEngine::Postgres
+                sdkwork_database_config::DatabaseEngine::Postgres
             } else {
-                sdkwork_pool_config::DatabaseEngine::Sqlite
+                sdkwork_database_config::DatabaseEngine::Sqlite
             },
             url: database_url.to_string(),
             max_connections: if database_url.starts_with("postgres") { 8 } else { 4 },
             ..Default::default()
         };
 
-        let pool = sdkwork_pool_sqlx::create_pool_from_config(pool_config)
+        let pool = sdkwork_database_sqlx::create_pool_from_config(pool_config)
             .await
             .map_err(|e| StoreError::Connection(e.to_string()))?;
 
         match pool {
-            sdkwork_pool_sqlx::DatabasePool::Sqlite(sqlite_pool, _) => {
+            sdkwork_database_sqlx::DatabasePool::Sqlite(sqlite_pool, _) => {
                 Ok(Self {
                     pool: DatabasePool::Sqlite(sqlite_pool),
                     encryption,
                 })
             }
-            sdkwork_pool_sqlx::DatabasePool::Postgres(pg_pool, _) => {
+            sdkwork_database_sqlx::DatabasePool::Postgres(pg_pool, _) => {
                 Ok(Self {
                     pool: DatabasePool::Postgres(pg_pool),
                     encryption,

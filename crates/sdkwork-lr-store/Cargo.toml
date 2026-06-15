@@ -12,8 +12,8 @@ chrono.workspace = true
 hkdf = "0.12"
 rand = "0.8"
 sdkwork_platform_id_service.workspace = true
-sdkwork-pool-config = { path = "../../../sdkwork-pool/crates/sdkwork-pool-config" }
-sdkwork-pool-sqlx = { path = "../../../sdkwork-pool/crates/sdkwork-pool-sqlx" }
+sdkwork-database-config = { path = "../../../sdkwork-pool/crates/sdkwork-database-config" }
+sdkwork-database-sqlx = { path = "../../../sdkwork-pool/crates/sdkwork-database-sqlx" }
 serde.workspace = true
 serde_json.workspace = true
 sha2 = "0.10"
