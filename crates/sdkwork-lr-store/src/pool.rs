@@ -2,8 +2,8 @@ use crate::crypto::KeyEncryption;
 use crate::error::StoreError;
 use crate::id::next_runtime_id;
 use crate::models::*;
-use sqlx::postgres::{PgPool, PgPoolOptions};
-use sqlx::sqlite::{SqlitePool, SqlitePoolOptions};
+use sqlx::postgres::PgPool;
+use sqlx::sqlite::SqlitePool;
 use sqlx::Row;
 
 const ACCOUNTS_TABLE: &str = "local_router_upstream_accounts";
@@ -34,44 +34,35 @@ impl Store {
         database_url: &str,
         encryption: KeyEncryption,
     ) -> Result<Self, StoreError> {
-        if database_url.starts_with("postgres://") || database_url.starts_with("postgresql://") {
-            let pool = PgPoolOptions::new()
-                .max_connections(8)
-                .connect(database_url)
-                .await
-                .map_err(|e| StoreError::Connection(e.to_string()))?;
-            Ok(Self {
-                pool: DatabasePool::Postgres(pool),
-                encryption,
-            })
-        } else {
-            let pool = SqlitePoolOptions::new()
-                .max_connections(4)
-                .connect(database_url)
-                .await
-                .map_err(|e| StoreError::Connection(e.to_string()))?;
+        // Use sdkwork-pool for unified pool creation
+        let pool_config = sdkwork_pool_config::DatabaseConfig {
+            engine: if database_url.starts_with("postgres://") || database_url.starts_with("postgresql://") {
+                sdkwork_pool_config::DatabaseEngine::Postgres
+            } else {
+                sdkwork_pool_config::DatabaseEngine::Sqlite
+            },
+            url: database_url.to_string(),
+            max_connections: if database_url.starts_with("postgres") { 8 } else { 4 },
+            ..Default::default()
+        };
 
-            sqlx::query("PRAGMA journal_mode=WAL")
-                .execute(&pool)
-                .await
-                .map_err(|e| StoreError::Connection(format!("failed to set WAL mode: {e}")))?;
+        let pool = sdkwork_pool_sqlx::create_pool_from_config(pool_config)
+            .await
+            .map_err(|e| StoreError::Connection(e.to_string()))?;
 
-            sqlx::query("PRAGMA busy_timeout=5000")
-                .execute(&pool)
-                .await
-                .map_err(|e| StoreError::Connection(format!("failed to set busy_timeout: {e}")))?;
-
-            sqlx::query("PRAGMA foreign_keys=ON")
-                .execute(&pool)
-                .await
-                .map_err(|e| {
-                    StoreError::Connection(format!("failed to enable foreign_keys: {e}"))
-                })?;
-
-            Ok(Self {
-                pool: DatabasePool::Sqlite(pool),
-                encryption,
-            })
+        match pool {
+            sdkwork_pool_sqlx::DatabasePool::Sqlite(sqlite_pool, _) => {
+                Ok(Self {
+                    pool: DatabasePool::Sqlite(sqlite_pool),
+                    encryption,
+                })
+            }
+            sdkwork_pool_sqlx::DatabasePool::Postgres(pg_pool, _) => {
+                Ok(Self {
+                    pool: DatabasePool::Postgres(pg_pool),
+                    encryption,
+                })
+            }
         }
     }
 
