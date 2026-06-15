@@ -1,6 +1,6 @@
 use std::sync::OnceLock;
 
-use sdkwork_id::{max_snowflake_node_id, SnowflakeIdGenerator};
+use sdkwork_platform_id_service::{max_snowflake_node_id, SnowflakeIdGenerator};
 
 use crate::error::StoreError;
 

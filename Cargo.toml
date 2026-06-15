@@ -30,7 +30,7 @@ hyper-rustls = { version = "0.27", default-features = false, features = ["http1"
 hyper-util = { version = "0.1", features = ["client-legacy", "http1", "tokio"] }
 parking_lot = "0.12"
 regex = "1"
-sdkwork_id = { path = "../sdkwork-appbase/packages/native-rust/foundation/sdkwork-id-rust" }
+sdkwork_platform_id_service = { package = "sdkwork-platform-id-service", path = "../sdkwork-appbase/crates/sdkwork-platform-id-service" }
 sdkwork-models = { git = "https://github.com/Sdkwork-Cloud/sdkwork-models.git" }
 serde = { version = "1.0", features = ["derive"] }
 serde_json = "1.0"

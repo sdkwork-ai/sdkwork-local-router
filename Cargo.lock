@@ -1553,7 +1553,7 @@ dependencies = [
  "chrono",
  "hkdf",
  "rand",
- "sdkwork_id",
+ "sdkwork-platform-id-service",
  "serde",
  "serde_json",
  "sha2",
@@ -1584,7 +1584,7 @@ dependencies = [
 ]
 
 [[package]]
-name = "sdkwork_id"
+name = "sdkwork-platform-id-service"
 version = "0.1.0"
 
 [[package]]
