@@ -1449,6 +1449,29 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "94143f37725109f92c262ed2cf5e59bce7498c01bcc1502d7b9afe439a4e9f49"
 
 [[package]]
+name = "sdkwork-database-config"
+version = "0.1.0"
+dependencies = [
+ "serde",
+ "serde_json",
+ "thiserror 2.0.18",
+ "toml",
+ "tracing",
+]
+
+[[package]]
+name = "sdkwork-database-sqlx"
+version = "0.1.0"
+dependencies = [
+ "sdkwork-database-config",
+ "serde",
+ "sqlx",
+ "thiserror 2.0.18",
+ "tokio",
+ "tracing",
+]
+
+[[package]]
 name = "sdkwork-local-router"
 version = "0.1.0"
 dependencies = [
@@ -1553,9 +1576,9 @@ dependencies = [
  "chrono",
  "hkdf",
  "rand",
+ "sdkwork-database-config",
+ "sdkwork-database-sqlx",
  "sdkwork-platform-id-service",
- "sdkwork-pool-config",
- "sdkwork-pool-sqlx",
  "serde",
  "serde_json",
  "sha2",
@@ -1588,29 +1611,6 @@ dependencies = [
 [[package]]
 name = "sdkwork-platform-id-service"
 version = "0.1.0"
-
-[[package]]
-name = "sdkwork-pool-config"
-version = "0.1.0"
-dependencies = [
- "serde",
- "serde_json",
- "thiserror 2.0.18",
- "toml",
- "tracing",
-]
-
-[[package]]
-name = "sdkwork-pool-sqlx"
-version = "0.1.0"
-dependencies = [
- "sdkwork-pool-config",
- "serde",
- "sqlx",
- "thiserror 2.0.18",
- "tokio",
- "tracing",
-]
 
 [[package]]
 name = "semver"
