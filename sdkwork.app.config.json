@@ -27,7 +27,6 @@
     "grantMode": "current",
     "platform": "WEB",
     "appId": null,
-    "tenantId": "20001",
     "organizationId": null
   },
   "runtime": {
@@ -42,7 +41,12 @@
       "DIRECT_DOWNLOAD"
     ],
     "defaultPlatform": "WEB",
-    "defaultArchitecture": "x64"
+    "defaultArchitecture": "x64",
+    "supportedDeploymentProfiles": [
+      "cloud",
+      "standalone"
+    ],
+    "defaultDeploymentProfile": "cloud"
   },
   "media": {
     "icons": {
@@ -131,7 +135,7 @@
     "installPlatforms": [
       "WEB"
     ],
-    "defaultPackageId": "web-production",
+    "defaultPackageId": "web-universal-cloud-browser-zip",
     "storeUrl": "https://sdkwork.com/apps/sdkwork-local-router",
     "stores": [],
     "config": {
@@ -159,13 +163,13 @@
   },
   "artifacts": {
     "installConfig": {
-      "defaultPackageId": "web-production",
+      "defaultPackageId": "web-universal-cloud-browser-zip",
       "installCommand": "sdkwork install sdkwork-local-router",
       "launchCommand": "sdkwork open sdkwork-local-router",
       "uninstallCommand": "sdkwork uninstall sdkwork-local-router",
       "packages": [
         {
-          "id": "web-production",
+          "id": "web-universal-cloud-browser-zip",
           "name": "SDKWork Local Router Web Bundle",
           "sourceType": "WEB_URL",
           "packageFormat": "ZIP",
@@ -174,10 +178,13 @@
           "enabled": true,
           "metadata": {},
           "checksumAlgorithm": "SHA-256",
-          "checksum": "d7e563bfd7e563bfd7e563bfd7e563bfd7e563bfd7e563bfd7e563bfd7e563bf"
+          "checksum": "d7e563bfd7e563bfd7e563bfd7e563bfd7e563bfd7e563bfd7e563bfd7e563bf",
+          "architecture": "universal",
+          "deploymentProfile": "cloud",
+          "runtimeTarget": "browser"
         },
         {
-          "id": "desktop-windows",
+          "id": "windows-x64-standalone-desktop-zip",
           "name": "SDKWork Local Router Windows Bundle",
           "sourceType": "BINARY_URL",
           "packageFormat": "ZIP",
@@ -187,10 +194,12 @@
           "metadata": {},
           "architecture": "x64",
           "checksumAlgorithm": "SHA-256",
-          "checksum": "5a84a8855a84a8855a84a8855a84a8855a84a8855a84a8855a84a8855a84a885"
+          "checksum": "5a84a8855a84a8855a84a8855a84a8855a84a8855a84a8855a84a8855a84a885",
+          "deploymentProfile": "standalone",
+          "runtimeTarget": "desktop"
         },
         {
-          "id": "desktop-macos",
+          "id": "macos-universal-standalone-desktop-dmg",
           "name": "SDKWork Local Router macOS Bundle",
           "sourceType": "BINARY_URL",
           "packageFormat": "DMG",
@@ -200,10 +209,12 @@
           "metadata": {},
           "architecture": "universal",
           "checksumAlgorithm": "SHA-256",
-          "checksum": "167039f5167039f5167039f5167039f5167039f5167039f5167039f5167039f5"
+          "checksum": "167039f5167039f5167039f5167039f5167039f5167039f5167039f5167039f5",
+          "deploymentProfile": "standalone",
+          "runtimeTarget": "desktop"
         },
         {
-          "id": "desktop-linux",
+          "id": "linux-x64-standalone-desktop-appimage",
           "name": "SDKWork Local Router Linux Bundle",
           "sourceType": "BINARY_URL",
           "packageFormat": "APPIMAGE",
@@ -217,7 +228,9 @@
           },
           "architecture": "x64",
           "checksumAlgorithm": "SHA-256",
-          "checksum": "1665ef761665ef761665ef761665ef761665ef761665ef761665ef761665ef76"
+          "checksum": "1665ef761665ef761665ef761665ef761665ef761665ef761665ef761665ef76",
+          "deploymentProfile": "standalone",
+          "runtimeTarget": "desktop"
         }
       ],
       "metadata": {
@@ -247,10 +260,10 @@
           "Download package matrix normalized"
         ],
         "packageIds": [
-          "web-production",
-          "desktop-windows",
-          "desktop-macos",
-          "desktop-linux"
+          "web-universal-cloud-browser-zip",
+          "windows-x64-standalone-desktop-zip",
+          "macos-universal-standalone-desktop-dmg",
+          "linux-x64-standalone-desktop-appimage"
         ],
         "publishedAt": "2026-05-07T00:00:00Z",
         "current": true,
