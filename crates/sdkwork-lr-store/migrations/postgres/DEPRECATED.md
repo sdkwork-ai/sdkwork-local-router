@@ -1,11 +1,7 @@
-# Deprecated
+# Deprecated legacy migrations
 
-Canonical database lifecycle assets live in the application-root `database/` directory.
+PostgreSQL schema is consolidated in `database/ddl/baseline/postgres/0001_localrouter_legacy_baseline.sql`.
 
-Do not add new schema files here. Migrate remaining changes into:
+Production PostgreSQL bootstrap MUST use `sdkwork-local-router-database-host` via `bootstrap_local_router_database()`.
 
-- `database/contract/schema.yaml`
-- `database/migrations/{engine}/`
-- `database/ddl/baseline/{engine}/`
-
-See `DATABASE_FRAMEWORK_SPEC.md` and `database/README.md`.
+SQLite tests and local runtimes continue to use `sqlx::migrate!("./migrations/sqlite")`.

@@ -74,11 +74,10 @@ impl Store {
                     .await
                     .map_err(|e| StoreError::Migration(e.to_string()))?;
             }
-            DatabasePool::Postgres(pool) => {
-                sqlx::migrate!("./migrations/postgres")
-                    .run(pool)
+            DatabasePool::Postgres(_) => {
+                crate::bootstrap::bootstrap_local_router_database_from_env()
                     .await
-                    .map_err(|e| StoreError::Migration(e.to_string()))?;
+                    .map_err(|error| StoreError::Migration(error))?;
             }
         }
         Ok(())

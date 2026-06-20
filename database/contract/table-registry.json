@@ -1,5 +1,36 @@
 {
   "schemaVersion": 1,
   "kind": "sdkwork.database.table-registry",
-  "tables": []
+  "tables": [
+    {
+      "table_name": "local_router_upstream_accounts",
+      "owner": "local-router-platform",
+      "compliance_level": "L2",
+      "lifecycle_status": "active"
+    },
+    {
+      "table_name": "local_router_client_api_keys",
+      "owner": "local-router-platform",
+      "compliance_level": "L2",
+      "lifecycle_status": "active"
+    },
+    {
+      "table_name": "local_router_invocations",
+      "owner": "local-router-platform",
+      "compliance_level": "L2",
+      "lifecycle_status": "active"
+    },
+    {
+      "table_name": "local_router_usages",
+      "owner": "local-router-platform",
+      "compliance_level": "L2",
+      "lifecycle_status": "active"
+    },
+    {
+      "table_name": "local_router_model_route_mappings",
+      "owner": "local-router-platform",
+      "compliance_level": "L2",
+      "lifecycle_status": "active"
+    }
+  ]
 }

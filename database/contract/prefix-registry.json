@@ -1,5 +1,11 @@
 {
   "schemaVersion": 1,
   "kind": "sdkwork.database.prefix-registry",
-  "prefixes": []
+  "prefixes": [
+    {
+      "prefix": "local_router_",
+      "owner": "local-router-platform",
+      "domain": "localrouter"
+    }
+  ]
 }

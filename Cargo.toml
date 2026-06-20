@@ -2,6 +2,7 @@
 members = [
     "crates/sdkwork-lr-config",
     "crates/sdkwork-lr-core",
+    "crates/sdkwork-local-router-database-host",
     "crates/sdkwork-lr-plugin",
     "crates/sdkwork-lr-proxy",
     "crates/sdkwork-lr-transform",

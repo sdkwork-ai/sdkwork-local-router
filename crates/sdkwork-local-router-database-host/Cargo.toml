@@ -1,0 +1,17 @@
+[package]
+name = "sdkwork-local-router-database-host"
+version.workspace = true
+edition.workspace = true
+license.workspace = true
+description = "SDKWork Local Router database lifecycle bootstrap."
+
+[lib]
+name = "sdkwork_local_router_database_host"
+path = "src/lib.rs"
+
+[dependencies]
+dotenvy = "0.15"
+sdkwork_database_config = { path = "../../../sdkwork-database/crates/sdkwork-database-config", package = "sdkwork-database-config" }
+sdkwork_database_lifecycle = { path = "../../../sdkwork-database/crates/sdkwork-database-lifecycle", package = "sdkwork-database-lifecycle" }
+sdkwork_database_spi = { path = "../../../sdkwork-database/crates/sdkwork-database-spi", package = "sdkwork-database-spi" }
+sdkwork_database_sqlx = { path = "../../../sdkwork-database/crates/sdkwork-database-sqlx", package = "sdkwork-database-sqlx" }

@@ -1,11 +1,26 @@
 schema_version: 1
 kind: sdkwork.database.schema
 module_id: localrouter
-contract_version: 0.1.0
+contract_version: 1.0.0
 owner_team: local-router-platform
 compliance_level: L2
 engines:
   - postgres
   - sqlite
-table_prefix: lr_
-tables: []
+table_prefix: local_router_
+tables:
+  - name: local_router_upstream_accounts
+    lifecycle_status: active
+    owner: local-router-platform
+  - name: local_router_client_api_keys
+    lifecycle_status: active
+    owner: local-router-platform
+  - name: local_router_invocations
+    lifecycle_status: active
+    owner: local-router-platform
+  - name: local_router_usages
+    lifecycle_status: active
+    owner: local-router-platform
+  - name: local_router_model_route_mappings
+    lifecycle_status: active
+    owner: local-router-platform
