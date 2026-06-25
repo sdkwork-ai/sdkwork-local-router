@@ -106,7 +106,8 @@
     "routeManifest": null,
     "sdkClients": [],
     "events": [],
-    "configKeys": []
+    "configKeys": [],
+    "dependencyComposition": "specs/dependency.composition.json"
   },
   "verification": {
     "commands": [

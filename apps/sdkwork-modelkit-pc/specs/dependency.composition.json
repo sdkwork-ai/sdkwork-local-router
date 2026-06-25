@@ -1,0 +1,37 @@
+{
+  "schemaVersion": 1,
+  "kind": "sdkwork.dependency.composition",
+  "applicationCode": "modelkit",
+  "clientArchitecture": "pc",
+  "surfaces": [
+    {
+      "surface": "app",
+      "corePackage": "@sdkwork/modelkit-pc-core",
+      "sdkClients": [],
+      "reusableModules": [],
+      "hostAdapters": [],
+      "dependencyApiExports": [],
+      "dependencyApiSurfaces": []
+    }
+  ],
+  "buildToolEntries": {
+    "pnpm": {
+      "workspacePackages": [
+        "@sdkwork/modelkit-core",
+        "@sdkwork/modelkit-pc-core",
+        "@sdkwork/modelkit-commons",
+        "@sdkwork/modelkit-news",
+        "@sdkwork/modelkit-plugins",
+        "@sdkwork/modelkit-prompts",
+        "@sdkwork/modelkit-relay",
+        "@sdkwork/modelkit-repos",
+        "@sdkwork/modelkit-services",
+        "@sdkwork/modelkit-shop",
+        "@sdkwork/modelkit-skillhub",
+        "@sdkwork/modelkit-software",
+        "@sdkwork/modelkit-types",
+        "@sdkwork/modelkit-workspace"
+      ]
+    }
+  }
+}
