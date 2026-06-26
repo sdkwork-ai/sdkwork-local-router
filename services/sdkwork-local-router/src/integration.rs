@@ -662,7 +662,7 @@ fn standard_component_standards_payload() -> Vec<serde_json::Value> {
             "blocking_stages": ["request_received"],
             "non_blocking_stages": [],
             "configuration_source": "service_middleware",
-            "purpose": "Resolve user_id from database-backed client_api_key on proxy routes or SDKWork token/JWT context on app/backend routes.",
+            "purpose": "Resolve user_id from database-backed client_api_key on proxy routes or upstream sdkwork-iam subject projection on app/backend routes.",
         }),
         json!({
             "code": "routing_policy",

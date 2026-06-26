@@ -49,8 +49,8 @@ the runtime request context and is recorded in audit metadata as
 | API group | Runtime paths | Audience | Auth and user source |
 | --- | --- | --- | --- |
 | `local-router-open-api` | Provider-compatible proxy paths from `[base_paths]`, for example `/v1/{*path}`, `/anthropic/{*path}`, and `/google/{*path}` | Codex, Claude Code, Gemini CLI, OpenAI-compatible SDKs, and model clients | Database-backed `client_api_key`; `user_id` comes from `local_router_client_api_keys.user_id` |
-| `local-router-app-api` | `/app/v3/api/local_router/*` | SDKWork app clients and local/private app integrations | SDKWork auth/access tokens, JWT claims, or trusted subject headers |
-| `local-router-backend-api` | `/backend/v3/api/local_router/*` | Backend SDKs, admin consoles, operators, and control-plane services | SDKWork auth/access tokens, JWT claims, or trusted subject headers |
+| `local-router-app-api` | `/app/v3/api/local_router/*` | SDKWork app clients and local/private app integrations | sdkwork-iam subject projection from the surrounding runtime |
+| `local-router-backend-api` | `/backend/v3/api/local_router/*` | Backend SDKs, admin consoles, operators, and control-plane services | sdkwork-iam subject projection from the surrounding runtime |
 
 `local-router-open-api` preserves provider-compatible URL shapes because
 existing tools expect OpenAI, Anthropic, or Gemini-compatible paths. Its group
@@ -441,7 +441,7 @@ they do not invalidate an upstream response that has already been produced.
 Standard server components should map to the pipeline this way:
 
 - `auth_context_resolver`: middleware. Resolves `user_id` from
-  database-backed `client_api_key` on proxy routes, or SDKWork token/JWT context
+  database-backed `client_api_key` on proxy routes, or sdkwork-iam subject context
   on app/backend routes. Built in and enabled by default.
 - `routing_policy`: account pool plus `route_candidates` and
   `account_selected`. Applies priority, round-robin, random, least-latency,
@@ -565,7 +565,7 @@ Gemini-compatible `key` query parameter. A missing or invalid client API key
 returns `401 invalid_client_api_key`.
 
 App and backend APIs do not use client API keys for local identity. They resolve
-`user_id` from SDKWork auth/access tokens, JWT claims, or trusted subject
+`user_id` from sdkwork-iam subject projection supplied by the surrounding runtime
 headers used by the surrounding SDKWork runtime. If no user context is present,
 the request runs in user scope `0`.
 

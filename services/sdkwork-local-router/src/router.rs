@@ -777,7 +777,7 @@ mod tests {
             .find(|group| group.code == "local-router-app-api")
             .expect("app api group");
         assert_eq!(app_api.canonical_prefix, "/app/v3/api/local_router");
-        assert_eq!(app_api.auth_scheme, "sdkwork_dual_token_or_jwt");
+        assert_eq!(app_api.auth_scheme, "sdkwork_subject_projection");
 
         let backend_api = groups
             .iter()

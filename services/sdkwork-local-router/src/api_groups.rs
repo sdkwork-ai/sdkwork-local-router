@@ -53,7 +53,7 @@ pub fn local_router_api_groups(
             canonical_prefix: LOCAL_ROUTER_APP_API_PREFIX.to_owned(),
             path_prefixes: vec![format!("{LOCAL_ROUTER_APP_API_PREFIX}/{{*path}}")],
             audience: "SDKWork app clients and local/private app integrations",
-            auth_scheme: "sdkwork_dual_token_or_jwt",
+            auth_scheme: "sdkwork_subject_projection",
             user_id_source: "auth_token_or_jwt_subject",
             data_scope: "per_user",
             capabilities: vec!["router_status", "model_listing"],
@@ -64,7 +64,7 @@ pub fn local_router_api_groups(
             canonical_prefix: LOCAL_ROUTER_BACKEND_API_PREFIX.to_owned(),
             path_prefixes: vec![format!("{LOCAL_ROUTER_BACKEND_API_PREFIX}/{{*path}}")],
             audience: "SDKWork backend SDKs, admin consoles, operators, and control-plane services",
-            auth_scheme: "sdkwork_dual_token_or_jwt",
+            auth_scheme: "sdkwork_subject_projection",
             user_id_source: "auth_token_or_jwt_subject",
             data_scope: "per_user",
             capabilities: vec![

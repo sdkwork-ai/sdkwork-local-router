@@ -15,8 +15,8 @@ The server exposes three service-side API groups:
   `/v1/*`, `/anthropic/*`, and `/google/*`; authenticated by local-router
   `client_api_key` records.
 - `local-router-app-api`: `/app/v3/api/local_router/*` app integration routes;
-  authenticated from SDKWork auth/access tokens, JWT claims, or trusted subject
-  headers supplied by the surrounding SDKWork runtime.
+  authenticated from `sdkwork-iam` subject projection supplied by the
+  surrounding SDKWork runtime.
 - `local-router-backend-api`: `/backend/v3/api/local_router/*` operator and
   control-plane routes for accounts, client API keys, usage, health, plugins,
   routing strategy, and API group manifests.
@@ -75,3 +75,6 @@ Owner and lifecycle status are tracked in `specs/component.spec.json`.
 - [docs/product/prd/PRD.md](docs/product/prd/PRD.md)
 - [docs/architecture/tech/TECH_ARCHITECTURE.md](docs/architecture/tech/TECH_ARCHITECTURE.md)
 
+## Application Roots
+
+- [apps directory index](apps/README.md)

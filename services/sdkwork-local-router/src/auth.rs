@@ -2,7 +2,6 @@ use axum::extract::{Request, State};
 use axum::http::{HeaderMap, StatusCode, Uri};
 use axum::middleware::Next;
 use axum::response::{IntoResponse, Response};
-use base64::{engine::general_purpose::URL_SAFE_NO_PAD, Engine};
 use serde_json::json;
 
 use crate::router::AppState;
@@ -18,8 +17,6 @@ pub const X_SDKWORK_SUBJECT_USER_ID_HEADER: &str = "x-sdkwork-subject-user-id";
 pub enum RequestContextSource {
     Default,
     ClientApiKey,
-    AppSessionToken,
-    JwtToken,
     SignedSubjectHeader,
 }
 
@@ -28,8 +25,6 @@ impl RequestContextSource {
         match self {
             Self::Default => "default",
             Self::ClientApiKey => "client_api_key",
-            Self::AppSessionToken => "app_session_token",
-            Self::JwtToken => "jwt_token",
             Self::SignedSubjectHeader => "signed_subject_header",
         }
     }
@@ -171,21 +166,9 @@ pub fn backend_api_context(headers: &HeaderMap) -> RequestContext {
 }
 
 pub fn resolve_app_backend_context(headers: &HeaderMap) -> Option<RequestContext> {
-    if let Some(user_id) = signed_subject_user_id(headers) {
-        return Some(RequestContext::new(
-            user_id,
-            RequestContextSource::SignedSubjectHeader,
-        ));
-    }
-    if let Some(user_id) = claw_app_session_user_id(headers) {
-        return Some(RequestContext::new(
-            user_id,
-            RequestContextSource::AppSessionToken,
-        ));
-    }
-    bearer_token(headers)
-        .and_then(jwt_user_id)
-        .map(|user_id| RequestContext::new(user_id, RequestContextSource::JwtToken))
+    signed_subject_user_id(headers).map(|user_id| {
+        RequestContext::new(user_id, RequestContextSource::SignedSubjectHeader)
+    })
 }
 
 pub fn client_api_key_secret_from_headers_and_uri(
@@ -211,49 +194,8 @@ fn bearer_token(headers: &HeaderMap) -> Option<String> {
     Some(token.to_owned())
 }
 
-fn claw_app_session_user_id(headers: &HeaderMap) -> Option<i64> {
-    let auth_token = bearer_token(headers)?;
-    let access_token = header_string(headers, ACCESS_TOKEN_HEADER)?;
-    let auth_user_id = parse_claw_app_session_user_id(&auth_token)?;
-    let access_user_id = parse_claw_app_session_user_id(&access_token)?;
-    (auth_user_id == access_user_id).then_some(auth_user_id)
-}
-
-fn parse_claw_app_session_user_id(token: &str) -> Option<i64> {
-    let parts: Vec<&str> = token.trim().split('.').collect();
-    if parts.len() != 7 || parts[0] != "v1" {
-        return None;
-    }
-    parse_user_id(parts[3])
-}
-
-fn jwt_user_id(token: String) -> Option<i64> {
-    let mut parts = token.split('.');
-    let _header = parts.next()?;
-    let payload = parts.next()?;
-    if parts.next().is_none() {
-        return None;
-    }
-    let decoded = URL_SAFE_NO_PAD.decode(payload).ok()?;
-    let claims: serde_json::Value = serde_json::from_slice(&decoded).ok()?;
-    for key in ["user_id", "userId", "uid", "sub"] {
-        if let Some(value) = claims.get(key).and_then(value_as_user_id) {
-            return Some(value);
-        }
-    }
-    None
-}
-
 fn signed_subject_user_id(headers: &HeaderMap) -> Option<i64> {
     header_string(headers, X_SDKWORK_SUBJECT_USER_ID_HEADER).and_then(|value| parse_user_id(&value))
-}
-
-fn value_as_user_id(value: &serde_json::Value) -> Option<i64> {
-    match value {
-        serde_json::Value::Number(number) => number.as_i64().map(normalize_user_id),
-        serde_json::Value::String(value) => parse_user_id(value),
-        _ => None,
-    }
 }
 
 fn parse_user_id(value: &str) -> Option<i64> {
@@ -329,10 +271,7 @@ mod tests {
             HeaderValue::from_static("v1.10.20.42.2.1000.signature"),
         );
 
-        let context = resolve_app_backend_context(&headers).expect("context");
-
-        assert_eq!(context.user_id, 42);
-        assert_eq!(context.source, RequestContextSource::AppSessionToken);
+        assert!(resolve_app_backend_context(&headers).is_none());
     }
 
     #[test]
@@ -351,19 +290,14 @@ mod tests {
     }
 
     #[test]
-    fn jwt_context_reads_user_id_claims() {
+    fn jwt_context_is_not_accepted_without_subject_projection() {
         let mut headers = HeaderMap::new();
-        let payload = URL_SAFE_NO_PAD.encode(br#"{"user_id":"123"}"#);
-        let token = format!("header.{payload}.signature");
         headers.insert(
             axum::http::header::AUTHORIZATION,
-            HeaderValue::from_str(&format!("Bearer {token}")).unwrap(),
+            HeaderValue::from_static("Bearer header.payload.signature"),
         );
 
-        let context = resolve_app_backend_context(&headers).expect("context");
-
-        assert_eq!(context.user_id, 123);
-        assert_eq!(context.source, RequestContextSource::JwtToken);
+        assert!(resolve_app_backend_context(&headers).is_none());
     }
 
     #[test]
@@ -378,11 +312,7 @@ mod tests {
             HeaderValue::from_static("v1.10.20.77.2.1000.signature"),
         );
 
-        let context = resolve_app_backend_context(&headers)
-            .expect("token should resolve app/backend request context");
-
-        assert_eq!(context.user_id, 77);
-        assert_eq!(context.source, RequestContextSource::AppSessionToken);
+        assert!(resolve_app_backend_context(&headers).is_none());
     }
 
     #[test]
@@ -407,14 +337,7 @@ mod tests {
     #[test]
     fn app_and_backend_contexts_keep_distinct_api_groups() {
         let mut headers = HeaderMap::new();
-        headers.insert(
-            axum::http::header::AUTHORIZATION,
-            HeaderValue::from_static("Bearer v1.10.20.42.1.999.signature"),
-        );
-        headers.insert(
-            ACCESS_TOKEN_HEADER,
-            HeaderValue::from_static("v1.10.20.42.2.1000.signature"),
-        );
+        headers.insert(X_SDKWORK_SUBJECT_USER_ID_HEADER, HeaderValue::from_static("42"));
 
         let app_context = app_api_context(&headers);
         let backend_context = backend_api_context(&headers);

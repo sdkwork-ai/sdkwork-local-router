@@ -17,7 +17,7 @@ database_url = "sqlite:./data/local-router.db?mode=rwc"
 # requests authenticate with a database-backed client API key created through
 # /backend/v3/api/local_router/client_api_keys.
 # The client API key row carries user_id; an empty user context defaults to 0.
-# App/backend APIs resolve user_id from SDKWork auth/access tokens or JWT context.
+# App/backend APIs resolve user_id from upstream sdkwork-iam subject projection.
 
 [logging]
 level = "info"
