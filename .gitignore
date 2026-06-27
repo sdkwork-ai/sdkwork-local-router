@@ -17,3 +17,7 @@ data/
 .env.postgres
 .env.release.local
 config/*.local.toml
+
+# SDKWork local runtime state
+.runtime/
+**/.runtime/
