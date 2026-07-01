@@ -88,7 +88,13 @@
     "sdkClients": [],
     "events": [],
     "configKeys": [],
-    "dependencyComposition": "../../../specs/dependency.composition.json"
+    "sdkDependencies": [
+      {
+        "workspace": "sdkwork-modelkit-sdk-typescript",
+        "surface": "open-api",
+        "credentialMode": "protected-open-api-flexible"
+      }
+    ]
   },
   "verification": {
     "commands": [

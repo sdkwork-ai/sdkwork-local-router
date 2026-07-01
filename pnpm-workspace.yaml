@@ -1,5 +1,8 @@
 packages:
-  - 'packages/*'
+  - "apps/sdkwork-local-router-pc"
+  - "apps/sdkwork-local-router-pc/packages/*"
+  - "apps/sdkwork-modelkit-pc"
+  - "apps/sdkwork-modelkit-pc/packages/*"
 
 allowBuilds:
   '@google/genai': set this to true or false

@@ -18,6 +18,15 @@ version = "0.1.0"
 license = "MIT"
 
 [workspace.dependencies]
+sdkwork_database_sqlx = { path = "../../../sdkwork-database/crates/sdkwork-database-sqlx" }
+sdkwork_database_spi = { path = "../../../sdkwork-database/crates/sdkwork-database-spi" }
+sdkwork_database_lifecycle = { path = "../../../sdkwork-database/crates/sdkwork-database-lifecycle" }
+sdkwork_database_config = { path = "../../../sdkwork-database/crates/sdkwork-database-config" }
+sdkwork-database-id = { path = "../../../sdkwork-database/crates/sdkwork-database-id" }
+sdkwork-database-sqlx = { path = "../../../sdkwork-database/crates/sdkwork-database-sqlx" }
+sdkwork-database-spi = { path = "../../../sdkwork-database/crates/sdkwork-database-spi" }
+sdkwork-database-lifecycle = { path = "../../../sdkwork-database/crates/sdkwork-database-lifecycle" }
+sdkwork-database-config = { path = "../../../sdkwork-database/crates/sdkwork-database-config" }
 anyhow = "1.0"
 axum = { version = "0.8", features = ["macros"] }
 bytes = "1.11"

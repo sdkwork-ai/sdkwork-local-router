@@ -15,5 +15,9 @@
     "react": "^19.0.1",
     "react-dom": "^19.0.1",
     "lucide-react": "^0.546.0"
+  },
+  "publishConfig": {
+    "access": "public",
+    "registry": "https://registry.npmjs.org/"
   }
 }

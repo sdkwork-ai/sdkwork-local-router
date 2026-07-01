@@ -14,9 +14,14 @@
     "generated": false
   },
   "contracts": {
-    "sdkDependencies": [],
+    "sdkDependencies": [
+      {
+        "workspace": "sdkwork-modelkit-sdk-typescript",
+        "surface": "open-api",
+        "credentialMode": "protected-open-api-flexible"
+      }
+    ],
     "dependencyApiExports": [],
-    "dependencyApiSurfaces": [],
-    "dependencyComposition": "../../../specs/dependency.composition.json"
+    "dependencyApiSurfaces": []
   }
 }

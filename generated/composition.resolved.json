@@ -1,0 +1,44 @@
+{
+  "schemaVersion": 1,
+  "kind": "sdkwork.composition.resolved",
+  "repository": "sdkwork-local-router",
+  "integrations": [
+    {
+      "workspace": "sdkwork-modelkit-sdk-typescript",
+      "surface": "open-api",
+      "apiPrefix": null,
+      "connectivityPlane": "application",
+      "runtimeMode": "same-origin-embedded",
+      "mountStatus": null,
+      "envKey": null,
+      "forbidProductSameOriginFallback": false,
+      "corePackage": "@sdkwork/modelkit-core",
+      "source": "apps/sdkwork-modelkit-pc/packages/sdkwork-modelkit-core/specs/component.spec.json"
+    },
+    {
+      "workspace": "sdkwork-modelkit-sdk-typescript",
+      "surface": "open-api",
+      "apiPrefix": null,
+      "connectivityPlane": "application",
+      "runtimeMode": "same-origin-embedded",
+      "mountStatus": null,
+      "envKey": null,
+      "forbidProductSameOriginFallback": false,
+      "corePackage": "@sdkwork/modelkit-pc-core",
+      "source": "apps/sdkwork-modelkit-pc/packages/sdkwork-modelkit-pc-core/specs/component.spec.json"
+    }
+  ],
+  "permissions": {
+    "inheritanceMode": "module-catalog-with-overrides",
+    "inheritedManifests": []
+  },
+  "env": {},
+  "requiresPlatformGatewayProcess": false,
+  "issues": [],
+  "meta": {
+    "resolver": "sdkwork-specs/tools/lib/composition-resolver.mjs",
+    "credentialModes": {
+      "sdkwork-modelkit-sdk-typescript": "protected-open-api-flexible"
+    }
+  }
+}

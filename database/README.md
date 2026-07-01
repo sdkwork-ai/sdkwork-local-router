@@ -6,22 +6,23 @@ Canonical lifecycle assets for `sdkwork-local-router` per `DATABASE_FRAMEWORK_SP
 - serviceCode: `LOCAL_ROUTER`
 - tablePrefix: `local_router_` (physical tables; manifest module prefix remains `lr_`)
 
+## Initialization state
+
+This module is in **initialization state** for greenfield deployments:
+
+1. **Baseline** — `database/ddl/baseline/{engine}/0001_localrouter_baseline.sql` contains the full DDL snapshot.
+2. **Migrations** — `database/migrations/{engine}/` is reserved for post-GA incremental schema changes only. It is intentionally empty at initialization.
+3. **Drift** — run `pnpm db:drift:check` before release.
+
 ## Commands
 
 ```bash
-pnpm run db:materialize:contract
 pnpm run db:validate
-pnpm run db:bootstrap
+pnpm run db:materialize:contract
+pnpm run db:plan
+pnpm run db:init
+pnpm run db:migrate
+pnpm run db:seed
+pnpm run db:status
+pnpm run db:drift:check
 ```
-
-## Baseline
-
-Legacy PostgreSQL SQL is consolidated in `database/ddl/baseline/postgres/0001_localrouter_legacy_baseline.sql`.
-
-Legacy SQLite SQL is consolidated in `database/ddl/baseline/sqlite/0001_localrouter_legacy_baseline.sql`.
-
-## Runtime bootstrap
-
-PostgreSQL: `Store::run_migrations()` calls `bootstrap_local_router_database_from_env()` via `sdkwork-local-router-database-host`.
-
-SQLite: `sqlx::migrate!("./migrations/sqlite")` unchanged for tests and local runtimes.

@@ -1,4 +1,5 @@
 # sdkwork-local-router
+repository-kind: application
 
 Rust local router for model API compatibility across OpenAI-compatible tools,
 Claude Code, Gemini CLI, and vendor-native upstreams.

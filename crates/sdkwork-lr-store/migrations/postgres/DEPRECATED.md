@@ -1,6 +1,6 @@
 # Deprecated legacy migrations
 
-PostgreSQL schema is consolidated in `database/ddl/baseline/postgres/0001_localrouter_legacy_baseline.sql`.
+PostgreSQL schema is consolidated in `database/ddl/baseline/postgres/0001_localrouter_baseline.sql`.
 
 Production PostgreSQL bootstrap MUST use `sdkwork-local-router-database-host` via `bootstrap_local_router_database()`.
 

@@ -6,17 +6,17 @@ license.workspace = true
 
 [dependencies]
 sdkwork-local-router-database-host = { path = "../sdkwork-local-router-database-host" }
-sdkwork-database-config = { path = "../../../sdkwork-database/crates/sdkwork-database-config" }
-sdkwork-database-lifecycle = { path = "../../../sdkwork-database/crates/sdkwork-database-lifecycle" }
-sdkwork-database-spi = { path = "../../../sdkwork-database/crates/sdkwork-database-spi" }
-sdkwork-database-sqlx = { path = "../../../sdkwork-database/crates/sdkwork-database-sqlx" }
+sdkwork-database-config = { workspace = true }
+sdkwork-database-lifecycle = { workspace = true }
+sdkwork-database-spi = { workspace = true }
+sdkwork-database-sqlx = { workspace = true }
 aes-gcm = "0.10"
 anyhow.workspace = true
 base64 = "0.22"
 chrono.workspace = true
 hkdf = "0.12"
 rand = "0.8"
-sdkwork-database-id = { path = "../../../sdkwork-database/crates/sdkwork-database-id" }
+sdkwork-database-id = { workspace = true }
 serde.workspace = true
 serde_json.workspace = true
 sha2 = "0.10"
