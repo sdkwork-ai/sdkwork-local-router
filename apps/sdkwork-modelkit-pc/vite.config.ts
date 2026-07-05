@@ -14,7 +14,7 @@ export default defineConfig(({mode}) => {
     resolve: {
       alias: [
         { find: '@sdkwork/modelkit-sdk-typescript', replacement: path.resolve(__dirname, './sdks/sdkwork-modelkit-sdk-typescript/src/index.ts') },
-        { find: /^@sdkwork\/modelkit-(.*)$/, replacement: path.resolve(__dirname, './packages/sdkwork-modelkit-$1/src/index.ts') },
+        { find: /^@sdkwork\/modelkit-(.*)$/, replacement: path.resolve(__dirname, './packages/sdkwork-modelkit-undefined') },
         { find: '@', replacement: path.resolve(__dirname, '.') }
       ]
     },

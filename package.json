@@ -15,5 +15,12 @@
     "db:bootstrap": "cargo run --manifest-path ../sdkwork-database/Cargo.toml -p sdkwork-database-cli -- --app-root . bootstrap",
     "test": "node ../sdkwork-specs/tools/check-database-framework-standard.mjs --root .",
     "check:app-composition": "node ../sdkwork-specs/tools/verify-repo.mjs --root ."
+  },
+  "exports": {
+    ".": {
+      "types": "./src/index.ts",
+      "import": "./src/index.ts",
+      "default": "./src/index.ts"
+    }
   }
 }

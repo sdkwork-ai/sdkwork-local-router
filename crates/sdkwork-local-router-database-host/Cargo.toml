@@ -11,7 +11,7 @@ path = "src/lib.rs"
 
 [dependencies]
 dotenvy = "0.15"
-sdkwork_database_config = { workspace = true, package = "sdkwork-database-config" }
-sdkwork_database_lifecycle = { workspace = true, package = "sdkwork-database-lifecycle" }
-sdkwork_database_spi = { workspace = true, package = "sdkwork-database-spi" }
-sdkwork_database_sqlx = { workspace = true, package = "sdkwork-database-sqlx" }
+sdkwork-database-config = { workspace = true, package = "sdkwork-database-config" }
+sdkwork-database-lifecycle = { workspace = true, package = "sdkwork-database-lifecycle" }
+sdkwork-database-spi = { workspace = true, package = "sdkwork-database-spi" }
+sdkwork-database-sqlx = { workspace = true, package = "sdkwork-database-sqlx" }

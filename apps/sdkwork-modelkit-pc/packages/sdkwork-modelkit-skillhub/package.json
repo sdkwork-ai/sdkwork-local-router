@@ -1,7 +1,7 @@
 {
   "name": "@sdkwork/modelkit-skillhub",
   "version": "1.0.0",
-  "main": "src/index.ts",
+  "main": "./src/index.ts",
   "dependencies": {
     "react": "^19.0.1",
     "lucide-react": "^0.546.0",
@@ -11,5 +11,13 @@
   "publishConfig": {
     "access": "public",
     "registry": "https://registry.npmjs.org/"
+  },
+  "private": true,
+  "exports": {
+    ".": {
+      "types": "./src/index.ts",
+      "import": "./src/index.ts",
+      "default": "./src/index.ts"
+    }
   }
 }
