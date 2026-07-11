@@ -132,7 +132,7 @@ class Json5Parser {
   }
 
   private parseIdentifier(): string {
-    const start = this.index;
+    const fromPos = this.index;
     const first = this.peek();
     if (!first || !/[A-Za-z_$]/.test(first)) {
       this.throwSyntaxError("Expected an object key");
@@ -147,7 +147,7 @@ class Json5Parser {
       this.index += 1;
     }
 
-    return this.input.slice(start, this.index);
+    return this.input.slice(fromPos, this.index);
   }
 
   private parseString(): string {
@@ -229,7 +229,7 @@ class Json5Parser {
   }
 
   private parseNumber(): number {
-    const start = this.index;
+    const fromPos = this.index;
 
     if (this.peek() === "+" || this.peek() === "-") {
       this.index += 1;
@@ -237,7 +237,7 @@ class Json5Parser {
 
     if (this.peek() === "I" && this.input.slice(this.index, this.index + 8) === "Infinity") {
       this.index += 8;
-      return this.input[start] === "-" ? -Infinity : Infinity;
+      return this.input[fromPos] === "-" ? -Infinity : Infinity;
     }
     if (this.peek() === "N" && this.input.slice(this.index, this.index + 3) === "NaN") {
       this.index += 3;
@@ -253,7 +253,7 @@ class Json5Parser {
       if (digitsStart === this.index) {
         this.throwSyntaxError("Invalid hexadecimal number");
       }
-      return Number.parseInt(this.input.slice(start, this.index), 16);
+      return Number.parseInt(this.input.slice(fromPos, this.index), 16);
     }
 
     let consumedDigit = false;
@@ -291,7 +291,7 @@ class Json5Parser {
       this.throwSyntaxError("Expected a JSON value");
     }
 
-    const token = this.input.slice(start, this.index);
+    const token = this.input.slice(fromPos, this.index);
     const value = Number(token);
     if (Number.isNaN(value)) {
       this.throwSyntaxError(`Invalid number literal "${token}"`);

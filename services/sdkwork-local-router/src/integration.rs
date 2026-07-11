@@ -16,13 +16,13 @@ use sdkwork_lr_store::{NewAccount, NewClientApiKey, NewModelRouteMapping};
 
 #[derive(Deserialize)]
 pub struct PaginationParams {
-    pub limit: Option<i64>,
+    pub page_size: Option<i64>,
     pub offset: Option<i64>,
 }
 
 #[derive(Deserialize)]
 pub struct UsageQueryParams {
-    pub limit: Option<i64>,
+    pub page_size: Option<i64>,
     pub offset: Option<i64>,
     pub model: Option<String>,
 }
@@ -378,7 +378,7 @@ pub async fn list_logs(
     Query(params): Query<PaginationParams>,
     Extension(context): Extension<RequestContext>,
 ) -> impl IntoResponse {
-    let limit = params.limit.unwrap_or(100).min(1000);
+    let limit = params.page_size.unwrap_or(100).min(1000);
     let offset = params.offset.unwrap_or(0);
     match state
         .store
@@ -1504,7 +1504,7 @@ pub async fn list_usages(
     Query(params): Query<UsageQueryParams>,
     Extension(context): Extension<RequestContext>,
 ) -> impl IntoResponse {
-    let limit = params.limit.unwrap_or(100).min(1000);
+    let limit = params.page_size.unwrap_or(100).min(1000);
     let offset = params.offset.unwrap_or(0);
     match state
         .store

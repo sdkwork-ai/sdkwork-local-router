@@ -298,7 +298,7 @@ export function NewsPage() {
               </div>
               <div className="flex items-center gap-3">
                 <div className="w-[72px] h-[72px] bg-gray-50 dark:bg-gray-800 rounded flex items-center justify-center p-1 border border-gray-200 dark:border-gray-700 shrink-0 shadow-sm">
-                  <img src="https://api.qrserver.com/v1/create-qr-code/?size=80x80&data=hackernews" alt="QR Code" className="w-full h-full opacity-90 mix-blend-multiply dark:mix-blend-normal" referrerPolicy="no-referrer" />
+                  <img src="https://api.qrserver.com/v1/create-qr-code/?page_size=80x80&data=hackernews" alt="QR Code" className="w-full h-full opacity-90 mix-blend-multiply dark:mix-blend-normal" referrerPolicy="no-referrer" />
                 </div>
                 <div className="flex flex-col gap-2 min-w-0">
                   <div className="flex items-center gap-1.5 text-[#07c160] font-bold text-[13px] whitespace-nowrap">
