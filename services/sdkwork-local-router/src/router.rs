@@ -2,7 +2,6 @@ use std::sync::Arc;
 
 use axum::extract::State;
 use axum::http::header;
-use axum::http::HeaderValue;
 use axum::middleware;
 use axum::response::IntoResponse;
 use axum::routing::{get, post, put};
@@ -10,7 +9,7 @@ use axum::{Json, Router};
 use parking_lot::RwLock;
 use serde_json::json;
 use std::collections::HashMap;
-use tower_http::cors::{Any, CorsLayer};
+use tower_http::cors::CorsLayer;
 use tower_http::limit::RequestBodyLimitLayer;
 
 use crate::auth;
@@ -174,32 +173,22 @@ pub async fn build_router(
 }
 
 fn build_cors_layer(cors_config: &sdkwork_lr_config::CorsConfig) -> CorsLayer {
-    if cors_config.is_allow_any() {
-        tracing::warn!("CORS allows any origin - not recommended for production");
-        return CorsLayer::new()
-            .allow_origin(Any)
-            .allow_methods(Any)
-            .allow_headers(Any);
+    let use_private_network_policy = cors_config.is_allow_any()
+        || cors_config.allowed_origins.iter().any(|origin| origin.contains(":*"));
+    let mut policy = if use_private_network_policy {
+        sdkwork_web_core::CorsPolicy::development_private_network()
+    } else {
+        sdkwork_web_core::CorsPolicy::default()
+    };
+    for origin in cors_config
+        .allowed_origins
+        .iter()
+        .filter(|origin| !origin.contains(":*") && origin.as_str() != "*")
+    {
+        if !policy.allowed_origins.contains(origin) {
+            policy.allowed_origins.push(origin.clone());
+        }
     }
-
-    let origins: Vec<HeaderValue> = cors_config
-        .allowed_origins
-        .iter()
-        .filter_map(|origin| {
-            if origin.contains(":*") {
-                None
-            } else {
-                origin.parse::<HeaderValue>().ok()
-            }
-        })
-        .collect();
-
-    let wildcard_patterns: Vec<&str> = cors_config
-        .allowed_origins
-        .iter()
-        .filter(|o| o.contains(":*"))
-        .map(|o| o.as_str())
-        .collect();
 
     let exposed_headers = [
         header::HeaderName::from_static("x-request-id"),
@@ -212,39 +201,19 @@ fn build_cors_layer(cors_config: &sdkwork_lr_config::CorsConfig) -> CorsLayer {
         header::HeaderName::from_static("access-token"),
     ];
 
-    let mut cors = CorsLayer::new()
-        .allow_methods([
-            axum::http::Method::GET,
-            axum::http::Method::POST,
-            axum::http::Method::PUT,
-            axum::http::Method::DELETE,
-            axum::http::Method::OPTIONS,
-        ])
-        .allow_headers([
-            header::CONTENT_TYPE,
-            header::AUTHORIZATION,
-            header::ACCEPT,
-            header::HeaderName::from_static("x-api-key"),
-            header::HeaderName::from_static("x-goog-api-key"),
-            header::HeaderName::from_static("x-sdkwork-client-api-key-id"),
-            header::HeaderName::from_static("x-request-id"),
-            header::HeaderName::from_static("x-sdkwork-client-api"),
-            header::HeaderName::from_static("access-token"),
-            header::HeaderName::from_static("anthropic-version"),
-        ])
-        .expose_headers(exposed_headers);
-
-    if !origins.is_empty() && wildcard_patterns.is_empty() {
-        cors = cors.allow_origin(origins);
-    } else if !wildcard_patterns.is_empty() {
-        cors = cors.allow_origin(Any);
-        tracing::info!(
-            patterns = ?wildcard_patterns,
-            "CORS: wildcard patterns detected, allowing any origin (use specific origins in production)"
-        );
+    for name in [
+        "accept",
+        "x-goog-api-key",
+        "x-sdkwork-client-api-key-id",
+        "x-request-id",
+        "x-sdkwork-client-api",
+        "anthropic-version",
+    ] {
+        if !policy.allowed_headers.iter().any(|allowed| allowed == name) {
+            policy.allowed_headers.push(name.to_owned());
+        }
     }
-
-    cors
+    sdkwork_web_axum::cors_layer_from_policy(policy).expose_headers(exposed_headers)
 }
 
 fn local_router_open_api_routes(

@@ -37,6 +37,8 @@ hyper-util = { version = "0.1", features = ["client-legacy", "http1", "tokio"] }
 parking_lot = "0.12"
 regex = "1"
 sdkwork-models = { git = "https://github.com/Sdkwork-Cloud/sdkwork-models.git" }
+sdkwork-web-axum = { path = "../sdkwork-web-framework/crates/sdkwork-web-axum" }
+sdkwork-web-core = { path = "../sdkwork-web-framework/crates/sdkwork-web-core" }
 serde = { version = "1.0", features = ["derive"] }
 serde_json = "1.0"
 sqlx = { version = "0.8", default-features = false, features = ["runtime-tokio", "sqlite", "postgres", "derive", "migrate", "macros"] }

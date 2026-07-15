@@ -30,6 +30,8 @@ sdkwork-lr-transform = { path = "../../crates/sdkwork-lr-transform" }
 sdkwork-lr-store = { path = "../../crates/sdkwork-lr-store" }
 sdkwork-lr-observability = { path = "../../crates/sdkwork-lr-observability" }
 sdkwork-models.workspace = true
+sdkwork-web-axum.workspace = true
+sdkwork-web-core.workspace = true
 tokio.workspace = true
 tower-http.workspace = true
 tracing.workspace = true
