@@ -3,7 +3,7 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "db:validate": "node ../sdkwork-specs/tools/check-database-framework-standard.mjs --root .",
+    "stop": "node ../sdkwork-specs/tools/stop-sdkwork-workspace-processes.mjs --workspace .",    "db:validate": "node ../sdkwork-specs/tools/check-database-framework-standard.mjs --root .",
     "db:materialize:contract": "node ../sdkwork-specs/tools/materialize-database-contract-from-baseline.mjs --root . --baseline database/ddl/baseline/postgres/0001_localrouter_baseline.sql --module-id localrouter --owner local-router-platform --prefixes lr_ --engines postgres,sqlite",
     "db:plan": "cargo run --manifest-path ../sdkwork-database/Cargo.toml -p sdkwork-database-cli -- --app-root . plan",
     "db:init": "cargo run --manifest-path ../sdkwork-database/Cargo.toml -p sdkwork-database-cli -- --app-root . init",
