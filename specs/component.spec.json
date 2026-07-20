@@ -53,15 +53,21 @@
     "publicExports": [
       "."
     ],
-    "runtimeEntrypoints": [],
+    "runtimeEntrypoints": [
+      "services/sdkwork-local-router#lr"
+    ],
     "routeManifest": null,
     "sdkClients": [],
     "events": [],
-    "configKeys": []
+    "configKeys": [
+      "SDKWORK_LR_BIND",
+      "SDKWORK_LR_PORT",
+      "SDKWORK_LR_CONFIG_FILE"
+    ]
   },
   "verification": {
     "commands": [
-      "cargo test"
+      "pnpm verify"
     ]
   }
 }

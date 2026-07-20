@@ -12,6 +12,6 @@
     }
   },
   "dependencies": {
-    "@sdkwork/modelkit-types": "*"
+    "@sdkwork/modelkit-types": "workspace:*"
   }
 }

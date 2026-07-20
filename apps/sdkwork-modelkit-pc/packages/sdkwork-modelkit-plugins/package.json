@@ -5,8 +5,8 @@
   "dependencies": {
     "react": "^19.0.1",
     "lucide-react": "^0.546.0",
-    "@sdkwork/modelkit-types": "*",
-    "@sdkwork/modelkit-services": "*"
+    "@sdkwork/modelkit-types": "workspace:*",
+    "@sdkwork/modelkit-services": "workspace:*"
   },
   "publishConfig": {
     "access": "public",

@@ -3,7 +3,20 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "stop": "node ../sdkwork-specs/tools/stop-sdkwork-workspace-processes.mjs --workspace .",    "db:validate": "node ../sdkwork-specs/tools/check-database-framework-standard.mjs --root .",
+    "stop": "pnpm exec sdkwork-app stop",
+    "dev": "pnpm dev:standalone",
+    "dev:standalone": "pnpm exec sdkwork-app dev --deployment-profile standalone",
+    "dev:cloud": "pnpm exec sdkwork-app dev --deployment-profile cloud",
+    "build": "pnpm exec sdkwork-app build",
+    "test": "pnpm exec sdkwork-app test",
+    "check": "pnpm exec sdkwork-app check",
+    "verify": "pnpm exec sdkwork-app verify",
+    "clean": "pnpm exec sdkwork-app clean",
+    "api:assembly:materialize": "node ../sdkwork-specs/tools/materialize-api-assembly.mjs --root .",
+    "api:assembly:validate": "node ../sdkwork-specs/tools/validate-api-assembly.mjs --root .",
+    "topology:validate": "pnpm exec sdkwork-topology validate --root . --spec specs/topology.spec.json",
+    "topology:plan": "pnpm exec sdkwork-topology plan --root . --spec specs/topology.spec.json",
+    "db:validate": "node ../sdkwork-specs/tools/check-database-framework-standard.mjs --root .",
     "db:materialize:contract": "node ../sdkwork-specs/tools/materialize-database-contract-from-baseline.mjs --root . --baseline database/ddl/baseline/postgres/0001_localrouter_baseline.sql --module-id localrouter --owner local-router-platform --prefixes lr_ --engines postgres,sqlite",
     "db:plan": "cargo run --manifest-path ../sdkwork-database/Cargo.toml -p sdkwork-database-cli -- --app-root . plan",
     "db:init": "cargo run --manifest-path ../sdkwork-database/Cargo.toml -p sdkwork-database-cli -- --app-root . init",
@@ -13,8 +26,15 @@
     "db:drift": "cargo run --manifest-path ../sdkwork-database/Cargo.toml -p sdkwork-database-cli -- --app-root . drift",
     "db:drift:check": "cargo run --manifest-path ../sdkwork-database/Cargo.toml -p sdkwork-database-cli -- --app-root . drift-check",
     "db:bootstrap": "cargo run --manifest-path ../sdkwork-database/Cargo.toml -p sdkwork-database-cli -- --app-root . bootstrap",
-    "test": "node ../sdkwork-specs/tools/check-database-framework-standard.mjs --root .",
-    "check:app-composition": "node ../sdkwork-specs/tools/verify-repo.mjs --root ."
+    "check:app-composition": "node ../sdkwork-specs/tools/verify-repo.mjs --root .",
+    "_sdkwork:build": "cargo build --workspace",
+    "_sdkwork:test": "node ../sdkwork-specs/tools/check-database-framework-standard.mjs --root . && cargo test --workspace",
+    "_sdkwork:check": "pnpm run check:app-composition && pnpm db:validate && pnpm topology:validate && cargo fmt --all --check && cargo clippy --workspace --tests -- -D warnings",
+    "_sdkwork:verify": "pnpm check && pnpm test && pnpm api:assembly:validate",
+    "_sdkwork:clean": "cargo clean && node scripts/clean.mjs"
+  },
+  "devDependencies": {
+    "@sdkwork/app-topology": "workspace:*"
   },
   "exports": {
     ".": {

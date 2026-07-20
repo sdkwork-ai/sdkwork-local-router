@@ -13,11 +13,11 @@
   },
   "dependencies": {
     "@monaco-editor/react": "^4.7.0",
-    "@sdkwork/modelkit-commons": "*",
-    "@sdkwork/modelkit-core": "*",
-    "@sdkwork/modelkit-services": "*",
-    "@sdkwork/modelkit-types": "*",
-    "@sdkwork/modelkit-sdk-typescript": "*",
+    "@sdkwork/modelkit-commons": "workspace:*",
+    "@sdkwork/modelkit-core": "workspace:*",
+    "@sdkwork/modelkit-services": "workspace:*",
+    "@sdkwork/modelkit-types": "workspace:*",
+    "@sdkwork/modelkit-sdk-typescript": "workspace:*",
     "sonner": "^2.0.7"
   }
 }

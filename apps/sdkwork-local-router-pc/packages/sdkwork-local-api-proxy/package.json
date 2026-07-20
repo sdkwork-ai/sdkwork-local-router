@@ -20,8 +20,8 @@
     "typecheck": "tsc --noEmit"
   },
   "peerDependencies": {
-    "@sdkwork/core-pc-react": "*",
-    "@sdkwork/ui-pc-react": "*",
+    "@sdkwork/core-pc-react": "workspace:*",
+    "@sdkwork/ui-pc-react": "workspace:*",
     "react": ">=18.2.0 <20.0.0",
     "react-dom": ">=18.2.0 <20.0.0"
   },
