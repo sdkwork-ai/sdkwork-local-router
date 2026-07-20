@@ -1,0 +1,9 @@
+{
+  "kind": "sdkwork.api.assembly",
+  "schemaVersion": 1,
+  "applicationCode": "local-router",
+  "apiMode": "none",
+  "packageName": "sdkwork-api-local-router-assembly",
+  "crateDir": "crates/sdkwork-api-local-router-assembly",
+  "routeCrates": []
+}

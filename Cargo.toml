@@ -1,5 +1,6 @@
 [workspace]
 members = [
+    "crates/sdkwork-api-local-router-assembly",
     "crates/sdkwork-lr-config",
     "crates/sdkwork-lr-core",
     "crates/sdkwork-local-router-database-host",
