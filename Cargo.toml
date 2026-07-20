@@ -2,6 +2,10 @@
 members = [
     "crates/sdkwork-api-local-router-standalone-gateway",
     "crates/sdkwork-api-local-router-assembly",
+    "crates/sdkwork-routes-local-router-support",
+    "crates/sdkwork-routes-local-router-open-api",
+    "crates/sdkwork-routes-local-router-app-api",
+    "crates/sdkwork-routes-local-router-backend-api",
     "crates/sdkwork-lr-config",
     "crates/sdkwork-lr-core",
     "crates/sdkwork-local-router-database-host",
@@ -10,7 +14,6 @@ members = [
     "crates/sdkwork-lr-transform",
     "crates/sdkwork-lr-store",
     "crates/sdkwork-lr-observability",
-    "services/sdkwork-local-router",
 ]
 resolver = "2"
 
@@ -20,11 +23,11 @@ version = "0.1.0"
 license = "MIT"
 
 [workspace.dependencies]
-sdkwork-database-id = { path = "../../../sdkwork-database/crates/sdkwork-database-id" }
-sdkwork-database-sqlx = { path = "../../../sdkwork-database/crates/sdkwork-database-sqlx" }
-sdkwork-database-spi = { path = "../../../sdkwork-database/crates/sdkwork-database-spi" }
-sdkwork-database-lifecycle = { path = "../../../sdkwork-database/crates/sdkwork-database-lifecycle" }
-sdkwork-database-config = { path = "../../../sdkwork-database/crates/sdkwork-database-config" }
+sdkwork-database-id = { path = "../sdkwork-database/crates/sdkwork-database-id" }
+sdkwork-database-sqlx = { path = "../sdkwork-database/crates/sdkwork-database-sqlx" }
+sdkwork-database-spi = { path = "../sdkwork-database/crates/sdkwork-database-spi" }
+sdkwork-database-lifecycle = { path = "../sdkwork-database/crates/sdkwork-database-lifecycle" }
+sdkwork-database-config = { path = "../sdkwork-database/crates/sdkwork-database-config" }
 anyhow = "1.0"
 axum = { version = "0.8", features = ["macros"] }
 bytes = "1.11"
@@ -61,3 +64,10 @@ sdkwork-lr-plugin = { path = "crates/sdkwork-lr-plugin" }
 sdkwork-lr-proxy = { path = "crates/sdkwork-lr-proxy" }
 sdkwork-lr-transform = { path = "crates/sdkwork-lr-transform" }
 sdkwork-lr-observability = { path = "crates/sdkwork-lr-observability" }
+sdkwork-lr-store = { path = "crates/sdkwork-lr-store" }
+sdkwork-routes-local-router-support = { path = "crates/sdkwork-routes-local-router-support" }
+sdkwork-routes-local-router-open-api = { path = "crates/sdkwork-routes-local-router-open-api" }
+sdkwork-routes-local-router-app-api = { path = "crates/sdkwork-routes-local-router-app-api" }
+sdkwork-routes-local-router-backend-api = { path = "crates/sdkwork-routes-local-router-backend-api" }
+sdkwork-api-local-router-assembly = { path = "crates/sdkwork-api-local-router-assembly" }
+sdkwork-web-bootstrap = { path = "../sdkwork-web-framework/crates/sdkwork-web-bootstrap" }

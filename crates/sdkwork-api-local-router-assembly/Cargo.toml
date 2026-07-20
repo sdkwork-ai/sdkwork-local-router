@@ -11,4 +11,19 @@ path = "src/lib.rs"
 
 [dependencies]
 axum.workspace = true
+bytes.workspace = true
 tokio.workspace = true
+anyhow.workspace = true
+parking_lot.workspace = true
+sdkwork-lr-config.workspace = true
+sdkwork-lr-core.workspace = true
+sdkwork-lr-proxy.workspace = true
+sdkwork-lr-store.workspace = true
+sdkwork-routes-local-router-support.workspace = true
+sdkwork-web-axum.workspace = true
+sdkwork-web-core.workspace = true
+tower-http.workspace = true
+tracing.workspace = true
+sdkwork-routes-local-router-app-api.workspace = true
+sdkwork-routes-local-router-backend-api.workspace = true
+sdkwork-routes-local-router-open-api.workspace = true

@@ -16,13 +16,18 @@ futures-core.workspace = true
 futures-util.workspace = true
 http-body-util.workspace = true
 hyper.workspace = true
+parking_lot.workspace = true
+regex.workspace = true
 serde_json.workspace = true
 sdkwork-lr-config.workspace = true
 sdkwork-lr-core.workspace = true
 sdkwork-lr-plugin.workspace = true
 sdkwork-lr-proxy.workspace = true
+sdkwork-lr-observability.workspace = true
 sdkwork-lr-transform.workspace = true
 sdkwork-lr-store = { path = "../sdkwork-lr-store" }
 sdkwork-routes-local-router-support = { path = "../sdkwork-routes-local-router-support" }
 tracing.workspace = true
+tokio.workspace = true
+urlencoding.workspace = true
 uuid.workspace = true

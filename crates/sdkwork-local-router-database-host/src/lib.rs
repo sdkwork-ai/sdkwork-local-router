@@ -50,8 +50,7 @@ pub async fn bootstrap_local_router_database(
     Ok(LocalRouterDatabaseHost { pool, module })
 }
 
-pub async fn bootstrap_local_router_database_from_env(
-) -> Result<LocalRouterDatabaseHost, String> {
+pub async fn bootstrap_local_router_database_from_env() -> Result<LocalRouterDatabaseHost, String> {
     let _ = dotenvy::dotenv();
     let config = DatabaseConfig::from_env("LOCAL_ROUTER")
         .map_err(|error| format!("read local router database config failed: {error}"))?;

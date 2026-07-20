@@ -1,0 +1,51 @@
+{
+  "schemaVersion": 1,
+  "kind": "sdkwork.component.spec",
+  "component": {
+    "name": "sdkwork-routes-local-router-support",
+    "displayName": "SDKWork Local Router Route Support",
+    "version": "0.1.0",
+    "type": "rust-crate",
+    "root": "crates/sdkwork-routes-local-router-support",
+    "domain": "intelligence",
+    "capability": "local-router-route-support",
+    "surface": "internal",
+    "languages": ["rust"],
+    "generated": false,
+    "manifests": ["Cargo.toml"]
+  },
+  "canonicalSpecs": [
+    {
+      "file": "RUST_CODE_SPEC.md",
+      "path": "../../../sdkwork-specs/RUST_CODE_SPEC.md",
+      "purpose": "Rust state, middleware, and handler boundaries."
+    },
+    {
+      "file": "WEB_FRAMEWORK_SPEC.md",
+      "path": "../../../sdkwork-specs/WEB_FRAMEWORK_SPEC.md",
+      "purpose": "Request context and response integration."
+    },
+    {
+      "file": "API_SPEC.md",
+      "path": "../../../sdkwork-specs/API_SPEC.md",
+      "purpose": "HTTP operation and response contracts."
+    }
+  ],
+  "contracts": {
+    "layerRole": "http-adapter",
+    "publicExports": ["."],
+    "providedPorts": ["AppState", "RateLimiter"],
+    "requiredPorts": ["sdkwork-lr-core", "sdkwork-lr-store"],
+    "runtimeEntrypoints": [],
+    "routeManifest": null,
+    "sdkClients": [],
+    "sdkDependencies": [],
+    "dependencyApiExports": [],
+    "dependencyApiSurfaces": [],
+    "events": [],
+    "configKeys": []
+  },
+  "verification": {
+    "commands": ["cargo test -p sdkwork-routes-local-router-support"]
+  }
+}

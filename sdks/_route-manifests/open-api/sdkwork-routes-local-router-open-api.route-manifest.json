@@ -1,0 +1,48 @@
+{
+  "schemaVersion": 1,
+  "kind": "sdkwork.route.manifest",
+  "packageName": "sdkwork-routes-local-router-open-api",
+  "surface": "open-api",
+  "owner": "sdkwork-local-router",
+  "domain": "intelligence",
+  "capability": "local-router",
+  "apiAuthority": "sdkwork-local-router-open-api",
+  "sdkFamily": "sdkwork-local-router-sdk",
+  "prefix": "/",
+  "routes": [
+    {
+      "method": "ANY",
+      "path": "/v1/{*path}",
+      "operationId": "localRouter.openai.proxy",
+      "requestContext": "WebRequestContext",
+      "apiSurface": "open-api",
+      "auth": {
+        "mode": "api-key"
+      },
+      "externalProtocolId": "openai"
+    },
+    {
+      "method": "ANY",
+      "path": "/anthropic/{*path}",
+      "operationId": "localRouter.anthropic.proxy",
+      "requestContext": "WebRequestContext",
+      "apiSurface": "open-api",
+      "auth": {
+        "mode": "api-key"
+      },
+      "externalProtocolId": "anthropic"
+    },
+    {
+      "method": "ANY",
+      "path": "/google/{*path}",
+      "operationId": "localRouter.google.proxy",
+      "requestContext": "WebRequestContext",
+      "apiSurface": "open-api",
+      "auth": {
+        "mode": "api-key"
+      },
+      "externalProtocolId": "google"
+    }
+  ]
+}
+

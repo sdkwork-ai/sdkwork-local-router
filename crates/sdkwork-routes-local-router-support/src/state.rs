@@ -34,7 +34,12 @@ pub fn build_app_state(
     config: &RuntimeConfig,
     store: Store,
     rate_limiter: Arc<RateLimiter>,
-) -> (AppState, Arc<HealthManager>, Arc<RwLock<AccountPool>>, RoutingStrategyOverrides) {
+) -> (
+    AppState,
+    Arc<HealthManager>,
+    Arc<RwLock<AccountPool>>,
+    RoutingStrategyOverrides,
+) {
     let accounts: Vec<Account> = config
         .upstreams
         .iter()

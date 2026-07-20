@@ -10,17 +10,16 @@ use axum::{Json, Router};
 use bytes::Bytes;
 use serde_json::json;
 
-use sdkwork_routes_local_router_support::auth;
-use sdkwork_routes_local_router_support::state::AppState;
-use sdkwork_routes_local_router_support::streaming;
-use sdkwork_routes_local_router_support::upstream_auth::auth_from_scheme;
-use sdkwork_routes_local_router_support::RateLimiter;
 use sdkwork_lr_core::{Account, InterceptorError, Invocation, Protocol, ProviderKind};
 use sdkwork_lr_plugin::{
     ApiSurface, CompatibilityDecision, ModelCompatibilityResolver, PluginPolicy, TransformContext,
 };
 use sdkwork_lr_proxy::{AuthInjection, ForwardTarget};
 use sdkwork_lr_store::{NewInvocation as StoreInvocation, NewUsage};
+use sdkwork_routes_local_router_support::auth;
+use sdkwork_routes_local_router_support::state::AppState;
+use sdkwork_routes_local_router_support::streaming;
+use sdkwork_routes_local_router_support::upstream_auth::auth_from_scheme;
 
 static GEMINI_MODEL_REGEX: LazyLock<regex::Regex> =
     LazyLock::new(|| regex::Regex::new(r"/models/([^:]+)").unwrap());
@@ -2771,7 +2770,7 @@ mod tests {
             )),
             client: sdkwork_lr_proxy::build_proxy_client(),
             store,
-            rate_limiter: Arc::new(RateLimiter::new(60, 60)),
+            rate_limiter: Arc::new(sdkwork_routes_local_router_support::RateLimiter::new(60, 60)),
             interceptor_chain: Arc::new(sdkwork_lr_core::InterceptorChain::new()),
             health_manager,
             transform_registry: Arc::new(sdkwork_lr_transform::plugins::built_in_plugin_registry()),

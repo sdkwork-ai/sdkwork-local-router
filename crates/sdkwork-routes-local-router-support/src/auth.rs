@@ -166,9 +166,8 @@ pub fn backend_api_context(headers: &HeaderMap) -> RequestContext {
 }
 
 pub fn resolve_app_backend_context(headers: &HeaderMap) -> Option<RequestContext> {
-    signed_subject_user_id(headers).map(|user_id| {
-        RequestContext::new(user_id, RequestContextSource::SignedSubjectHeader)
-    })
+    signed_subject_user_id(headers)
+        .map(|user_id| RequestContext::new(user_id, RequestContextSource::SignedSubjectHeader))
 }
 
 pub fn client_api_key_secret_from_headers_and_uri(
@@ -337,7 +336,10 @@ mod tests {
     #[test]
     fn app_and_backend_contexts_keep_distinct_api_groups() {
         let mut headers = HeaderMap::new();
-        headers.insert(X_SDKWORK_SUBJECT_USER_ID_HEADER, HeaderValue::from_static("42"));
+        headers.insert(
+            X_SDKWORK_SUBJECT_USER_ID_HEADER,
+            HeaderValue::from_static("42"),
+        );
 
         let app_context = app_api_context(&headers);
         let backend_context = backend_api_context(&headers);

@@ -1,0 +1,35 @@
+{
+  "schemaVersion": 1,
+  "kind": "sdkwork.route.manifest",
+  "packageName": "sdkwork-routes-local-router-app-api",
+  "surface": "app-api",
+  "owner": "sdkwork-local-router",
+  "domain": "intelligence",
+  "capability": "local-router",
+  "apiAuthority": "sdkwork-local-router-app-api",
+  "sdkFamily": "sdkwork-local-router-app-sdk",
+  "prefix": "/app/v3/api",
+  "routes": [
+    {
+      "method": "GET",
+      "path": "/app/v3/api/local_router/status",
+      "operationId": "localRouter.status.retrieve",
+      "requestContext": "WebRequestContext",
+      "apiSurface": "app-api",
+      "auth": {
+        "mode": "dual-token"
+      }
+    },
+    {
+      "method": "GET",
+      "path": "/app/v3/api/local_router/models",
+      "operationId": "localRouter.models.list",
+      "requestContext": "WebRequestContext",
+      "apiSurface": "app-api",
+      "auth": {
+        "mode": "dual-token"
+      }
+    }
+  ]
+}
+

@@ -1,0 +1,235 @@
+{
+  "schemaVersion": 1,
+  "kind": "sdkwork.route.manifest",
+  "packageName": "sdkwork-routes-local-router-backend-api",
+  "surface": "backend-api",
+  "owner": "sdkwork-local-router",
+  "domain": "intelligence",
+  "capability": "local-router",
+  "apiAuthority": "sdkwork-local-router-backend-api",
+  "sdkFamily": "sdkwork-local-router-backend-sdk",
+  "prefix": "/backend/v3/api",
+  "routes": [
+    {
+      "method": "GET",
+      "path": "/backend/v3/api/local_router/upstreams",
+      "operationId": "localRouter.upstreams.list",
+      "requestContext": "WebRequestContext",
+      "apiSurface": "backend-api",
+      "auth": {
+        "mode": "dual-token"
+      }
+    },
+    {
+      "method": "GET",
+      "path": "/backend/v3/api/local_router/logs",
+      "operationId": "localRouter.logs.list",
+      "requestContext": "WebRequestContext",
+      "apiSurface": "backend-api",
+      "auth": {
+        "mode": "dual-token"
+      }
+    },
+    {
+      "method": "GET",
+      "path": "/backend/v3/api/local_router/plugins",
+      "operationId": "localRouter.plugins.list",
+      "requestContext": "WebRequestContext",
+      "apiSurface": "backend-api",
+      "auth": {
+        "mode": "dual-token"
+      }
+    },
+    {
+      "method": "GET",
+      "path": "/backend/v3/api/local_router/plugins/decision",
+      "operationId": "localRouter.plugins.decision.retrieve",
+      "requestContext": "WebRequestContext",
+      "apiSurface": "backend-api",
+      "auth": {
+        "mode": "dual-token"
+      }
+    },
+    {
+      "method": "GET",
+      "path": "/backend/v3/api/local_router/api_groups",
+      "operationId": "localRouter.apiGroups.list",
+      "requestContext": "WebRequestContext",
+      "apiSurface": "backend-api",
+      "auth": {
+        "mode": "dual-token"
+      }
+    },
+    {
+      "method": "GET",
+      "path": "/backend/v3/api/local_router/accounts",
+      "operationId": "localRouter.accounts.list",
+      "requestContext": "WebRequestContext",
+      "apiSurface": "backend-api",
+      "auth": {
+        "mode": "dual-token"
+      }
+    },
+    {
+      "method": "POST",
+      "path": "/backend/v3/api/local_router/accounts",
+      "operationId": "localRouter.accounts.create",
+      "requestContext": "WebRequestContext",
+      "apiSurface": "backend-api",
+      "auth": {
+        "mode": "dual-token"
+      }
+    },
+    {
+      "method": "GET",
+      "path": "/backend/v3/api/local_router/client_api_keys",
+      "operationId": "localRouter.clientApiKeys.list",
+      "requestContext": "WebRequestContext",
+      "apiSurface": "backend-api",
+      "auth": {
+        "mode": "dual-token"
+      }
+    },
+    {
+      "method": "POST",
+      "path": "/backend/v3/api/local_router/client_api_keys",
+      "operationId": "localRouter.clientApiKeys.create",
+      "requestContext": "WebRequestContext",
+      "apiSurface": "backend-api",
+      "auth": {
+        "mode": "dual-token"
+      }
+    },
+    {
+      "method": "DELETE",
+      "path": "/backend/v3/api/local_router/client_api_keys/{clientApiKeyId}",
+      "operationId": "localRouter.clientApiKeys.delete",
+      "requestContext": "WebRequestContext",
+      "apiSurface": "backend-api",
+      "auth": {
+        "mode": "dual-token"
+      }
+    },
+    {
+      "method": "PUT",
+      "path": "/backend/v3/api/local_router/accounts/{accountId}",
+      "operationId": "localRouter.accounts.update",
+      "requestContext": "WebRequestContext",
+      "apiSurface": "backend-api",
+      "auth": {
+        "mode": "dual-token"
+      }
+    },
+    {
+      "method": "DELETE",
+      "path": "/backend/v3/api/local_router/accounts/{accountId}",
+      "operationId": "localRouter.accounts.delete",
+      "requestContext": "WebRequestContext",
+      "apiSurface": "backend-api",
+      "auth": {
+        "mode": "dual-token"
+      }
+    },
+    {
+      "method": "POST",
+      "path": "/backend/v3/api/local_router/accounts/{accountId}/toggle",
+      "operationId": "localRouter.accounts.toggle",
+      "requestContext": "WebRequestContext",
+      "apiSurface": "backend-api",
+      "auth": {
+        "mode": "dual-token"
+      }
+    },
+    {
+      "method": "GET",
+      "path": "/backend/v3/api/local_router/model_route_mappings",
+      "operationId": "localRouter.modelRouteMappings.list",
+      "requestContext": "WebRequestContext",
+      "apiSurface": "backend-api",
+      "auth": {
+        "mode": "dual-token"
+      }
+    },
+    {
+      "method": "POST",
+      "path": "/backend/v3/api/local_router/model_route_mappings",
+      "operationId": "localRouter.modelRouteMappings.upsert",
+      "requestContext": "WebRequestContext",
+      "apiSurface": "backend-api",
+      "auth": {
+        "mode": "dual-token"
+      }
+    },
+    {
+      "method": "DELETE",
+      "path": "/backend/v3/api/local_router/model_route_mappings/{modelRouteMappingId}",
+      "operationId": "localRouter.modelRouteMappings.delete",
+      "requestContext": "WebRequestContext",
+      "apiSurface": "backend-api",
+      "auth": {
+        "mode": "dual-token"
+      }
+    },
+    {
+      "method": "GET",
+      "path": "/backend/v3/api/local_router/usages",
+      "operationId": "localRouter.usages.list",
+      "requestContext": "WebRequestContext",
+      "apiSurface": "backend-api",
+      "auth": {
+        "mode": "dual-token"
+      }
+    },
+    {
+      "method": "GET",
+      "path": "/backend/v3/api/local_router/usages/summary",
+      "operationId": "localRouter.usages.summary.retrieve",
+      "requestContext": "WebRequestContext",
+      "apiSurface": "backend-api",
+      "auth": {
+        "mode": "dual-token"
+      }
+    },
+    {
+      "method": "GET",
+      "path": "/backend/v3/api/local_router/health",
+      "operationId": "localRouter.health.list",
+      "requestContext": "WebRequestContext",
+      "apiSurface": "backend-api",
+      "auth": {
+        "mode": "dual-token"
+      }
+    },
+    {
+      "method": "POST",
+      "path": "/backend/v3/api/local_router/health/{accountName}/open",
+      "operationId": "localRouter.health.open",
+      "requestContext": "WebRequestContext",
+      "apiSurface": "backend-api",
+      "auth": {
+        "mode": "dual-token"
+      }
+    },
+    {
+      "method": "POST",
+      "path": "/backend/v3/api/local_router/health/{accountName}/close",
+      "operationId": "localRouter.health.close",
+      "requestContext": "WebRequestContext",
+      "apiSurface": "backend-api",
+      "auth": {
+        "mode": "dual-token"
+      }
+    },
+    {
+      "method": "POST",
+      "path": "/backend/v3/api/local_router/strategy",
+      "operationId": "localRouter.strategy.update",
+      "requestContext": "WebRequestContext",
+      "apiSurface": "backend-api",
+      "auth": {
+        "mode": "dual-token"
+      }
+    }
+  ]
+}
+
