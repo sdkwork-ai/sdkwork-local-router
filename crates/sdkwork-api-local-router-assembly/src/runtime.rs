@@ -472,40 +472,6 @@ fn effective_probe_anthropic_version(account: &Account) -> Option<String> {
     }
 }
 
-async fn shutdown_signal(_shutdown_token: Arc<AtomicBool>) {
-    let ctrl_c = async {
-        signal::ctrl_c()
-            .await
-            .expect("failed to install Ctrl+C handler");
-    };
-
-    #[cfg(windows)]
-    let terminate = async {
-        signal::windows::ctrl_close()
-            .expect("failed to install Windows ctrl_close handler")
-            .recv()
-            .await
-            .expect("failed to receive Windows ctrl_close signal");
-    };
-
-    #[cfg(not(windows))]
-    let terminate = async {
-        signal::unix::signal(signal::unix::SignalKind::terminate())
-            .expect("failed to install SIGTERM handler")
-            .recv()
-            .await
-    };
-
-    tokio::select! {
-        _ = ctrl_c => {
-            tracing::info!("received Ctrl+C, shutting down gracefully");
-        },
-        _ = terminate => {
-            tracing::info!("received terminate signal, shutting down gracefully");
-        },
-    }
-}
-
 #[cfg(test)]
 mod tests {
     use super::*;
