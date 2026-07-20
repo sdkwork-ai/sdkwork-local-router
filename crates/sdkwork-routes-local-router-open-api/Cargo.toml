@@ -1,0 +1,28 @@
+[package]
+name = "sdkwork-routes-local-router-open-api"
+version.workspace = true
+edition.workspace = true
+license.workspace = true
+description = "OpenAI, Anthropic, and Google-compatible Local Router Open API routes."
+
+[lib]
+name = "sdkwork_routes_local_router_open_api"
+path = "src/lib.rs"
+
+[dependencies]
+axum.workspace = true
+bytes.workspace = true
+futures-core.workspace = true
+futures-util.workspace = true
+http-body-util.workspace = true
+hyper.workspace = true
+serde_json.workspace = true
+sdkwork-lr-config.workspace = true
+sdkwork-lr-core.workspace = true
+sdkwork-lr-plugin.workspace = true
+sdkwork-lr-proxy.workspace = true
+sdkwork-lr-transform.workspace = true
+sdkwork-lr-store = { path = "../sdkwork-lr-store" }
+sdkwork-routes-local-router-support = { path = "../sdkwork-routes-local-router-support" }
+tracing.workspace = true
+uuid.workspace = true

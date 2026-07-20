@@ -5,18 +5,34 @@ use std::time::Duration;
 use anyhow::Result;
 use axum::http::StatusCode;
 use parking_lot::RwLock;
-use tokio::net::TcpListener;
-use tokio::signal;
-
-use crate::rate_limit::RateLimiter;
-use crate::router;
-use crate::upstream_auth::auth_from_scheme;
+use sdkwork_routes_local_router_support::{
+    build_app_state, upstream_auth::auth_from_scheme, AppState, RateLimiter,
+    RoutingStrategyOverrides,
+};
 use sdkwork_lr_config::RuntimeConfig;
 use sdkwork_lr_core::{Account, HealthManager, HealthState};
 use sdkwork_lr_proxy::ProxyClient;
 use sdkwork_lr_store::Store;
 
-pub async fn serve(config: RuntimeConfig) -> Result<()> {
+pub struct RuntimeBootstrap {
+    pub state: AppState,
+    pub handle: RuntimeHandle,
+}
+
+#[derive(Clone)]
+pub struct RuntimeHandle {
+    shutdown_token: Arc<AtomicBool>,
+}
+
+impl RuntimeHandle {
+    pub async fn shutdown(self) {
+        self.shutdown_token.store(true, Ordering::SeqCst);
+        tracing::info!("waiting for Local Router background tasks to stop");
+        tokio::time::sleep(Duration::from_millis(500)).await;
+    }
+}
+
+pub async fn bootstrap(config: RuntimeConfig) -> Result<RuntimeBootstrap> {
     let encryption = sdkwork_lr_store::KeyEncryption::new(&config.storage.encryption_secret);
     if encryption.is_enabled() {
         tracing::info!("upstream API key encryption enabled");
@@ -52,8 +68,8 @@ pub async fn serve(config: RuntimeConfig) -> Result<()> {
         shutdown_token.clone(),
     );
 
-    let (app, health_manager, pool_arc, routing_strategy_overrides) =
-        router::build_router(&config, store.clone(), rate_limiter).await?;
+    let (state, health_manager, pool_arc, routing_strategy_overrides) =
+        build_app_state(&config, store.clone(), rate_limiter);
 
     if config.health_probe.enabled {
         let probe_accounts: Vec<Account> = {
@@ -83,19 +99,10 @@ pub async fn serve(config: RuntimeConfig) -> Result<()> {
         );
     }
 
-    let bind_addr = config.bind_addr();
-    let listener = TcpListener::bind(&bind_addr).await?;
-    tracing::info!(addr = %bind_addr, "listening");
-
-    axum::serve(listener, app)
-        .with_graceful_shutdown(shutdown_signal(shutdown_token.clone()))
-        .await?;
-
-    shutdown_token.store(true, Ordering::SeqCst);
-    tracing::info!("waiting for background tasks to complete...");
-    tokio::time::sleep(Duration::from_millis(500)).await;
-    tracing::info!("server shutdown complete");
-    Ok(())
+    Ok(RuntimeBootstrap {
+        state,
+        handle: RuntimeHandle { shutdown_token },
+    })
 }
 
 fn spawn_rate_limit_cleanup(
@@ -146,7 +153,7 @@ fn spawn_invocation_cleanup(store: Store, retention_days: i64, shutdown: Arc<Ato
 fn spawn_config_watcher(
     config_path: String,
     pool_arc: Arc<RwLock<sdkwork_lr_core::AccountPool>>,
-    routing_strategy_overrides: router::RoutingStrategyOverrides,
+    routing_strategy_overrides: RoutingStrategyOverrides,
     store: Store,
     shutdown: Arc<AtomicBool>,
 ) {

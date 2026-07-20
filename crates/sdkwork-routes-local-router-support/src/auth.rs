@@ -4,7 +4,7 @@ use axum::middleware::Next;
 use axum::response::{IntoResponse, Response};
 use serde_json::json;
 
-use crate::router::AppState;
+use crate::state::AppState;
 use sdkwork_lr_store::DEFAULT_USER_ID;
 
 pub const ACCESS_TOKEN_HEADER: &str = "access-token";

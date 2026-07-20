@@ -10,9 +10,11 @@ use axum::{Json, Router};
 use bytes::Bytes;
 use serde_json::json;
 
-use crate::router::AppState;
-use crate::streaming;
-use crate::upstream_auth::auth_from_scheme;
+use sdkwork_routes_local_router_support::auth;
+use sdkwork_routes_local_router_support::state::AppState;
+use sdkwork_routes_local_router_support::streaming;
+use sdkwork_routes_local_router_support::upstream_auth::auth_from_scheme;
+use sdkwork_routes_local_router_support::RateLimiter;
 use sdkwork_lr_core::{Account, InterceptorError, Invocation, Protocol, ProviderKind};
 use sdkwork_lr_plugin::{
     ApiSurface, CompatibilityDecision, ModelCompatibilityResolver, PluginPolicy, TransformContext,
@@ -164,7 +166,7 @@ async fn handle_provider_passthrough(
     let query = req.uri().query().map(|q| q.to_owned());
     let method = req.method().clone();
     let headers = req.headers().clone();
-    let request_context = crate::auth::context_from_request(&req);
+    let request_context = auth::context_from_request(&req);
     let user_id = request_context.user_id;
 
     let mut invocation = Invocation::new(
@@ -2769,7 +2771,7 @@ mod tests {
             )),
             client: sdkwork_lr_proxy::build_proxy_client(),
             store,
-            rate_limiter: Arc::new(crate::rate_limit::RateLimiter::new(60, 60)),
+            rate_limiter: Arc::new(RateLimiter::new(60, 60)),
             interceptor_chain: Arc::new(sdkwork_lr_core::InterceptorChain::new()),
             health_manager,
             transform_registry: Arc::new(sdkwork_lr_transform::plugins::built_in_plugin_registry()),

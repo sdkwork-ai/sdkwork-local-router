@@ -6,7 +6,7 @@ use dashmap::DashMap;
 use serde_json::json;
 use std::time::Instant;
 
-use crate::router::AppState;
+use crate::state::AppState;
 
 const MAX_ENTRIES: usize = 100_000;
 

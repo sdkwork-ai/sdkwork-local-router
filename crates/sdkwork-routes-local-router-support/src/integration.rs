@@ -7,7 +7,7 @@ use serde::Deserialize;
 use serde_json::json;
 
 use crate::auth::RequestContext;
-use crate::router::AppState;
+use crate::state::AppState;
 use crate::upstream_auth::{
     canonical_upstream_auth_scheme, is_supported_auth_scheme, SUPPORTED_UPSTREAM_AUTH_SCHEMES,
 };
