@@ -1,4 +1,4 @@
-[workspace]
+﻿[workspace]
 members = [
     "crates/sdkwork-api-local-router-standalone-gateway",
     "crates/sdkwork-api-local-router-assembly",
@@ -20,7 +20,7 @@ resolver = "2"
 [workspace.package]
 edition = "2021"
 version = "0.1.0"
-license = "MIT"
+license = "AGPL-3.0-or-later"
 
 [workspace.dependencies]
 sdkwork-database-id = { path = "../sdkwork-database/crates/sdkwork-database-id" }
