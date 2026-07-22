@@ -1791,6 +1791,7 @@ dependencies = [
  "sdkwork-lr-proxy",
  "sdkwork-lr-store",
  "sdkwork-lr-transform",
+ "sdkwork-models",
  "sdkwork-routes-local-router-support",
  "serde_json",
  "tokio",

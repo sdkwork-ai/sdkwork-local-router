@@ -2770,7 +2770,9 @@ mod tests {
             )),
             client: sdkwork_lr_proxy::build_proxy_client(),
             store,
-            rate_limiter: Arc::new(sdkwork_routes_local_router_support::RateLimiter::new(60, 60)),
+            rate_limiter: Arc::new(sdkwork_routes_local_router_support::RateLimiter::new(
+                60, 60,
+            )),
             interceptor_chain: Arc::new(sdkwork_lr_core::InterceptorChain::new()),
             health_manager,
             transform_registry: Arc::new(sdkwork_lr_transform::plugins::built_in_plugin_registry()),

@@ -1,0 +1,151 @@
+{
+  "$schema": "../sdkwork-github-workflow/schemas/sdkwork-workflow.schema.json",
+  "schemaVersion": "2026-06-06.sdkwork.workflow.v1",
+  "app": {
+    "id": "sdkwork-local-router",
+    "name": "SDKWork Local Router",
+    "repository": "Sdkwork-Cloud/sdkwork-local-router",
+    "sourcePath": ".",
+    "configPath": "sdkwork.app.config.json"
+  },
+  "release": {
+    "artifactPrefix": "sdkwork-local-router",
+    "defaultVersion": "0.1.0",
+    "changelog": {
+      "source": "app-manifest",
+      "maxCommitSubjects": 50
+    }
+  },
+  "dependencies": [
+    {
+      "id": "sdkwork-appbase",
+      "repository": "Sdkwork-Cloud/sdkwork-appbase",
+      "refInput": "SDKWORK_APPBASE_REF",
+      "tokenSecret": "SDKWORK_RELEASE_TOKEN"
+    },
+    {
+      "id": "sdkwork-database",
+      "repository": "Sdkwork-Cloud/sdkwork-database",
+      "refInput": "SDKWORK_DATABASE_REF",
+      "tokenSecret": "SDKWORK_RELEASE_TOKEN"
+    },
+    {
+      "id": "sdkwork-id",
+      "repository": "Sdkwork-Cloud/sdkwork-id",
+      "refInput": "SDKWORK_ID_REF",
+      "tokenSecret": "SDKWORK_RELEASE_TOKEN"
+    },
+    {
+      "id": "sdkwork-utils",
+      "repository": "Sdkwork-Cloud/sdkwork-utils",
+      "refInput": "SDKWORK_UTILS_REF",
+      "tokenSecret": "SDKWORK_RELEASE_TOKEN"
+    },
+    {
+      "id": "sdkwork-web-framework",
+      "repository": "Sdkwork-Cloud/sdkwork-web-framework",
+      "refInput": "SDKWORK_WEB_FRAMEWORK_REF",
+      "tokenSecret": "SDKWORK_RELEASE_TOKEN"
+    }
+  ],
+  "toolchains": {
+    "node": "22",
+    "pnpm": "10.33.0",
+    "rust": "stable"
+  },
+  "lifecycle": {
+    "install": [
+      {
+        "name": "Install workspace dependencies",
+        "shell": "pwsh",
+        "run": "pnpm install --no-frozen-lockfile --config.auto-install-peers=false"
+      }
+    ],
+    "build": [
+      {
+        "name": "Verify Local Router",
+        "shell": "pwsh",
+        "run": "pnpm verify"
+      }
+    ],
+    "package": [
+      {
+        "name": "Build Local Router standalone gateway",
+        "shell": "pwsh",
+        "run": "cargo build --release -p sdkwork-api-local-router-standalone-gateway"
+      },
+      {
+        "name": "Build Local Router PC web bundle",
+        "shell": "pwsh",
+        "run": "pnpm --dir apps/sdkwork-modelkit-pc build"
+      }
+    ],
+    "validate": [
+      {
+        "name": "Validate Local Router contracts",
+        "shell": "pwsh",
+        "run": "pnpm verify"
+      }
+    ],
+    "sign": [
+      {
+        "name": "Sign Local Router release artifacts",
+        "shell": "pwsh",
+        "run": "node ../sdkwork-github-workflow/scripts/sign-release-artifacts.mjs --app sdkwork-local-router --package-id $env:SDKWORK_PACKAGE_ID"
+      }
+    ],
+    "sbom": [
+      {
+        "name": "Generate Local Router SBOM",
+        "shell": "pwsh",
+        "run": "node ../sdkwork-github-workflow/scripts/generate-release-sbom.mjs --app sdkwork-local-router --package-id $env:SDKWORK_PACKAGE_ID"
+      }
+    ]
+  },
+  "targets": [
+    {
+      "id": "linux-x64-standalone-server-tar-gz",
+      "profileBinding": "fixed",
+      "profile": "server",
+      "platform": "linux",
+      "architecture": "x64",
+      "formats": [
+        "tar.gz"
+      ],
+      "runner": "ubuntu-24.04",
+      "outputGlobs": [
+        "target/release/sdkwork-api-local-router-standalone-gateway*"
+      ],
+      "deploymentProfile": "standalone",
+      "runtimeTarget": "server"
+    },
+    {
+      "id": "web-universal-cloud-browser-zip",
+      "profileBinding": "fixed",
+      "profile": "browser",
+      "platform": "web",
+      "targetPlatform": "web",
+      "clientArchitecture": "pc-web",
+      "architecture": "universal",
+      "formats": [
+        "zip"
+      ],
+      "runner": "ubuntu-24.04",
+      "outputGlobs": [
+        "apps/sdkwork-modelkit-pc/dist/**"
+      ],
+      "deploymentProfile": "cloud",
+      "runtimeTarget": "browser"
+    }
+  ],
+  "security": {
+    "artifactAttestations": true,
+    "sbomRequired": true,
+    "signingRequired": true
+  },
+  "publish": {
+    "workflowArtifact": true,
+    "githubRelease": false,
+    "retentionDays": 30
+  }
+}

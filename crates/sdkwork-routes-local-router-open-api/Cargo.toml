@@ -31,3 +31,6 @@ tracing.workspace = true
 tokio.workspace = true
 urlencoding.workspace = true
 uuid.workspace = true
+
+[dev-dependencies]
+sdkwork-models.workspace = true

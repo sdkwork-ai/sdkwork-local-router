@@ -13,7 +13,8 @@ isolation. Provider credentials are separate `upstream_api_key` values on
 The server exposes three service-side API groups:
 
 - `local-router-open-api`: provider-compatible model proxy routes such as
-  `/v1/*`, `/anthropic/*`, and `/google/*`; authenticated by local-router
+  `/local-router/v1/*`, `/local-router/anthropic/*`, and
+  `/local-router/google/*`; authenticated by local-router
   `client_api_key` records.
 - `local-router-app-api`: `/app/v3/api/local_router/*` app integration routes;
   authenticated from `sdkwork-iam` subject projection supplied by the
@@ -27,7 +28,7 @@ manifest. `GET /backend/v3/api/local_router/plugins` embeds the same groups toge
 with plugin standards, routing strategies, pipeline stages, and standard
 components.
 
-See [docs/plugin-compatibility.md](docs/plugin-compatibility.md) for the plugin
+See [docs/architecture/tech/TECH-plugin-compatibility.md](docs/architecture/tech/TECH-plugin-compatibility.md) for the plugin
 standard, canonical plugin names, and `sdkwork-models` vendor compatibility
 rules.
 

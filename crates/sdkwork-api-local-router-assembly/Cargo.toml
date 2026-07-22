@@ -11,8 +11,8 @@ path = "src/lib.rs"
 
 [dependencies]
 axum.workspace = true
-bytes.workspace = true
 tokio.workspace = true
+bytes.workspace = true
 anyhow.workspace = true
 parking_lot.workspace = true
 sdkwork-lr-config.workspace = true

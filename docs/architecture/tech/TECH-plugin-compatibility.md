@@ -1,4 +1,3 @@
-> Migrated from `docs/plugin-compatibility.md` on 2026-06-24.
 > Owner: SDKWork maintainers
 
 # Plugin Compatibility Standard
@@ -48,14 +47,14 @@ the runtime request context and is recorded in audit metadata as
 
 | API group | Runtime paths | Audience | Auth and user source |
 | --- | --- | --- | --- |
-| `local-router-open-api` | Provider-compatible proxy paths from `[base_paths]`, for example `/v1/{*path}`, `/anthropic/{*path}`, and `/google/{*path}` | Codex, Claude Code, Gemini CLI, OpenAI-compatible SDKs, and model clients | Database-backed `client_api_key`; `user_id` comes from `local_router_client_api_keys.user_id` |
+| `local-router-open-api` | Locked provider-compatible ingress paths `/local-router/v1/{*path}`, `/local-router/anthropic/{*path}`, and `/local-router/google/{*path}` | Codex, Claude Code, Gemini CLI, OpenAI-compatible SDKs, and model clients | Database-backed `client_api_key`; `user_id` comes from `local_router_client_api_keys.user_id` |
 | `local-router-app-api` | `/app/v3/api/local_router/*` | SDKWork app clients and local/private app integrations | sdkwork-iam subject projection from the surrounding runtime |
 | `local-router-backend-api` | `/backend/v3/api/local_router/*` | Backend SDKs, admin consoles, operators, and control-plane services | sdkwork-iam subject projection from the surrounding runtime |
 
-`local-router-open-api` preserves provider-compatible URL shapes because
-existing tools expect OpenAI, Anthropic, or Gemini-compatible paths. Its group
-name is therefore a server-side contract for auth, routing, audit, monitoring,
-and SDK manifest purposes rather than a URL prefix.
+`local-router-open-api` preserves each provider's path suffix and wire protocol
+under a locked `/local-router` ingress namespace. Client base URLs include the
+provider-specific namespace, while auth, routing, audit, and monitoring use the
+`local-router-open-api` group contract.
 
 The machine-readable group manifest is available at:
 
@@ -319,7 +318,8 @@ models = ["gemini-*"]
 ```
 
 With that configuration, a Codex/OpenAI-compatible client can call
-`/v1/responses` or `/v1/chat/completions` with `"model": "gpt-5.5"`. The router
+`/local-router/v1/responses` or `/local-router/v1/chat/completions` with
+`"model": "gpt-5.5"`. The router
 selects the Gemini account, transforms the request when needed, and forwards it
 to `/v1/models/gemini-2.5-pro:generateContent` or
 `/v1/models/gemini-2.5-pro:streamGenerateContent?alt=sse`.
@@ -715,4 +715,3 @@ Anthropic upstream forwarding always sends an `anthropic-version` header for
 Messages API calls. Account-specific `anthropic_version` values take
 precedence; when omitted, the router uses the stable Messages API default
 `2023-06-01` for both real proxy requests and health probes.
-

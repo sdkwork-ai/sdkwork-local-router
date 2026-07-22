@@ -9,7 +9,6 @@ pub struct RuntimeTomlConfig {
     pub server: ServerSectionConfig,
     pub storage: StorageSectionConfig,
     pub logging: LoggingSectionConfig,
-    pub base_paths: BasePathSectionConfig,
     pub upstreams: Vec<UpstreamSectionConfig>,
     pub fallback: FallbackSectionConfig,
     pub rate_limit: RateLimitSectionConfig,
@@ -41,14 +40,6 @@ pub struct StorageSectionConfig {
 pub struct LoggingSectionConfig {
     pub level: Option<String>,
     pub format: Option<String>,
-}
-
-#[derive(Debug, Clone, Default, Deserialize)]
-#[serde(default, deny_unknown_fields)]
-pub struct BasePathSectionConfig {
-    pub openai: Option<String>,
-    pub anthropic: Option<String>,
-    pub google: Option<String>,
 }
 
 #[derive(Debug, Clone, Default, Deserialize)]
@@ -183,6 +174,20 @@ pub struct BasePathConfig {
     pub openai: String,
     pub anthropic: String,
     pub google: String,
+}
+
+pub const LOCAL_ROUTER_OPENAI_PREFIX: &str = "/local-router/v1";
+pub const LOCAL_ROUTER_ANTHROPIC_PREFIX: &str = "/local-router/anthropic";
+pub const LOCAL_ROUTER_GOOGLE_PREFIX: &str = "/local-router/google";
+
+impl Default for BasePathConfig {
+    fn default() -> Self {
+        Self {
+            openai: LOCAL_ROUTER_OPENAI_PREFIX.to_owned(),
+            anthropic: LOCAL_ROUTER_ANTHROPIC_PREFIX.to_owned(),
+            google: LOCAL_ROUTER_GOOGLE_PREFIX.to_owned(),
+        }
+    }
 }
 
 #[derive(Debug, Clone)]
@@ -356,33 +361,7 @@ impl RuntimeConfig {
             _ => LogFormat::Text,
         };
 
-        let base_paths = BasePathConfig {
-            openai: toml_config
-                .base_paths
-                .openai
-                .clone()
-                .unwrap_or_else(|| "/v1".to_owned()),
-            anthropic: toml_config
-                .base_paths
-                .anthropic
-                .clone()
-                .unwrap_or_else(|| "/anthropic".to_owned()),
-            google: toml_config
-                .base_paths
-                .google
-                .clone()
-                .unwrap_or_else(|| "/google".to_owned()),
-        };
-
-        if base_paths.openai == base_paths.anthropic
-            || base_paths.openai == base_paths.google
-            || base_paths.anthropic == base_paths.google
-        {
-            return Err(format!(
-                "base_paths must be unique: openai='{}', anthropic='{}', google='{}'",
-                base_paths.openai, base_paths.anthropic, base_paths.google
-            ));
-        }
+        let base_paths = BasePathConfig::default();
 
         let max_body_size_mb = toml_config.server.max_body_size_mb.unwrap_or(50);
         if max_body_size_mb < 1 {
@@ -718,6 +697,15 @@ mod tests {
         assert!(config.plugins.enabled);
         assert_eq!(config.plugins.policy, PluginPolicy::Auto);
         assert!(config.plugins.expose_decision_headers);
+    }
+
+    #[test]
+    fn provider_compatible_paths_use_the_canonical_local_router_namespace() {
+        let config = RuntimeConfig::from_toml(&RuntimeTomlConfig::default()).unwrap();
+
+        assert_eq!(config.base_paths.openai, LOCAL_ROUTER_OPENAI_PREFIX);
+        assert_eq!(config.base_paths.anthropic, LOCAL_ROUTER_ANTHROPIC_PREFIX);
+        assert_eq!(config.base_paths.google, LOCAL_ROUTER_GOOGLE_PREFIX);
     }
 
     #[test]

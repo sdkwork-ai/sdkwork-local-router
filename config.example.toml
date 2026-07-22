@@ -23,14 +23,10 @@ database_url = "sqlite:./data/local-router.db?mode=rwc"
 level = "info"
 format = "text"
 
-[base_paths]
-# local-router-open-api provider-compatible proxy prefixes.
-# Codex/OpenAI-compatible clients use openai, Claude Code-compatible clients use
-# anthropic, and Gemini-compatible clients use google. These paths are grouped
-# as local-router-open-api at runtime and authenticated by client_api_key.
-openai = "/v1"
-anthropic = "/anthropic"
-google = "/google"
+# local-router-open-api uses locked SDKWork ingress prefixes:
+# /local-router/v1, /local-router/anthropic, and /local-router/google.
+# They are intentionally not runtime-configurable so standalone and cloud
+# deployments expose the same conflict-free API contract.
 
 [fallback]
 enabled = true

@@ -1874,9 +1874,9 @@ mod tests {
         let payload = plugin_registry_payload(
             &registry,
             &sdkwork_lr_config::BasePathConfig {
-                openai: "/v1".to_owned(),
-                anthropic: "/anthropic".to_owned(),
-                google: "/google".to_owned(),
+                openai: sdkwork_lr_config::LOCAL_ROUTER_OPENAI_PREFIX.to_owned(),
+                anthropic: sdkwork_lr_config::LOCAL_ROUTER_ANTHROPIC_PREFIX.to_owned(),
+                google: sdkwork_lr_config::LOCAL_ROUTER_GOOGLE_PREFIX.to_owned(),
             },
             true,
             sdkwork_lr_plugin::PluginPolicy::Auto,
