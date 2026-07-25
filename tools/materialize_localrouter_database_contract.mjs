@@ -40,13 +40,13 @@ const prefixRegistry = {
 const schemaYaml = [
   'schema_version: 1',
   'kind: sdkwork.database.schema',
+  'database_role: authoritative-server',
   'module_id: localrouter',
   'contract_version: 1.0.0',
   'owner_team: local-router-platform',
   'compliance_level: L2',
   'engines:',
   '  - postgres',
-  '  - sqlite',
   'table_prefix: local_router_',
   'tables:',
   ...tableNames.map(
@@ -70,8 +70,11 @@ const manifestPath = path.join(root, 'database/database.manifest.json');
 const manifest = JSON.parse(fs.readFileSync(manifestPath, 'utf8'));
 manifest.contractVersion = '1.0.0';
 manifest.lifecycle.autoMigrate = true;
-manifest.engines = ['postgres', 'sqlite'];
+manifest.schemaVersion = 2;
+manifest.databaseRole = 'authoritative-server';
+manifest.engines = ['postgres'];
 manifest.defaultEngine = 'postgres';
+manifest.tablePrefix = 'local_router_';
 fs.writeFileSync(manifestPath, `${JSON.stringify(manifest, null, 2)}\n`);
 
 process.stdout.write(

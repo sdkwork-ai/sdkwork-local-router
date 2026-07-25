@@ -1,16 +1,16 @@
 {
-  "schemaVersion": 1,
+  "schemaVersion": 2,
   "kind": "sdkwork.database.module",
+  "databaseRole": "authoritative-server",
   "moduleId": "localrouter",
   "serviceCode": "LOCAL_ROUTER",
   "displayName": "LOCAL_ROUTER Database",
   "owner": "local-router-platform",
   "engines": [
-    "postgres",
-    "sqlite"
+    "postgres"
   ],
   "defaultEngine": "postgres",
-  "tablePrefix": "lr_",
+  "tablePrefix": "local_router_",
   "contractVersion": "1.0.0",
   "baselineStrategy": "baseline-plus-migrations",
   "modules": [],

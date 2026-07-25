@@ -18,7 +18,7 @@
     "topology:validate": "pnpm exec sdkwork-topology validate --root . --spec specs/topology.spec.json",
     "topology:plan": "pnpm exec sdkwork-topology plan --root . --spec specs/topology.spec.json",
     "db:validate": "node ../sdkwork-specs/tools/check-database-framework-standard.mjs --root .",
-    "db:materialize:contract": "node ../sdkwork-specs/tools/materialize-database-contract-from-baseline.mjs --root . --baseline database/ddl/baseline/postgres/0001_localrouter_baseline.sql --module-id localrouter --owner local-router-platform --prefixes lr_ --engines postgres,sqlite",
+    "db:materialize:contract": "node ../sdkwork-specs/tools/materialize-database-contract-from-baseline.mjs --root . --baseline database/ddl/baseline/postgres/0001_localrouter_baseline.sql --module-id localrouter --owner local-router-platform --prefixes local_router_ --engines postgres",
     "db:plan": "cargo run --manifest-path ../sdkwork-database/Cargo.toml -p sdkwork-database-cli -- --app-root . plan",
     "db:init": "cargo run --manifest-path ../sdkwork-database/Cargo.toml -p sdkwork-database-cli -- --app-root . init",
     "db:migrate": "cargo run --manifest-path ../sdkwork-database/Cargo.toml -p sdkwork-database-cli -- --app-root . migrate",
