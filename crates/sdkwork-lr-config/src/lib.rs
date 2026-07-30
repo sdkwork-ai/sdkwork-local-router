@@ -344,10 +344,12 @@ impl RuntimeConfig {
             .unwrap_or(8080);
 
         let database_url = config_value(
-            "SDKWORK_LR_DATABASE_URL",
+            "SDKWORK_DATABASE_URL",
             toml_config.storage.database_url.as_deref(),
         )
-        .unwrap_or_else(|| format!("sqlite:./data/local-router-{port}.db?mode=rwc"));
+        .unwrap_or_else(|| {
+            "postgresql://sdkwork_ai_dev:sdkworkdev123@127.0.0.1:5432/sdkwork_ai_dev".to_owned()
+        });
 
         let log_level = config_value("SDKWORK_LR_LOG_LEVEL", toml_config.logging.level.as_deref())
             .unwrap_or_else(|| "info".to_owned());

@@ -12,6 +12,7 @@ path = "src/lib.rs"
 [dependencies]
 axum.workspace = true
 tokio.workspace = true
+sdkwork-web-bootstrap.workspace = true
 bytes.workspace = true
 anyhow.workspace = true
 parking_lot.workspace = true

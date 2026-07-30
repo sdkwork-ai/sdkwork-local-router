@@ -15,7 +15,7 @@
   "baselineStrategy": "baseline-plus-migrations",
   "modules": [],
   "lifecycle": {
-    "autoMigrate": true,
+    "autoMigrate": false,
     "seedOnBoot": false,
     "defaultSeedLocale": "zh-CN",
     "defaultSeedProfile": "standard",
