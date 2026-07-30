@@ -13,7 +13,7 @@ services:
       SDKWORK_LR_ENCRYPTION_SECRET: ${SDKWORK_LR_ENCRYPTION_SECRET:-}
       SDKWORK_LR_BIND: "0.0.0.0"
       SDKWORK_LR_PORT: "8080"
-      SDKWORK_LR_DATABASE_URL: sqlite:./data/local-router.db?mode=rwc
+      SDKWORK_DATABASE_URL: sqlite:./data/local-router.db?mode=rwc
     volumes:
       - sqlite-data:/app/data
       - ./config.example.toml:/app/config.toml:ro
@@ -39,7 +39,7 @@ services:
       SDKWORK_LR_ENCRYPTION_SECRET: ${SDKWORK_LR_ENCRYPTION_SECRET:-}
       SDKWORK_LR_BIND: "0.0.0.0"
       SDKWORK_LR_PORT: "8080"
-      SDKWORK_LR_DATABASE_URL: postgres://${POSTGRES_USER:-sdkwork}:${POSTGRES_PASSWORD:?POSTGRES_PASSWORD must be set}@postgres:5432/${POSTGRES_DB:-sdkwork_lr}
+      SDKWORK_DATABASE_URL: postgres://${POSTGRES_USER:-sdkwork}:${POSTGRES_PASSWORD:?POSTGRES_PASSWORD must be set}@postgres:5432/${POSTGRES_DB:-sdkwork_lr}
     volumes:
       - ./config.example.toml:/app/config.toml:ro
     restart: unless-stopped
