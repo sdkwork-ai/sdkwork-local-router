@@ -1,30 +1,6 @@
 version: "3.8"
 
 services:
-  sdkwork-local-router-sqlite:
-    build:
-      context: .
-      dockerfile: Dockerfile
-    container_name: sdkwork-local-router
-    ports:
-      - "${SDKWORK_LR_PORT:-8080}:8080"
-    environment:
-      SDKWORK_LR_CONFIG_FILE: /app/config.toml
-      SDKWORK_LR_ENCRYPTION_SECRET: ${SDKWORK_LR_ENCRYPTION_SECRET:-}
-      SDKWORK_LR_BIND: "0.0.0.0"
-      SDKWORK_LR_PORT: "8080"
-      SDKWORK_DATABASE_URL: sqlite:./data/local-router.db?mode=rwc
-    volumes:
-      - sqlite-data:/app/data
-      - ./config.example.toml:/app/config.toml:ro
-    restart: unless-stopped
-    healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:8080/healthz"]
-      interval: 30s
-      timeout: 5s
-      retries: 3
-      start_period: 10s
-
   sdkwork-local-router-postgres:
     build:
       context: .
@@ -39,7 +15,15 @@ services:
       SDKWORK_LR_ENCRYPTION_SECRET: ${SDKWORK_LR_ENCRYPTION_SECRET:-}
       SDKWORK_LR_BIND: "0.0.0.0"
       SDKWORK_LR_PORT: "8080"
-      SDKWORK_DATABASE_URL: postgres://${POSTGRES_USER:-sdkwork}:${POSTGRES_PASSWORD:?POSTGRES_PASSWORD must be set}@postgres:5432/${POSTGRES_DB:-sdkwork_lr}
+      SDKWORK_DATABASE_ENGINE: postgresql
+      SDKWORK_DATABASE_HOST: postgres
+      SDKWORK_DATABASE_PORT: "5432"
+      SDKWORK_DATABASE_NAME: sdkwork_ai_dev
+      SDKWORK_DATABASE_SCHEMA: sdkwork_ai_dev
+      SDKWORK_DATABASE_SCHEMA_FALLBACK_PUBLIC: "false"
+      SDKWORK_DATABASE_USERNAME: sdkwork_ai_dev
+      SDKWORK_DATABASE_PASSWORD: ${POSTGRES_PASSWORD:?POSTGRES_PASSWORD must be set}
+      SDKWORK_DATABASE_SSL_MODE: disable
     volumes:
       - ./config.example.toml:/app/config.toml:ro
     restart: unless-stopped
@@ -49,29 +33,22 @@ services:
       timeout: 5s
       retries: 3
       start_period: 10s
-    profiles:
-      - postgres
-
   postgres:
     image: postgres:16-alpine
     container_name: sdkwork-postgres
     environment:
-      POSTGRES_USER: ${POSTGRES_USER:-sdkwork}
+      POSTGRES_USER: sdkwork_ai_dev
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:?POSTGRES_PASSWORD must be set}
-      POSTGRES_DB: ${POSTGRES_DB:-sdkwork_lr}
+      POSTGRES_DB: sdkwork_ai_dev
     volumes:
       - pg-data:/var/lib/postgresql/data
     ports:
       - "5432:5432"
     restart: unless-stopped
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U sdkwork -d sdkwork_lr"]
+      test: ["CMD-SHELL", "pg_isready -U sdkwork_ai_dev -d sdkwork_ai_dev"]
       interval: 10s
       timeout: 5s
       retries: 5
-    profiles:
-      - postgres
-
 volumes:
-  sqlite-data:
   pg-data:
