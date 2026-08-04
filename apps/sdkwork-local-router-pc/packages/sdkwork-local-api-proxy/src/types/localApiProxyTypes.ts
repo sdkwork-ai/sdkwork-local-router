@@ -1,7 +1,7 @@
 export const LOCAL_API_PROXY_SCHEMA_VERSION = 1 as const;
 export const LOCAL_API_PROXY_TABLE_PREFIX = "lap_" as const;
 export const LOCAL_API_PROXY_DEFAULT_SQLITE_FILENAME = "local-api-proxy.db" as const;
-export const LOCAL_API_PROXY_DEFAULT_POSTGRES_SCHEMA = "local_api_proxy" as const;
+export const LOCAL_API_PROXY_DEFAULT_POSTGRES_SCHEMA = "sdkwork_ai_dev" as const;
 export const LOCAL_API_PROXY_DEFAULT_HOST = "127.0.0.1" as const;
 export const LOCAL_API_PROXY_DEFAULT_PORT = 21281 as const;
 

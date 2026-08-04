@@ -44,16 +44,16 @@ describe("@sdkwork/local-api-proxy schema builders", () => {
   it("builds postgresql ddl for the single-schema server topology", () => {
     const schema = buildLocalApiProxyPostgresqlSchema({
       dialect: "postgresql",
-      postgresUrl: "postgres://localhost:5432/local_api_proxy",
+      postgresUrl: "postgres://localhost:5432/sdkwork_ai_dev",
     });
 
     const ddl = schema.statements.join("\n");
 
     expect(schema.dialect).toBe("postgresql");
-    expect(schema.schemaName).toBe("local_api_proxy");
+    expect(schema.schemaName).toBe("sdkwork_ai_dev");
     expect(schema.tableNames).toEqual(createLocalApiProxySchemaTableNames());
-    expect(ddl).toContain("CREATE SCHEMA IF NOT EXISTS local_api_proxy;");
-    expect(ddl).toContain("CREATE TABLE IF NOT EXISTS local_api_proxy.lap_config");
+    expect(ddl).toContain("CREATE SCHEMA IF NOT EXISTS sdkwork_ai_dev;");
+    expect(ddl).toContain("CREATE TABLE IF NOT EXISTS sdkwork_ai_dev.lap_config");
     expect(ddl).toContain("storage_config JSONB NOT NULL");
     expect(ddl).toContain("updated_at_ms BIGINT NOT NULL");
     expect(ddl).toContain("CREATE INDEX IF NOT EXISTS idx_lap_request_logs_route_created_at");

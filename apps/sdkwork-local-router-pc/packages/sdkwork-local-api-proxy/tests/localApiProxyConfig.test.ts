@@ -210,15 +210,15 @@ describe("@sdkwork/local-api-proxy authority model", () => {
       routes: [],
       storage: {
         dialect: "postgresql",
-        postgresUrl: "postgres://localhost:5432/local_api_proxy",
+        postgresUrl: "postgres://localhost:5432/sdkwork_ai_dev",
       },
     });
 
-    expect(LOCAL_API_PROXY_DEFAULT_POSTGRES_SCHEMA).toBe("local_api_proxy");
+    expect(LOCAL_API_PROXY_DEFAULT_POSTGRES_SCHEMA).toBe("sdkwork_ai_dev");
     expect(config.storage).toEqual({
       dialect: "postgresql",
-      postgresUrl: "postgres://localhost:5432/local_api_proxy",
-      schema: "local_api_proxy",
+      postgresUrl: "postgres://localhost:5432/sdkwork_ai_dev",
+      schema: "sdkwork_ai_dev",
     });
     expect(config.bind.publicBaseUrl).toBe("http://0.0.0.0:3210");
   });
