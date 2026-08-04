@@ -1,6 +1,7 @@
 import { useAppContext } from "@sdkwork/modelkit-core";
 import React from "react";
 import { Activity, Coins, Clock, Banknote, ShieldCheck } from "lucide-react";
+import { formatMoney } from "@sdkwork/utils/money";
 
 interface MetricBreakdown {
   today: number;
@@ -30,10 +31,13 @@ const formatNumber = (num: number) => {
   return num.toLocaleString();
 };
 
-const formatCurrency = (amount: number) => {
-  return amount.toLocaleString(undefined, {
-    minimumFractionDigits: 2,
-    maximumFractionDigits: 2,
+const formatCurrency = (amount: number, locale: string) => {
+  return formatMoney(amount, {
+    currency: "CNY",
+    locale,
+    mode: "symbol",
+    minFractionDigits: 2,
+    maxFractionDigits: 2,
   });
 };
 
@@ -44,7 +48,8 @@ export function UsageStatsCards({
   baseTokensIn,
   baseTokensOut,
 }: UsageStatsCardsProps) {
-  const { t } = useAppContext();
+  const { t, language } = useAppContext();
+  const locale = language === "en" ? "en-US" : "zh-CN";
 
   // Calculating breakdowns scaling
   const scales = { today: 1, yesterday: 0.95, month: 28.5, allTime: 124.2 };
@@ -106,14 +111,7 @@ export function UsageStatsCards({
       if (isCurrency) {
         return (
           <span className="flex items-baseline gap-0.5">
-            <span
-              className={
-                isLarge ? "text-lg font-semibold" : "text-sm font-semibold"
-              }
-            >
-              ¥
-            </span>
-            {formatCurrency(val)}
+            {formatCurrency(val, locale) ?? "--"}
           </span>
         );
       }

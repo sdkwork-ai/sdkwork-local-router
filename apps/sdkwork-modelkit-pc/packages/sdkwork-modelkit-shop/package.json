@@ -3,6 +3,7 @@
   "version": "1.0.0",
   "main": "./src/index.ts",
   "dependencies": {
+    "@sdkwork/utils": "workspace:*",
     "react": "^19.0.1",
     "lucide-react": "^0.546.0"
   },

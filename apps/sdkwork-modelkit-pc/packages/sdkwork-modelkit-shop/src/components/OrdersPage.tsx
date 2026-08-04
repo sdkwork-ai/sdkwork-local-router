@@ -1,5 +1,6 @@
 import React from 'react';
 import { History, Package, Ticket, Check, MapPin, ArrowLeft } from 'lucide-react';
+import { formatMoney } from '@sdkwork/utils/money';
 import { useOrdersStorage } from '../hooks';
 import { useAppContext } from '@sdkwork/modelkit-core';
 import { INITIAL_PRODUCTS } from './ShopData';
@@ -10,7 +11,8 @@ interface OrdersPageProps {
 
 export function OrdersPage({ onBack }: OrdersPageProps) {
   const { orders } = useOrdersStorage();
-  const { t } = useAppContext();
+  const { t, language } = useAppContext();
+  const locale = language === 'en' ? 'en-US' : 'zh-CN';
 
   // Adapter to convert flat local storage orders to grouped orders of style required by OrdersPage UI
   const groupedOrders = React.useMemo(() => {
@@ -96,7 +98,9 @@ export function OrdersPage({ onBack }: OrdersPageProps) {
                     <span className="text-text-muted">{t('shop:txt_1033')}<span className="font-mono text-text-main/80 select-text">{order.orderId}</span></span>
                   </div>
                   <div className="flex items-center gap-2">
-                    <span className="font-mono font-black text-primary-main text-sm">¥ {order.totalAmount}</span>
+                    <span className="font-mono font-black text-primary-main text-sm">
+                      {formatMoney(order.totalAmount, { currency: 'CNY', locale, mode: 'symbol', minFractionDigits: 0, maxFractionDigits: 2 }) ?? '--'}
+                    </span>
                   </div>
                 </div>
 

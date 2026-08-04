@@ -2,6 +2,7 @@ import { useAppContext } from '@sdkwork/modelkit-core';
 import React, { useState, useEffect } from 'react';
 import { Timer, Cpu, QrCode, CreditCard, CheckCircle2 } from 'lucide-react';
 import { toast } from 'sonner';
+import { formatMoney } from '@sdkwork/utils/money';
 import { CartItem, OrderHistoryItem, Product, ProductSku } from '../../types';
 import { useCartStorage, useOrdersStorage } from '../../hooks';
 
@@ -20,9 +21,10 @@ export function ShopCheckoutModal({
   isBuyNow, 
   onSuccessNavigate 
 }: ShopCheckoutModalProps) {
-  const { t } = useAppContext();
+  const { t, language } = useAppContext();
   const { cart, saveCart } = useCartStorage();
   const { orders, saveOrders } = useOrdersStorage();
+  const locale = language === 'en' ? 'en-US' : 'zh-CN';
   
   const [checkoutStep, setCheckoutStep] = useState<'form' | 'paying' | 'processing' | 'success'>('form');
   const [paymentMethod, setPaymentMethod] = useState<'wechat' | 'alipay' | 'card'>('alipay');
@@ -175,14 +177,14 @@ export function ShopCheckoutModal({
                       🏷️ {item.product.name} <span className="text-primary-light font-bold font-mono">x {item.quantity}</span>
                     </span>
                     <strong className="text-text-main/80 font-mono font-bold shrink-0">
-                      ¥ {getActivePrice(item.product, item.selectedSku) * item.quantity}
+                      {formatMoney(getActivePrice(item.product, item.selectedSku) * item.quantity, { currency: 'CNY', locale, mode: 'symbol', minFractionDigits: 0, maxFractionDigits: 2 }) ?? '--'}
                     </strong>
                   </div>
                 ))}
                 <div className="flex justify-between items-center text-text-main/80 pt-3 border-t border-divider">
                   <span className="text-xs font-bold text-text-main/80">{t('shop:txt_1090')}</span>
                   <strong className="text-xl font-black text-primary-main font-mono">
-                    ¥ {getCheckoutTotal()}
+                    {formatMoney(getCheckoutTotal(), { currency: 'CNY', locale, mode: 'symbol', minFractionDigits: 0, maxFractionDigits: 2 }) ?? '--'}
                   </strong>
                 </div>
               </div>
@@ -307,7 +309,7 @@ export function ShopCheckoutModal({
               <div className="flex justify-between items-center text-text-main/80 pt-2 border-t border-divider">
                 <span>{t('shop:txt_1106')}</span>
                 <strong className="text-xl font-black text-primary-main font-mono">
-                  ¥ {getCheckoutTotal()}
+                  {formatMoney(getCheckoutTotal(), { currency: 'CNY', locale, mode: 'symbol', minFractionDigits: 0, maxFractionDigits: 2 }) ?? '--'}
                 </strong>
               </div>
             </div>

@@ -1,5 +1,6 @@
 import React from 'react';
 import { ShoppingBag, ChevronRight, Tags, ArrowLeft } from 'lucide-react';
+import { formatMoney } from '@sdkwork/utils/money';
 import { useCartStorage } from '../hooks';
 import { useAppContext } from '@sdkwork/modelkit-core';
 import { Product, ProductSku } from '../types';
@@ -13,7 +14,8 @@ interface CartDrawerProps {
 
 export function CartDrawer({ isOpen, onClose, onCheckout, getActivePrice }: CartDrawerProps) {
   const { cart, saveCart } = useCartStorage();
-  const { t } = useAppContext();
+  const { t, language } = useAppContext();
+  const locale = language === 'en' ? 'en-US' : 'zh-CN';
 
   if (!isOpen) return null;
 
@@ -82,7 +84,9 @@ export function CartDrawer({ isOpen, onClose, onCheckout, getActivePrice }: Cart
                         Specs: {item.selectedSku.name}
                       </div>
                     )}
-                    <div className="text-sm font-bold text-primary-main font-mono tracking-tight">¥ {displayPrice}</div>
+                    <div className="text-sm font-bold text-primary-main font-mono tracking-tight">
+                      {formatMoney(displayPrice, { currency: 'CNY', locale, mode: 'symbol', minFractionDigits: 0, maxFractionDigits: 2 }) ?? '--'}
+                    </div>
                     
                     {/* Action Bar */}
                     <div className="flex items-center justify-between mt-2 pt-2 border-t border-divider/50">
@@ -120,7 +124,9 @@ export function CartDrawer({ isOpen, onClose, onCheckout, getActivePrice }: Cart
           <div className="p-5 border-t border-divider bg-panel shrink-0 space-y-4 shadow-[0_-10px_20px_rgba(0,0,0,0.3)] z-10">
             <div className="flex justify-between items-center text-xs">
               <span className="font-bold text-text-muted">{t('shop:total')}</span>
-              <strong className="text-xl font-black text-primary-main font-mono">¥ {getCartTotal()}</strong>
+              <strong className="text-xl font-black text-primary-main font-mono">
+                {formatMoney(getCartTotal(), { currency: 'CNY', locale, mode: 'symbol', minFractionDigits: 0, maxFractionDigits: 2 }) ?? '--'}
+              </strong>
             </div>
             <button 
               onClick={onCheckout}

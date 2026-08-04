@@ -1,5 +1,6 @@
 import React from "react";
 import { Check, X, Sparkles } from "lucide-react";
+import { formatMoney } from "@sdkwork/utils/money";
 import { useAppContext } from "@sdkwork/modelkit-core";
 
 export interface VipPlanCardProps {
@@ -19,6 +20,7 @@ export function VipPlanCard({
 }: VipPlanCardProps) {
   const { t, language } = useAppContext();
   const isZh = language === "zh";
+  const locale = language === "en" ? "en-US" : "zh-CN";
 
   const price = billingCycle === "yearly" ? plan.yearlyPrice : plan.monthlyPrice;
   const previousPrice = billingCycle === "yearly" ? plan.monthlyPrice : null;
@@ -61,9 +63,14 @@ export function VipPlanCard({
 
         {/* Price Block */}
         <div className="py-2.5 border-y border-divider flex items-baseline gap-2">
-          <span className="text-xs text-amber-500 font-mono">¥</span>
           <strong className="text-3xl font-black text-text-main tracking-tight font-mono">
-            {price}
+            {formatMoney(price, {
+              currency: "CNY",
+              locale,
+              mode: "symbol",
+              minFractionDigits: 0,
+              maxFractionDigits: 2,
+            }) ?? "--"}
           </strong>
           <span className="text-xs text-text-muted font-medium">
             {periodLabel}
@@ -71,7 +78,14 @@ export function VipPlanCard({
 
           {previousPrice && (
             <span className="text-xs text-text-muted line-through font-mono ml-1.5">
-              {t("workspace:original_price_label", "Orig. ¥")}{previousPrice}
+              {t("workspace:original_price_label", "Orig. ¥")}
+              {formatMoney(previousPrice, {
+                currency: "CNY",
+                locale,
+                mode: "decimal",
+                minFractionDigits: 0,
+                maxFractionDigits: 2,
+              }) ?? ""}
             </span>
           )}
         </div>

@@ -1,6 +1,7 @@
 import { useAppContext } from '@sdkwork/modelkit-core';
 import React from 'react';
 import { Sparkles, ShoppingBag, TerminalSquare } from 'lucide-react';
+import { formatMoney } from '@sdkwork/utils/money';
 import { Product, ProductSku } from '../types';
 
 interface ShopProductCardProps {
@@ -11,7 +12,8 @@ interface ShopProductCardProps {
 }
 
 export function ShopProductCard({ product, onClick, onAddToCart }: ShopProductCardProps) {
-  const { t } = useAppContext();
+  const { t, language } = useAppContext();
+  const locale = language === 'en' ? 'en-US' : 'zh-CN';
   return (
     <div
       onClick={() => onClick(product)}
@@ -81,11 +83,12 @@ export function ShopProductCard({ product, onClick, onAddToCart }: ShopProductCa
       <div className="mt-4 pt-3 border-t border-divider flex items-center justify-between">
         <div className="flex flex-col">
           {product.originalPrice && product.originalPrice > product.price && (
-            <span className="text-[9px] text-text-muted line-through font-mono">¥{product.originalPrice}</span>
+            <span className="text-[9px] text-text-muted line-through font-mono">
+              {formatMoney(product.originalPrice, { currency: 'CNY', locale, mode: 'symbol', minFractionDigits: 0, maxFractionDigits: 2 }) ?? ''}
+            </span>
           )}
           <span className="text-[15px] font-display font-black text-rose-500 truncate min-w-0">
-            <span className="text-xs mr-0.5">¥</span>
-            {product.price.toLocaleString()}
+            {formatMoney(product.price, { currency: 'CNY', locale, mode: 'symbol', minFractionDigits: 0, maxFractionDigits: 2 }) ?? '--'}
           </span>
         </div>
 

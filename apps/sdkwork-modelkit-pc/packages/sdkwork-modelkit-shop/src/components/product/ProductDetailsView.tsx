@@ -1,6 +1,7 @@
 import { useAppContext } from '@sdkwork/modelkit-core';
 import React, { useState } from 'react';
 import { ArrowLeft, ChevronLeft, ChevronRight, Cpu, Package, Check, ExternalLink, ShoppingBag, CreditCard, Sparkles } from 'lucide-react';
+import { formatMoney } from '@sdkwork/utils/money';
 import { Product, ProductSku } from '../../types';
 import { toast } from 'sonner';
 
@@ -36,7 +37,8 @@ export function ProductDetailsView({
   onBuyNow,
   onSubmitComment
 }: ProductDetailsViewProps) {
-  const { t } = useAppContext();
+  const { t, language } = useAppContext();
+  const locale = language === 'en' ? 'en-US' : 'zh-CN';
   const [currentSlide, setCurrentSlide] = useState(0);
   const [newCommentText, setNewCommentText] = useState('');
 
@@ -141,13 +143,12 @@ export function ProductDetailsView({
             {/* Price Block */}
             <div className="bg-surface border border-divider rounded-2xl p-5 mb-6 shadow-sm">
               <div className="flex items-baseline gap-1.5 mb-2">
-                <span className="text-base text-primary-main font-bold">¥</span>
                 <strong className="text-4xl font-black text-primary-main tracking-tight font-mono">
-                  {getActivePrice(product, selectedSku)}
+                  {formatMoney(getActivePrice(product, selectedSku), { currency: 'CNY', locale, mode: 'symbol', minFractionDigits: 0, maxFractionDigits: 2 }) ?? '--'}
                 </strong>
                 {(selectedSku?.originalPrice || (!selectedSku && product.originalPrice)) && (
                   <span className="text-sm text-text-muted line-through font-mono ml-3">
-                    Single Price ¥{selectedSku ? selectedSku.originalPrice : product.originalPrice}
+                    Single Price {formatMoney(selectedSku ? selectedSku.originalPrice : product.originalPrice, { currency: 'CNY', locale, mode: 'symbol', minFractionDigits: 0, maxFractionDigits: 2 }) ?? ''}
                   </span>
                 )}
               </div>

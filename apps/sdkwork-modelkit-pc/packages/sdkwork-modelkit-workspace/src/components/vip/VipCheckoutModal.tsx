@@ -11,6 +11,7 @@ import {
   ArrowRight,
 } from "lucide-react";
 import { toast } from "sonner";
+import { formatMoney } from "@sdkwork/utils/money";
 import { workspaceService } from "../../services/WorkspaceService";
 
 interface VipCheckoutModalProps {
@@ -28,7 +29,8 @@ export function VipCheckoutModal({
   billingCycle,
   onSuccess,
 }: VipCheckoutModalProps) {
-  const { t } = useAppContext();
+  const { t, language } = useAppContext();
+  const locale = language === "en" ? "en-US" : "zh-CN";
   const [checkoutStep, setCheckoutStep] = useState<
     "idle" | "paying" | "processing" | "success"
   >("idle");
@@ -131,7 +133,13 @@ export function VipCheckoutModal({
               <div className="flex justify-between items-center text-text-muted pt-2 border-t border-divider">
                 <span>{t("workspace:txt_1344")}</span>
                 <strong className="text-xl font-black text-amber-500 font-mono">
-                  ¥ {selectedPlan.price}
+                  {formatMoney(selectedPlan.price, {
+                    currency: "CNY",
+                    locale,
+                    mode: "symbol",
+                    minFractionDigits: 0,
+                    maxFractionDigits: 2,
+                  }) ?? "--"}
                 </strong>
               </div>
             </div>

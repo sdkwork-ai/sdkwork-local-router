@@ -1,9 +1,11 @@
 import { useAppContext } from "@sdkwork/modelkit-core";
 import React, { useState } from "react";
+import { formatMoney } from "@sdkwork/utils/money";
 import { MOCK_MODEL_DISTRIBUTION } from "./types";
 
 export function UsageModelDistribution() {
-  const { t } = useAppContext();
+  const { t, language } = useAppContext();
+  const locale = language === "en" ? "en-US" : "zh-CN";
   const [hoveredModel, setHoveredModel] = useState<number | null>(null);
   const [viewMode, setViewMode] = useState<"token" | "spend">("token");
 
@@ -114,7 +116,13 @@ export function UsageModelDistribution() {
           <div className="mt-1 h-4 flex items-center justify-center">
             {hoveredModel !== null && viewMode === "spend" ? (
               <span className="text-xs font-bold text-text-muted font-mono">
-                ¥{MOCK_MODEL_DISTRIBUTION[hoveredModel].spend.toFixed(2)}
+                {formatMoney(MOCK_MODEL_DISTRIBUTION[hoveredModel].spend, {
+                  currency: "CNY",
+                  locale,
+                  mode: "symbol",
+                  minFractionDigits: 2,
+                  maxFractionDigits: 2,
+                }) ?? "--"}
               </span>
             ) : hoveredModel !== null && viewMode === "token" ? (
               <span className="text-xs font-bold text-text-muted font-mono">
@@ -125,7 +133,15 @@ export function UsageModelDistribution() {
               </span>
             ) : (
               <span className="text-xs font-bold text-text-muted font-mono">
-                {viewMode === "spend" ? "¥446.2" : "20.2M"}
+                {viewMode === "spend"
+                  ? (formatMoney(446.2, {
+                      currency: "CNY",
+                      locale,
+                      mode: "symbol",
+                      minFractionDigits: 0,
+                      maxFractionDigits: 2,
+                    }) ?? "--")
+                  : "20.2M"}
               </span>
             )}
           </div>
@@ -156,7 +172,13 @@ export function UsageModelDistribution() {
             <div className="flex items-center gap-3">
               {viewMode === "spend" ? (
                 <span className="font-mono text-text-muted font-medium text-[11px] w-14 text-right">
-                  ¥{item.spend.toFixed(1)}
+                  {formatMoney(item.spend, {
+                    currency: "CNY",
+                    locale,
+                    mode: "symbol",
+                    minFractionDigits: 1,
+                    maxFractionDigits: 1,
+                  }) ?? "--"}
                 </span>
               ) : (
                 <span className="font-mono text-text-muted font-medium text-[11px] w-14 text-right">
