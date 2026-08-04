@@ -22,14 +22,14 @@ export function PluginDetailsView({ plugin, agents, onBack, onInstallClick, rend
 
   const getInstallCommand = () => {
     const version = "1.0.0";
-    const registry = mirror === 'official' ? 'https://registry.clawhub.io' : 'https://registry.npmmirror.com';
+    const registry = mirror === 'official' ? 'https://registry.cloudhub.io' : 'https://registry.npmmirror.com';
     const npmRegistry = mirror === 'taobao' ? ' --registry=https://registry.npmmirror.com' : '';
     
     if (installTab === 'agent') {
       if (agentTool === 'openclaw') {
-        return `Find via clawhub clawhub://plugins/${plugin.name}@${version} plugin, using registry ${registry}。`;
+        return `Find via cloudhub cloudhub://plugins/${plugin.name}@${version} plugin, using registry ${registry}。`;
       } else {
-        return `Find via codex codex://plugins/${plugin.name}@${version} plugin, using registry ${registry.replace('clawhub.io', 'codex.io')}。`;
+        return `Find via codex codex://plugins/${plugin.name}@${version} plugin, using registry ${registry.replace('cloudhub.io', 'codex.io')}。`;
       }
     }
     if (installTab === 'npm') return `npm install ${plugin.name}@${version}${npmRegistry}`;
@@ -153,7 +153,7 @@ export function PluginDetailsView({ plugin, agents, onBack, onInstallClick, rend
             <span className="break-all pr-8">
               {installTab === 'agent' ? (
                 <>
-                  {t("plugins:find_via", "Find via")} {agentTool} {agentTool}://plugins/{plugin.name}@1.0.0 plugin, using registry <span className="bg-surface px-1.5 py-0.5 rounded border border-divider text-text-main">{mirror === 'official' ? (agentTool === 'openclaw' ? 'https://registry.clawhub.io' : 'https://registry.codex.io') : 'https://registry.npmmirror.com'}</span>.
+                  {t("plugins:find_via", "Find via")} {agentTool} {agentTool}://plugins/{plugin.name}@1.0.0 plugin, using registry <span className="bg-surface px-1.5 py-0.5 rounded border border-divider text-text-main">{mirror === 'official' ? (agentTool === 'openclaw' ? 'https://registry.cloudhub.io' : 'https://registry.codex.io') : 'https://registry.npmmirror.com'}</span>.
                 </>
               ) : (
                 getInstallCommand()

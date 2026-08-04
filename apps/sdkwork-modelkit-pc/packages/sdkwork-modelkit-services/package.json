@@ -12,6 +12,8 @@
     }
   },
   "dependencies": {
+    "@sdkwork/modelkit-core": "workspace:*",
+    "@sdkwork/modelkit-sdk-typescript": "workspace:*",
     "@sdkwork/modelkit-types": "workspace:*"
   }
 }

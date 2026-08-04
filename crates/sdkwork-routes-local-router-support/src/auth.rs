@@ -259,7 +259,7 @@ mod tests {
     use axum::http::HeaderValue;
 
     #[test]
-    fn claw_app_session_context_requires_matching_auth_and_access_subjects() {
+    fn cloud_app_session_context_requires_matching_auth_and_access_subjects() {
         let mut headers = HeaderMap::new();
         headers.insert(
             axum::http::header::AUTHORIZATION,
@@ -274,7 +274,7 @@ mod tests {
     }
 
     #[test]
-    fn claw_app_session_context_rejects_mismatched_access_subject() {
+    fn cloud_app_session_context_rejects_mismatched_access_subject() {
         let mut headers = HeaderMap::new();
         headers.insert(
             axum::http::header::AUTHORIZATION,

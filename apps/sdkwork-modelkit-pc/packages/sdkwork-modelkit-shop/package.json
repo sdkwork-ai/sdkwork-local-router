@@ -3,9 +3,10 @@
   "version": "1.0.0",
   "main": "./src/index.ts",
   "dependencies": {
+    "@sdkwork/modelkit-core": "workspace:*",
     "@sdkwork/utils": "workspace:*",
-    "react": "^19.0.1",
-    "lucide-react": "^0.546.0"
+    "lucide-react": "^0.546.0",
+    "react": "^19.0.1"
   },
   "publishConfig": {
     "access": "public",

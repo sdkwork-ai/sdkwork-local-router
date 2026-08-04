@@ -22,6 +22,10 @@
     "@google/genai": "^2.6.0",
     "@hello-pangea/dnd": "^18.0.1",
     "@monaco-editor/react": "^4.7.0",
+    "@sdkwork/modelkit-core": "workspace:*",
+    "@sdkwork/modelkit-services": "workspace:*",
+    "@sdkwork/modelkit-shop": "workspace:*",
+    "@sdkwork/modelkit-workspace": "workspace:*",
     "@tailwindcss/vite": "^4.3.0",
     "@vitejs/plugin-react": "^6.0.2",
     "compression": "^1.8.1",
@@ -35,8 +39,8 @@
     "react": "^19.2.6",
     "react-dom": "^19.2.6",
     "react-i18next": "^17.0.8",
-    "vite": "^8.0.14",
-    "tailwindcss": "^4.3.0"
+    "tailwindcss": "^4.3.0",
+    "vite": "^8.0.14"
   },
   "devDependencies": {
     "@types/compression": "^1.8.1",
