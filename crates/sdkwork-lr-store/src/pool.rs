@@ -117,9 +117,9 @@ impl Store {
         let id = next_runtime_id(CLIENT_API_KEYS_TABLE)?;
         match &self.pool {
             DatabasePool::Sqlite(pool) => {
-                sqlx::query(&format!(
+                sqlx::query(sqlx::AssertSqlSafe(format!(
                     "INSERT INTO {CLIENT_API_KEYS_TABLE} (id, user_id, name, key_hash, key_prefix, enabled) VALUES (?, ?, ?, ?, ?, ?)"
-                ))
+                )))
                 .bind(id)
                 .bind(client_api_key.user_id)
                 .bind(&client_api_key.name)
@@ -132,9 +132,9 @@ impl Store {
                 Ok(id)
             }
             DatabasePool::Postgres(pool) => {
-                sqlx::query(&format!(
+                sqlx::query(sqlx::AssertSqlSafe(format!(
                     "INSERT INTO {CLIENT_API_KEYS_TABLE} (id, user_id, name, key_hash, key_prefix, enabled) VALUES ($1, $2, $3, $4, $5, $6)"
-                ))
+                )))
                 .bind(id)
                 .bind(client_api_key.user_id)
                 .bind(&client_api_key.name)
@@ -154,16 +154,16 @@ impl Store {
         user_id: i64,
     ) -> Result<Vec<ClientApiKeyRow>, StoreError> {
         match &self.pool {
-            DatabasePool::Sqlite(pool) => sqlx::query_as::<_, ClientApiKeyRow>(&format!(
+            DatabasePool::Sqlite(pool) => sqlx::query_as::<_, ClientApiKeyRow>(sqlx::AssertSqlSafe(format!(
                 "SELECT * FROM {CLIENT_API_KEYS_TABLE} WHERE user_id = ? ORDER BY id DESC"
-            ))
+            )))
             .bind(user_id)
             .fetch_all(pool)
             .await
             .map_err(|e| StoreError::Query(e.to_string())),
-            DatabasePool::Postgres(pool) => sqlx::query_as::<_, ClientApiKeyRow>(&format!(
+            DatabasePool::Postgres(pool) => sqlx::query_as::<_, ClientApiKeyRow>(sqlx::AssertSqlSafe(format!(
                 "SELECT * FROM {CLIENT_API_KEYS_TABLE} WHERE user_id = $1 ORDER BY id DESC"
-            ))
+            )))
             .bind(user_id)
             .fetch_all(pool)
             .await
@@ -177,18 +177,18 @@ impl Store {
         id: i64,
     ) -> Result<ClientApiKeyRow, StoreError> {
         match &self.pool {
-            DatabasePool::Sqlite(pool) => sqlx::query_as::<_, ClientApiKeyRow>(&format!(
+            DatabasePool::Sqlite(pool) => sqlx::query_as::<_, ClientApiKeyRow>(sqlx::AssertSqlSafe(format!(
                 "SELECT * FROM {CLIENT_API_KEYS_TABLE} WHERE user_id = ? AND id = ?"
-            ))
+            )))
             .bind(user_id)
             .bind(id)
             .fetch_optional(pool)
             .await
             .map_err(|e| StoreError::Query(e.to_string()))?
             .ok_or_else(|| StoreError::NotFound(format!("client API key {id} not found"))),
-            DatabasePool::Postgres(pool) => sqlx::query_as::<_, ClientApiKeyRow>(&format!(
+            DatabasePool::Postgres(pool) => sqlx::query_as::<_, ClientApiKeyRow>(sqlx::AssertSqlSafe(format!(
                 "SELECT * FROM {CLIENT_API_KEYS_TABLE} WHERE user_id = $1 AND id = $2"
-            ))
+            )))
             .bind(user_id)
             .bind(id)
             .fetch_optional(pool)
@@ -205,9 +205,9 @@ impl Store {
     ) -> Result<(), StoreError> {
         match &self.pool {
             DatabasePool::Sqlite(pool) => {
-                sqlx::query(&format!(
+                sqlx::query(sqlx::AssertSqlSafe(format!(
                     "DELETE FROM {CLIENT_API_KEYS_TABLE} WHERE user_id = ? AND id = ?"
-                ))
+                )))
                 .bind(user_id)
                 .bind(id)
                 .execute(pool)
@@ -215,9 +215,9 @@ impl Store {
                 .map_err(|e| StoreError::Query(e.to_string()))?;
             }
             DatabasePool::Postgres(pool) => {
-                sqlx::query(&format!(
+                sqlx::query(sqlx::AssertSqlSafe(format!(
                     "DELETE FROM {CLIENT_API_KEYS_TABLE} WHERE user_id = $1 AND id = $2"
-                ))
+                )))
                 .bind(user_id)
                 .bind(id)
                 .execute(pool)
@@ -234,16 +234,16 @@ impl Store {
     ) -> Result<Option<ClientApiKeyRow>, StoreError> {
         let key_hash = Self::client_api_key_hash(secret);
         let row = match &self.pool {
-            DatabasePool::Sqlite(pool) => sqlx::query_as::<_, ClientApiKeyRow>(&format!(
+            DatabasePool::Sqlite(pool) => sqlx::query_as::<_, ClientApiKeyRow>(sqlx::AssertSqlSafe(format!(
                 "SELECT * FROM {CLIENT_API_KEYS_TABLE} WHERE key_hash = ? AND enabled = 1"
-            ))
+            )))
             .bind(&key_hash)
             .fetch_optional(pool)
             .await
             .map_err(|e| StoreError::Query(e.to_string()))?,
-            DatabasePool::Postgres(pool) => sqlx::query_as::<_, ClientApiKeyRow>(&format!(
+            DatabasePool::Postgres(pool) => sqlx::query_as::<_, ClientApiKeyRow>(sqlx::AssertSqlSafe(format!(
                 "SELECT * FROM {CLIENT_API_KEYS_TABLE} WHERE key_hash = $1 AND enabled = TRUE"
-            ))
+            )))
             .bind(&key_hash)
             .fetch_optional(pool)
             .await
@@ -258,18 +258,18 @@ impl Store {
     async fn mark_client_api_key_used(&self, id: i64) -> Result<(), StoreError> {
         match &self.pool {
             DatabasePool::Sqlite(pool) => {
-                sqlx::query(&format!(
+                sqlx::query(sqlx::AssertSqlSafe(format!(
                     "UPDATE {CLIENT_API_KEYS_TABLE} SET last_used_at = strftime('%Y-%m-%dT%H:%M:%SZ', 'now'), updated_at = strftime('%Y-%m-%dT%H:%M:%SZ', 'now') WHERE id = ?"
-                ))
+                )))
                 .bind(id)
                 .execute(pool)
                 .await
                 .map_err(|e| StoreError::Query(e.to_string()))?;
             }
             DatabasePool::Postgres(pool) => {
-                sqlx::query(&format!(
+                sqlx::query(sqlx::AssertSqlSafe(format!(
                     "UPDATE {CLIENT_API_KEYS_TABLE} SET last_used_at = NOW() AT TIME ZONE 'UTC', updated_at = NOW() AT TIME ZONE 'UTC' WHERE id = $1"
-                ))
+                )))
                 .bind(id)
                 .execute(pool)
                 .await
@@ -290,16 +290,16 @@ impl Store {
         user_id: i64,
     ) -> Result<Vec<AccountRow>, StoreError> {
         let mut rows = match &self.pool {
-            DatabasePool::Sqlite(pool) => sqlx::query_as::<_, AccountRow>(&format!(
+            DatabasePool::Sqlite(pool) => sqlx::query_as::<_, AccountRow>(sqlx::AssertSqlSafe(format!(
                 "SELECT * FROM {ACCOUNTS_TABLE} WHERE user_id = ? ORDER BY priority ASC, name ASC"
-            ))
+            )))
             .bind(user_id)
             .fetch_all(pool)
             .await
             .map_err(|e| StoreError::Query(e.to_string()))?,
-            DatabasePool::Postgres(pool) => sqlx::query_as::<_, AccountRow>(&format!(
+            DatabasePool::Postgres(pool) => sqlx::query_as::<_, AccountRow>(sqlx::AssertSqlSafe(format!(
                 "SELECT * FROM {ACCOUNTS_TABLE} WHERE user_id = $1 ORDER BY priority ASC, name ASC"
-            ))
+            )))
             .bind(user_id)
             .fetch_all(pool)
             .await
@@ -321,18 +321,18 @@ impl Store {
         id: i64,
     ) -> Result<AccountRow, StoreError> {
         let mut row = match &self.pool {
-            DatabasePool::Sqlite(pool) => sqlx::query_as::<_, AccountRow>(&format!(
+            DatabasePool::Sqlite(pool) => sqlx::query_as::<_, AccountRow>(sqlx::AssertSqlSafe(format!(
                 "SELECT * FROM {ACCOUNTS_TABLE} WHERE user_id = ? AND id = ?"
-            ))
+            )))
             .bind(user_id)
             .bind(id)
             .fetch_optional(pool)
             .await
             .map_err(|e| StoreError::Query(e.to_string()))?
             .ok_or_else(|| StoreError::NotFound(format!("account {} not found", id)))?,
-            DatabasePool::Postgres(pool) => sqlx::query_as::<_, AccountRow>(&format!(
+            DatabasePool::Postgres(pool) => sqlx::query_as::<_, AccountRow>(sqlx::AssertSqlSafe(format!(
                 "SELECT * FROM {ACCOUNTS_TABLE} WHERE user_id = $1 AND id = $2"
-            ))
+            )))
             .bind(user_id)
             .bind(id)
             .fetch_optional(pool)
@@ -356,9 +356,9 @@ impl Store {
 
         match &self.pool {
             DatabasePool::Sqlite(pool) => {
-                sqlx::query(&format!(
+                sqlx::query(sqlx::AssertSqlSafe(format!(
                     "INSERT INTO {ACCOUNTS_TABLE} (id, user_id, name, provider, base_url, upstream_api_key, upstream_auth_scheme, models, priority, timeout_secs, max_retries, retry_delay_ms, anthropic_version, default_headers, model_route_mappings, enabled) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)"
-                ))
+                )))
                 .bind(account_id)
                 .bind(account.user_id).bind(&account.name).bind(&account.provider).bind(&account.base_url).bind(&encrypted_upstream_api_key)
                 .bind(&account.upstream_auth_scheme)
@@ -377,9 +377,9 @@ impl Store {
                 Ok(account_id)
             }
             DatabasePool::Postgres(pool) => {
-                sqlx::query(&format!(
+                sqlx::query(sqlx::AssertSqlSafe(format!(
                     "INSERT INTO {ACCOUNTS_TABLE} (id, user_id, name, provider, base_url, upstream_api_key, upstream_auth_scheme, models, priority, timeout_secs, max_retries, retry_delay_ms, anthropic_version, default_headers, model_route_mappings, enabled) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15, $16)"
-                ))
+                )))
                 .bind(account_id)
                 .bind(account.user_id).bind(&account.name).bind(&account.provider).bind(&account.base_url).bind(&encrypted_upstream_api_key)
                 .bind(&account.upstream_auth_scheme)
@@ -442,9 +442,9 @@ impl Store {
 
         match &self.pool {
             DatabasePool::Sqlite(pool) => {
-                sqlx::query(&format!(
+                sqlx::query(sqlx::AssertSqlSafe(format!(
                     "UPDATE {ACCOUNTS_TABLE} SET name=?, provider=?, base_url=?, upstream_api_key=?, upstream_auth_scheme=?, models=?, priority=?, timeout_secs=?, max_retries=?, retry_delay_ms=?, anthropic_version=?, default_headers=?, model_route_mappings=?, enabled=?, updated_at=datetime('now') WHERE user_id=? AND id=?"
-                ))
+                )))
                 .bind(&account.name).bind(&account.provider).bind(&account.base_url).bind(&encrypted_upstream_api_key)
                 .bind(&account.upstream_auth_scheme)
                 .bind(&models_json).bind(account.priority).bind(account.timeout_secs)
@@ -454,9 +454,9 @@ impl Store {
                 .execute(pool).await.map_err(|e| StoreError::Query(e.to_string()))?;
             }
             DatabasePool::Postgres(pool) => {
-                sqlx::query(&format!(
+                sqlx::query(sqlx::AssertSqlSafe(format!(
                     "UPDATE {ACCOUNTS_TABLE} SET name=$1, provider=$2, base_url=$3, upstream_api_key=$4, upstream_auth_scheme=$5, models=$6, priority=$7, timeout_secs=$8, max_retries=$9, retry_delay_ms=$10, anthropic_version=$11, default_headers=$12, model_route_mappings=$13, enabled=$14, updated_at=NOW() WHERE user_id=$15 AND id=$16"
-                ))
+                )))
                 .bind(&account.name).bind(&account.provider).bind(&account.base_url).bind(&encrypted_upstream_api_key)
                 .bind(&account.upstream_auth_scheme)
                 .bind(&models_json).bind(account.priority).bind(account.timeout_secs)
@@ -504,17 +504,17 @@ impl Store {
         name: &str,
     ) -> Result<Option<AccountRow>, StoreError> {
         let mut row = match &self.pool {
-            DatabasePool::Sqlite(pool) => sqlx::query_as::<_, AccountRow>(&format!(
+            DatabasePool::Sqlite(pool) => sqlx::query_as::<_, AccountRow>(sqlx::AssertSqlSafe(format!(
                 "SELECT * FROM {ACCOUNTS_TABLE} WHERE user_id = ? AND name = ?"
-            ))
+            )))
             .bind(user_id)
             .bind(name)
             .fetch_optional(pool)
             .await
             .map_err(|e| StoreError::Query(e.to_string()))?,
-            DatabasePool::Postgres(pool) => sqlx::query_as::<_, AccountRow>(&format!(
+            DatabasePool::Postgres(pool) => sqlx::query_as::<_, AccountRow>(sqlx::AssertSqlSafe(format!(
                 "SELECT * FROM {ACCOUNTS_TABLE} WHERE user_id = $1 AND name = $2"
-            ))
+            )))
             .bind(user_id)
             .bind(name)
             .fetch_optional(pool)
@@ -536,9 +536,9 @@ impl Store {
             .await?;
         match &self.pool {
             DatabasePool::Sqlite(pool) => {
-                sqlx::query(&format!(
+                sqlx::query(sqlx::AssertSqlSafe(format!(
                     "DELETE FROM {ACCOUNTS_TABLE} WHERE user_id = ? AND id = ?"
-                ))
+                )))
                 .bind(user_id)
                 .bind(id)
                 .execute(pool)
@@ -546,9 +546,9 @@ impl Store {
                 .map_err(|e| StoreError::Query(e.to_string()))?;
             }
             DatabasePool::Postgres(pool) => {
-                sqlx::query(&format!(
+                sqlx::query(sqlx::AssertSqlSafe(format!(
                     "DELETE FROM {ACCOUNTS_TABLE} WHERE user_id = $1 AND id = $2"
-                ))
+                )))
                 .bind(user_id)
                 .bind(id)
                 .execute(pool)
@@ -566,16 +566,16 @@ impl Store {
         user_id: i64,
     ) -> Result<Vec<ModelRouteMappingRow>, StoreError> {
         match &self.pool {
-            DatabasePool::Sqlite(pool) => sqlx::query_as::<_, ModelRouteMappingRow>(&format!(
+            DatabasePool::Sqlite(pool) => sqlx::query_as::<_, ModelRouteMappingRow>(sqlx::AssertSqlSafe(format!(
                 "SELECT * FROM {MODEL_ROUTE_MAPPINGS_TABLE} WHERE user_id = ? ORDER BY account_name ASC, client_model ASC"
-            ))
+            )))
             .bind(user_id)
             .fetch_all(pool)
             .await
             .map_err(|e| StoreError::Query(e.to_string())),
-            DatabasePool::Postgres(pool) => sqlx::query_as::<_, ModelRouteMappingRow>(&format!(
+            DatabasePool::Postgres(pool) => sqlx::query_as::<_, ModelRouteMappingRow>(sqlx::AssertSqlSafe(format!(
                 "SELECT * FROM {MODEL_ROUTE_MAPPINGS_TABLE} WHERE user_id = $1 ORDER BY account_name ASC, client_model ASC"
-            ))
+            )))
             .bind(user_id)
             .fetch_all(pool)
             .await
@@ -588,16 +588,16 @@ impl Store {
         user_id: i64,
     ) -> Result<Vec<ModelRouteMappingRow>, StoreError> {
         match &self.pool {
-            DatabasePool::Sqlite(pool) => sqlx::query_as::<_, ModelRouteMappingRow>(&format!(
+            DatabasePool::Sqlite(pool) => sqlx::query_as::<_, ModelRouteMappingRow>(sqlx::AssertSqlSafe(format!(
                 "SELECT * FROM {MODEL_ROUTE_MAPPINGS_TABLE} WHERE user_id = ? AND enabled = 1 ORDER BY account_name ASC, client_model ASC"
-            ))
+            )))
             .bind(user_id)
             .fetch_all(pool)
             .await
             .map_err(|e| StoreError::Query(e.to_string())),
-            DatabasePool::Postgres(pool) => sqlx::query_as::<_, ModelRouteMappingRow>(&format!(
+            DatabasePool::Postgres(pool) => sqlx::query_as::<_, ModelRouteMappingRow>(sqlx::AssertSqlSafe(format!(
                 "SELECT * FROM {MODEL_ROUTE_MAPPINGS_TABLE} WHERE user_id = $1 AND enabled = TRUE ORDER BY account_name ASC, client_model ASC"
-            ))
+            )))
             .bind(user_id)
             .fetch_all(pool)
             .await
@@ -611,17 +611,17 @@ impl Store {
         account_id: i64,
     ) -> Result<Vec<ModelRouteMappingRow>, StoreError> {
         match &self.pool {
-            DatabasePool::Sqlite(pool) => sqlx::query_as::<_, ModelRouteMappingRow>(&format!(
+            DatabasePool::Sqlite(pool) => sqlx::query_as::<_, ModelRouteMappingRow>(sqlx::AssertSqlSafe(format!(
                 "SELECT * FROM {MODEL_ROUTE_MAPPINGS_TABLE} WHERE user_id = ? AND account_id = ? ORDER BY client_model ASC"
-            ))
+            )))
             .bind(user_id)
             .bind(account_id)
             .fetch_all(pool)
             .await
             .map_err(|e| StoreError::Query(e.to_string())),
-            DatabasePool::Postgres(pool) => sqlx::query_as::<_, ModelRouteMappingRow>(&format!(
+            DatabasePool::Postgres(pool) => sqlx::query_as::<_, ModelRouteMappingRow>(sqlx::AssertSqlSafe(format!(
                 "SELECT * FROM {MODEL_ROUTE_MAPPINGS_TABLE} WHERE user_id = $1 AND account_id = $2 ORDER BY client_model ASC"
-            ))
+            )))
             .bind(user_id)
             .bind(account_id)
             .fetch_all(pool)
@@ -637,9 +637,9 @@ impl Store {
         let id = next_runtime_id(MODEL_ROUTE_MAPPINGS_TABLE)?;
         match &self.pool {
             DatabasePool::Sqlite(pool) => {
-                sqlx::query(&format!(
+                sqlx::query(sqlx::AssertSqlSafe(format!(
                     "INSERT INTO {MODEL_ROUTE_MAPPINGS_TABLE} (id, user_id, account_id, account_name, client_model, upstream_model, enabled, notes) VALUES (?, ?, ?, ?, ?, ?, ?, ?) ON CONFLICT(user_id, account_id, client_model) DO UPDATE SET account_name=excluded.account_name, upstream_model=excluded.upstream_model, enabled=excluded.enabled, notes=excluded.notes, version=version + 1, updated_at=strftime('%Y-%m-%dT%H:%M:%SZ', 'now')"
-                ))
+                )))
                 .bind(id)
                 .bind(route_mapping.user_id)
                 .bind(route_mapping.account_id)
@@ -660,9 +660,9 @@ impl Store {
                 .map(|row| row.id)
             }
             DatabasePool::Postgres(pool) => {
-                sqlx::query(&format!(
+                sqlx::query(sqlx::AssertSqlSafe(format!(
                     "INSERT INTO {MODEL_ROUTE_MAPPINGS_TABLE} (id, user_id, account_id, account_name, client_model, upstream_model, enabled, notes) VALUES ($1, $2, $3, $4, $5, $6, $7, $8) ON CONFLICT(user_id, account_id, client_model) DO UPDATE SET account_name=excluded.account_name, upstream_model=excluded.upstream_model, enabled=excluded.enabled, notes=excluded.notes, version={MODEL_ROUTE_MAPPINGS_TABLE}.version + 1, updated_at=NOW()"
-                ))
+                )))
                 .bind(id)
                 .bind(route_mapping.user_id)
                 .bind(route_mapping.account_id)
@@ -719,9 +719,9 @@ impl Store {
     ) -> Result<(), StoreError> {
         match &self.pool {
             DatabasePool::Sqlite(pool) => {
-                sqlx::query(&format!(
+                sqlx::query(sqlx::AssertSqlSafe(format!(
                     "DELETE FROM {MODEL_ROUTE_MAPPINGS_TABLE} WHERE user_id = ? AND id = ?"
-                ))
+                )))
                 .bind(user_id)
                 .bind(id)
                 .execute(pool)
@@ -729,9 +729,9 @@ impl Store {
                 .map_err(|e| StoreError::Query(e.to_string()))?;
             }
             DatabasePool::Postgres(pool) => {
-                sqlx::query(&format!(
+                sqlx::query(sqlx::AssertSqlSafe(format!(
                     "DELETE FROM {MODEL_ROUTE_MAPPINGS_TABLE} WHERE user_id = $1 AND id = $2"
-                ))
+                )))
                 .bind(user_id)
                 .bind(id)
                 .execute(pool)
@@ -749,9 +749,9 @@ impl Store {
     ) -> Result<(), StoreError> {
         match &self.pool {
             DatabasePool::Sqlite(pool) => {
-                sqlx::query(&format!(
+                sqlx::query(sqlx::AssertSqlSafe(format!(
                     "DELETE FROM {MODEL_ROUTE_MAPPINGS_TABLE} WHERE user_id = ? AND account_id = ?"
-                ))
+                )))
                 .bind(user_id)
                 .bind(account_id)
                 .execute(pool)
@@ -759,9 +759,9 @@ impl Store {
                 .map_err(|e| StoreError::Query(e.to_string()))?;
             }
             DatabasePool::Postgres(pool) => {
-                sqlx::query(&format!(
+                sqlx::query(sqlx::AssertSqlSafe(format!(
                     "DELETE FROM {MODEL_ROUTE_MAPPINGS_TABLE} WHERE user_id = $1 AND account_id = $2"
-                ))
+                )))
                 .bind(user_id)
                 .bind(account_id)
                 .execute(pool)
@@ -780,9 +780,9 @@ impl Store {
     ) -> Result<(), StoreError> {
         match &self.pool {
             DatabasePool::Sqlite(pool) => {
-                sqlx::query(&format!(
+                sqlx::query(sqlx::AssertSqlSafe(format!(
                     "UPDATE {MODEL_ROUTE_MAPPINGS_TABLE} SET account_name = ?, version = version + 1, updated_at = strftime('%Y-%m-%dT%H:%M:%SZ', 'now') WHERE user_id = ? AND account_id = ? AND account_name <> ?"
-                ))
+                )))
                 .bind(account_name)
                 .bind(user_id)
                 .bind(account_id)
@@ -792,9 +792,9 @@ impl Store {
                 .map_err(|e| StoreError::Query(e.to_string()))?;
             }
             DatabasePool::Postgres(pool) => {
-                sqlx::query(&format!(
+                sqlx::query(sqlx::AssertSqlSafe(format!(
                     "UPDATE {MODEL_ROUTE_MAPPINGS_TABLE} SET account_name = $1, version = version + 1, updated_at = NOW() WHERE user_id = $2 AND account_id = $3 AND account_name <> $1"
-                ))
+                )))
                 .bind(account_name)
                 .bind(user_id)
                 .bind(account_id)
@@ -813,9 +813,9 @@ impl Store {
         client_model: &str,
     ) -> Result<ModelRouteMappingRow, StoreError> {
         match &self.pool {
-            DatabasePool::Sqlite(pool) => sqlx::query_as::<_, ModelRouteMappingRow>(&format!(
+            DatabasePool::Sqlite(pool) => sqlx::query_as::<_, ModelRouteMappingRow>(sqlx::AssertSqlSafe(format!(
                 "SELECT * FROM {MODEL_ROUTE_MAPPINGS_TABLE} WHERE user_id = ? AND account_id = ? AND client_model = ?"
-            ))
+            )))
             .bind(user_id)
             .bind(account_id)
             .bind(client_model)
@@ -823,9 +823,9 @@ impl Store {
             .await
             .map_err(|e| StoreError::Query(e.to_string()))?
             .ok_or_else(|| StoreError::NotFound("model route mapping not found".to_owned())),
-            DatabasePool::Postgres(pool) => sqlx::query_as::<_, ModelRouteMappingRow>(&format!(
+            DatabasePool::Postgres(pool) => sqlx::query_as::<_, ModelRouteMappingRow>(sqlx::AssertSqlSafe(format!(
                 "SELECT * FROM {MODEL_ROUTE_MAPPINGS_TABLE} WHERE user_id = $1 AND account_id = $2 AND client_model = $3"
-            ))
+            )))
             .bind(user_id)
             .bind(account_id)
             .bind(client_model)
@@ -849,9 +849,9 @@ impl Store {
     ) -> Result<(), StoreError> {
         match &self.pool {
             DatabasePool::Sqlite(pool) => {
-                sqlx::query(&format!(
+                sqlx::query(sqlx::AssertSqlSafe(format!(
                     "UPDATE {ACCOUNTS_TABLE} SET enabled = ?, updated_at = datetime('now') WHERE user_id = ? AND id = ?",
-                ))
+                )))
                 .bind(enabled)
                 .bind(user_id)
                 .bind(id)
@@ -860,9 +860,9 @@ impl Store {
                 .map_err(|e| StoreError::Query(e.to_string()))?;
             }
             DatabasePool::Postgres(pool) => {
-                sqlx::query(&format!(
+                sqlx::query(sqlx::AssertSqlSafe(format!(
                     "UPDATE {ACCOUNTS_TABLE} SET enabled = $1, updated_at = NOW() WHERE user_id = $2 AND id = $3"
-                ))
+                )))
                     .bind(enabled)
                     .bind(user_id)
                     .bind(id)
@@ -880,9 +880,9 @@ impl Store {
         let id = next_runtime_id(INVOCATIONS_TABLE)?;
         match &self.pool {
             DatabasePool::Sqlite(pool) => {
-                sqlx::query(&format!(
+                sqlx::query(sqlx::AssertSqlSafe(format!(
                     "INSERT INTO {INVOCATIONS_TABLE} (id, user_id, request_id, account_name, protocol, method, path, query, model, status, status_code, latency_ms, error_message, request_body, response_body, request_body_size, response_body_size, upstream_protocol, upstream_path, client_api, request_surface, target_surface, plugin_policy, plugin_id, model_vendor, metadata, streaming, attempt_count) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)"
-                ))
+                )))
                 .bind(id)
                 .bind(inv.user_id).bind(&inv.request_id).bind(&inv.account_name).bind(&inv.protocol)
                 .bind(&inv.method).bind(&inv.path).bind(&inv.query).bind(&inv.model)
@@ -896,9 +896,9 @@ impl Store {
                 .execute(pool).await.map_err(|e| StoreError::Query(e.to_string()))?;
             }
             DatabasePool::Postgres(pool) => {
-                sqlx::query(&format!(
+                sqlx::query(sqlx::AssertSqlSafe(format!(
                     "INSERT INTO {INVOCATIONS_TABLE} (id, user_id, request_id, account_name, protocol, method, path, query, model, status, status_code, latency_ms, error_message, request_body, response_body, request_body_size, response_body_size, upstream_protocol, upstream_path, client_api, request_surface, target_surface, plugin_policy, plugin_id, model_vendor, metadata, streaming, attempt_count) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15, $16, $17, $18, $19, $20, $21, $22, $23, $24, $25, $26::jsonb, $27, $28)"
-                ))
+                )))
                 .bind(id)
                 .bind(inv.user_id).bind(&inv.request_id).bind(&inv.account_name).bind(&inv.protocol)
                 .bind(&inv.method).bind(&inv.path).bind(&inv.query).bind(&inv.model)
@@ -931,18 +931,18 @@ impl Store {
         offset: i64,
     ) -> Result<Vec<InvocationRow>, StoreError> {
         match &self.pool {
-            DatabasePool::Sqlite(pool) => sqlx::query_as::<_, InvocationRow>(&format!(
+            DatabasePool::Sqlite(pool) => sqlx::query_as::<_, InvocationRow>(sqlx::AssertSqlSafe(format!(
                 "SELECT * FROM {INVOCATIONS_TABLE} WHERE user_id = ? ORDER BY id DESC LIMIT ? OFFSET ?"
-            ))
+            )))
             .bind(user_id)
             .bind(limit)
             .bind(offset)
             .fetch_all(pool)
             .await
             .map_err(|e| StoreError::Query(e.to_string())),
-            DatabasePool::Postgres(pool) => sqlx::query_as::<_, InvocationRow>(&format!(
+            DatabasePool::Postgres(pool) => sqlx::query_as::<_, InvocationRow>(sqlx::AssertSqlSafe(format!(
                 "SELECT id, user_id, request_id, account_name, protocol, method, path, query, model, status, status_code, latency_ms, error_message, request_body, response_body, request_body_size, response_body_size, upstream_protocol, upstream_path, client_api, request_surface, target_surface, plugin_policy, plugin_id, model_vendor, metadata::text AS metadata, streaming, attempt_count, created_at::text AS created_at FROM {INVOCATIONS_TABLE} WHERE user_id = $1 ORDER BY id DESC LIMIT $2 OFFSET $3"
-            ))
+            )))
             .bind(user_id)
             .bind(limit)
             .bind(offset)
@@ -958,18 +958,18 @@ impl Store {
         let id = next_runtime_id(USAGES_TABLE)?;
         match &self.pool {
             DatabasePool::Sqlite(pool) => {
-                sqlx::query(&format!(
+                sqlx::query(sqlx::AssertSqlSafe(format!(
                     "INSERT INTO {USAGES_TABLE} (id, user_id, request_id, model, prompt_tokens, completion_tokens, total_tokens) VALUES (?, ?, ?, ?, ?, ?, ?)"
-                ))
+                )))
                 .bind(id)
                 .bind(usage.user_id).bind(&usage.request_id).bind(&usage.model)
                 .bind(usage.prompt_tokens).bind(usage.completion_tokens).bind(usage.total_tokens)
                 .execute(pool).await.map_err(|e| StoreError::Query(e.to_string()))?;
             }
             DatabasePool::Postgres(pool) => {
-                sqlx::query(&format!(
+                sqlx::query(sqlx::AssertSqlSafe(format!(
                     "INSERT INTO {USAGES_TABLE} (id, user_id, request_id, model, prompt_tokens, completion_tokens, total_tokens) VALUES ($1, $2, $3, $4, $5, $6, $7)"
-                ))
+                )))
                 .bind(id)
                 .bind(usage.user_id).bind(&usage.request_id).bind(&usage.model)
                 .bind(usage.prompt_tokens).bind(usage.completion_tokens).bind(usage.total_tokens)
@@ -991,18 +991,18 @@ impl Store {
         offset: i64,
     ) -> Result<Vec<UsageRow>, StoreError> {
         match &self.pool {
-            DatabasePool::Sqlite(pool) => sqlx::query_as::<_, UsageRow>(&format!(
+            DatabasePool::Sqlite(pool) => sqlx::query_as::<_, UsageRow>(sqlx::AssertSqlSafe(format!(
                 "SELECT * FROM {USAGES_TABLE} WHERE user_id = ? ORDER BY id DESC LIMIT ? OFFSET ?"
-            ))
+            )))
             .bind(user_id)
             .bind(limit)
             .bind(offset)
             .fetch_all(pool)
             .await
             .map_err(|e| StoreError::Query(e.to_string())),
-            DatabasePool::Postgres(pool) => sqlx::query_as::<_, UsageRow>(&format!(
+            DatabasePool::Postgres(pool) => sqlx::query_as::<_, UsageRow>(sqlx::AssertSqlSafe(format!(
                 "SELECT * FROM {USAGES_TABLE} WHERE user_id = $1 ORDER BY id DESC LIMIT $2 OFFSET $3"
-            ))
+            )))
             .bind(user_id)
             .bind(limit)
             .bind(offset)
@@ -1075,9 +1075,9 @@ impl Store {
     pub async fn cleanup_invocations(&self, retention_days: i64) -> Result<u64, StoreError> {
         match &self.pool {
             DatabasePool::Sqlite(pool) => {
-                let result = sqlx::query(&format!(
+                let result = sqlx::query(sqlx::AssertSqlSafe(format!(
                     "DELETE FROM {INVOCATIONS_TABLE} WHERE created_at < datetime('now', ? || ' days')",
-                ))
+                )))
                 .bind(format!("-{}", retention_days))
                 .execute(pool)
                 .await
@@ -1085,9 +1085,9 @@ impl Store {
                 Ok(result.rows_affected())
             }
             DatabasePool::Postgres(pool) => {
-                let result = sqlx::query(&format!(
+                let result = sqlx::query(sqlx::AssertSqlSafe(format!(
                     "DELETE FROM {INVOCATIONS_TABLE} WHERE created_at < NOW() AT TIME ZONE 'UTC' - $1 * INTERVAL '1 day'"
-                )).bind(retention_days)
+                ))).bind(retention_days)
                     .execute(pool).await.map_err(|e| StoreError::Query(e.to_string()))?;
                 Ok(result.rows_affected())
             }
@@ -1103,9 +1103,9 @@ impl Store {
     pub async fn count_invocations_for_user(&self, user_id: i64) -> Result<i64, StoreError> {
         match &self.pool {
             DatabasePool::Sqlite(pool) => {
-                let row = sqlx::query(&format!(
+                let row = sqlx::query(sqlx::AssertSqlSafe(format!(
                     "SELECT COUNT(*) as count FROM {INVOCATIONS_TABLE} WHERE user_id = ?"
-                ))
+                )))
                 .bind(user_id)
                 .fetch_one(pool)
                 .await
@@ -1113,9 +1113,9 @@ impl Store {
                 Ok(row.get::<i64, _>("count"))
             }
             DatabasePool::Postgres(pool) => {
-                let row = sqlx::query(&format!(
+                let row = sqlx::query(sqlx::AssertSqlSafe(format!(
                     "SELECT COUNT(*) as count FROM {INVOCATIONS_TABLE} WHERE user_id = $1"
-                ))
+                )))
                 .bind(user_id)
                 .fetch_one(pool)
                 .await
@@ -1132,9 +1132,9 @@ impl Store {
     pub async fn count_accounts_for_user(&self, user_id: i64) -> Result<i64, StoreError> {
         match &self.pool {
             DatabasePool::Sqlite(pool) => {
-                let row = sqlx::query(&format!(
+                let row = sqlx::query(sqlx::AssertSqlSafe(format!(
                     "SELECT COUNT(*) as count FROM {ACCOUNTS_TABLE} WHERE user_id = ?"
-                ))
+                )))
                 .bind(user_id)
                 .fetch_one(pool)
                 .await
@@ -1142,9 +1142,9 @@ impl Store {
                 Ok(row.get::<i64, _>("count"))
             }
             DatabasePool::Postgres(pool) => {
-                let row = sqlx::query(&format!(
+                let row = sqlx::query(sqlx::AssertSqlSafe(format!(
                     "SELECT COUNT(*) as count FROM {ACCOUNTS_TABLE} WHERE user_id = $1"
-                ))
+                )))
                 .bind(user_id)
                 .fetch_one(pool)
                 .await
@@ -1161,12 +1161,12 @@ impl Store {
     pub async fn usage_totals_for_user(&self, user_id: i64) -> Result<UsageTotals, StoreError> {
         match &self.pool {
             DatabasePool::Sqlite(pool) => {
-                let row = sqlx::query(&format!(
+                let row = sqlx::query(sqlx::AssertSqlSafe(format!(
                     "SELECT COALESCE(SUM(prompt_tokens), 0) as prompt_tokens, \
                      COALESCE(SUM(completion_tokens), 0) as completion_tokens, \
                      COALESCE(SUM(total_tokens), 0) as total_tokens \
                      FROM {USAGES_TABLE} WHERE user_id = ?",
-                ))
+                )))
                 .bind(user_id)
                 .fetch_one(pool)
                 .await
@@ -1178,12 +1178,12 @@ impl Store {
                 })
             }
             DatabasePool::Postgres(pool) => {
-                let row = sqlx::query(&format!(
+                let row = sqlx::query(sqlx::AssertSqlSafe(format!(
                     "SELECT COALESCE(SUM(prompt_tokens), 0) as prompt_tokens, \
                      COALESCE(SUM(completion_tokens), 0) as completion_tokens, \
                      COALESCE(SUM(total_tokens), 0) as total_tokens \
                      FROM {USAGES_TABLE} WHERE user_id = $1",
-                ))
+                )))
                 .bind(user_id)
                 .fetch_one(pool)
                 .await
@@ -1206,24 +1206,24 @@ impl Store {
         user_id: i64,
     ) -> Result<Vec<UsageByModelRow>, StoreError> {
         match &self.pool {
-            DatabasePool::Sqlite(pool) => sqlx::query_as::<_, UsageByModelRow>(&format!(
+            DatabasePool::Sqlite(pool) => sqlx::query_as::<_, UsageByModelRow>(sqlx::AssertSqlSafe(format!(
                 "SELECT user_id, model, COUNT(*) as request_count, \
                      COALESCE(SUM(prompt_tokens), 0) as prompt_tokens, \
                      COALESCE(SUM(completion_tokens), 0) as completion_tokens, \
                      COALESCE(SUM(total_tokens), 0) as total_tokens \
                      FROM {USAGES_TABLE} WHERE user_id = ? GROUP BY user_id, model ORDER BY total_tokens DESC",
-            ))
+            )))
             .bind(user_id)
             .fetch_all(pool)
             .await
             .map_err(|e| StoreError::Query(e.to_string())),
-            DatabasePool::Postgres(pool) => sqlx::query_as::<_, UsageByModelRow>(&format!(
+            DatabasePool::Postgres(pool) => sqlx::query_as::<_, UsageByModelRow>(sqlx::AssertSqlSafe(format!(
                 "SELECT user_id, model, COUNT(*) as request_count, \
                      COALESCE(SUM(prompt_tokens), 0) as prompt_tokens, \
                      COALESCE(SUM(completion_tokens), 0) as completion_tokens, \
                      COALESCE(SUM(total_tokens), 0) as total_tokens \
                      FROM {USAGES_TABLE} WHERE user_id = $1 GROUP BY user_id, model ORDER BY total_tokens DESC",
-            ))
+            )))
             .bind(user_id)
             .fetch_all(pool)
             .await
