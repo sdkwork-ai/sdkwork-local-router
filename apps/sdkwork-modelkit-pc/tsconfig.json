@@ -16,14 +16,6 @@
     "allowJs": true,
     "jsx": "react-jsx",
     "paths": {
-      "@sdkwork/modelkit-sdk-typescript": [
-        "./sdks/sdkwork-modelkit-sdk-typescript/src/index.ts",
-        "./sdks/sdkwork-modelkit-sdk-typescript/src"
-      ],
-      "@sdkwork/modelkit-*": [
-        "./packages/sdkwork-modelkit-*/src/index.ts",
-        "./packages/sdkwork-modelkit-*/src"
-      ],
       "@/*": [
         "./*"
       ]

@@ -5,7 +5,8 @@
   "dependencies": {
     "@sdkwork/modelkit-core": "workspace:*",
     "lucide-react": "^0.469.0",
-    "react": "^19.0.1"
+    "react": "^19.0.1",
+    "sonner": "catalog:"
   },
   "publishConfig": {
     "access": "public",

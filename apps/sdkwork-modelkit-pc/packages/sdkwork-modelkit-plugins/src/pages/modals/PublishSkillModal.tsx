@@ -1,17 +1,17 @@
 import React, { useState, useRef } from 'react';
 import { X, Blocks, TerminalSquare, GitBranch, Upload, FolderArchive } from 'lucide-react';
 import { toast } from 'sonner';
-import { pluginsService } from '../../services/PluginsService';
-import { PluginItem } from '../../services/types';
+import { skillhubService } from '../../services/SkillhubService';
+import { SkillItem } from '../../services/types';
 
-interface PublishPluginModalProps {
+interface PublishSkillModalProps {
   isOpen: boolean;
   onClose: () => void;
   categories: string[];
-  onPluginPublished: (newPlugin: PluginItem) => void;
+  onSkillPublished: (newSkill: SkillItem) => void;
 }
 
-export function PublishPluginModal({ isOpen, onClose, categories, onPluginPublished }: PublishPluginModalProps) {
+export function PublishSkillModal({ isOpen, onClose, categories, onSkillPublished }: PublishSkillModalProps) {
   const [newPluginName, setNewPluginName] = useState('');
   const [newPluginAuthor, setNewPluginAuthor] = useState('');
   const [newPluginCategory, setNewPluginCategory] = useState('Workflows');
@@ -83,20 +83,17 @@ export function PublishPluginModal({ isOpen, onClose, categories, onPluginPublis
     }
 
     try {
-      const newPlugin = await pluginsService.publishPlugin({
+      const newSkill = await skillhubService.publishSkill({
         name: newPluginName,
         author: newPluginAuthor.startsWith('@') ? newPluginAuthor : `@${newPluginAuthor}`,
         category: newPluginCategory,
         desc: newPluginDesc,
         schemaType: newPluginSchemaType || 'REST API',
         authType: newPluginAuthType || 'None',
-        permissions: newPluginPermissions ? newPluginPermissions.split(',').map(p => p.trim()) : ['Memory Access'],
-        sourceType: publishSourceType,
-        repoUrl: publishSourceType === 'repo' ? pluginRepoUrl : undefined,
-        fileName: publishSourceType === 'zip' ? pluginZipFileName : undefined
+        permissions: newPluginPermissions ? newPluginPermissions.split(',').map(p => p.trim()) : ['Memory Access']
       });
 
-      onPluginPublished(newPlugin);
+      onSkillPublished(newSkill);
       onClose();
       toast.success('Plugin published successfully');
     } catch(err) {

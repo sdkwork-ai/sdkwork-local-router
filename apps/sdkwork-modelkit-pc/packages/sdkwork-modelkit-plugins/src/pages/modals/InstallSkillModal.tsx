@@ -2,16 +2,16 @@ import React, { useState, useEffect } from 'react';
 import { X, Box, TerminalSquare, CheckCircle2 } from 'lucide-react';
 import { AgentTool } from '@sdkwork/modelkit-types';
 
-interface InstallPluginModalProps {
+interface InstallSkillModalProps {
   isOpen: boolean;
-  pluginName: string;
+  skillName: string;
   agents: AgentTool[];
   initialSelectedAgents?: string[];
   onClose: () => void;
   onConfirm: (selectedAgents: string[]) => void;
 }
 
-export function InstallPluginModal({ isOpen, pluginName, agents, initialSelectedAgents = [], onClose, onConfirm }: InstallPluginModalProps) {
+export function InstallSkillModal({ isOpen, skillName, agents, initialSelectedAgents = [], onClose, onConfirm }: InstallSkillModalProps) {
   const [selectedAgents, setSelectedAgents] = useState<string[]>([]);
 
   useEffect(() => {
@@ -36,7 +36,7 @@ export function InstallPluginModal({ isOpen, pluginName, agents, initialSelected
         </div>
         <div className="p-6">
           <p className="text-[14px] text-text-muted mb-5 font-medium leading-relaxed">
-            Select agents to equip with the <span className="text-red-400 font-bold">{pluginName}</span> plugin:
+            Select agents to equip with the <span className="text-red-400 font-bold">{skillName}</span> plugin:
           </p>
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 max-h-[60vh] overflow-y-auto pr-2 custom-scrollbar">
             {agents.map(agent => (
