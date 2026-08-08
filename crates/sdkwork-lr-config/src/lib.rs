@@ -492,10 +492,20 @@ impl RuntimeConfig {
                 window_secs,
             },
             cors: CorsConfig {
-                allowed_origins: if toml_config.cors.allowed_origins.is_empty() {
-                    vec!["http://localhost:*".to_owned()]
-                } else {
-                    toml_config.cors.allowed_origins.clone()
+                // Deployment-level CORS allowlist comes from the canonical
+                // `SDKWORK_CORS_ALLOWED_ORIGINS` key (official bootstrap helper);
+                // explicit TOML `[cors] allowedOrigins` is the local configuration
+                // fallback, and loopback is the last-resort default.
+                allowed_origins: {
+                    let env_origins =
+                        sdkwork_web_bootstrap::cors_allowed_origins_from_process_env();
+                    if !env_origins.is_empty() {
+                        env_origins
+                    } else if toml_config.cors.allowed_origins.is_empty() {
+                        vec!["http://localhost:*".to_owned()]
+                    } else {
+                        toml_config.cors.allowed_origins.clone()
+                    }
                 },
             },
             routing: {

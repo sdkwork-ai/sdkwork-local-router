@@ -12,3 +12,4 @@ regex.workspace = true
 tracing.workspace = true
 sdkwork-lr-core.workspace = true
 sdkwork-lr-plugin.workspace = true
+sdkwork-web-bootstrap.workspace = true

@@ -1745,6 +1745,7 @@ dependencies = [
  "regex",
  "sdkwork-lr-core",
  "sdkwork-lr-plugin",
+ "sdkwork-web-bootstrap",
  "serde",
  "serde_json",
  "toml 0.8.23",
