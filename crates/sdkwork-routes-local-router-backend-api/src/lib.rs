@@ -1,4 +1,6 @@
 use axum::routing::{delete, get, post, put};
+pub mod http_route_manifest;
+
 use axum::Router;
 use sdkwork_routes_local_router_support::{api_groups, integration, AppState};
 
@@ -67,6 +69,8 @@ pub fn routes() -> Router<AppState> {
             post(integration::set_routing_strategy),
         )
 }
+
+pub use http_route_manifest::gateway_route_manifest;
 
 pub fn gateway_mount(state: AppState) -> Router {
     routes().with_state(state)
