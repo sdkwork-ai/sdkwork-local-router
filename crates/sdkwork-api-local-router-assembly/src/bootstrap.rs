@@ -1,9 +1,20 @@
 //! API assembly bootstrap for sdkwork-local-router.
+//!
+//! The assembly exports the indivisible `ApiAssemblyContribution` contract
+//! (API_ASSEMBLY_SPEC.md section 4) as the `contribution` field of a
+//! host-neutral bundle; the platform cloud gateway passes that field intact
+//! into profile composition and retains the owner runtime handle.
 
 use axum::http::header;
 use axum::middleware;
 use axum::Router;
+use sdkwork_database_sqlx::DatabasePool;
 use sdkwork_routes_local_router_support::{auth, rate_limit::rate_limit_middleware};
+use sdkwork_web_bootstrap::{
+    ApiAssemblyContribution, DatabasePoolReadinessCheck, ReadinessCheck,
+};
+use sdkwork_web_core::HttpRouteManifest;
+use std::sync::Arc;
 use tower_http::cors::CorsLayer;
 use tower_http::limit::RequestBodyLimitLayer;
 
@@ -12,10 +23,40 @@ mod runtime;
 
 use runtime::{bootstrap, RuntimeHandle};
 
+/// Host-neutral API assembly bundle: the indivisible contribution plus the
+/// owner runtime handle and bind metadata retained by the host.
 pub struct ApiAssembly {
-    pub router: Router,
+    pub contribution: ApiAssemblyContribution,
     pub bind_address: String,
     pub runtime: RuntimeHandle,
+}
+
+fn combined_route_manifest() -> HttpRouteManifest {
+    let manifests = [
+        sdkwork_routes_local_router_app_api::gateway_route_manifest(),
+        sdkwork_routes_local_router_backend_api::gateway_route_manifest(),
+        sdkwork_routes_local_router_open_api::gateway_route_manifest(),
+    ];
+    HttpRouteManifest::from_owned_routes(
+        manifests
+            .into_iter()
+            .flat_map(|manifest| manifest.routes().to_vec())
+            .collect(),
+    )
+}
+
+fn contribution_from(
+    router: Router,
+    readiness_check: Arc<dyn ReadinessCheck>,
+) -> Result<ApiAssemblyContribution, String> {
+    ApiAssemblyContribution::from_manifest(
+        "sdkwork-local-router",
+        "SDKWork Local Router API",
+        router,
+        combined_route_manifest(),
+        Vec::new(),
+        readiness_check,
+    )
 }
 
 pub async fn assemble_api_router() -> Result<ApiAssembly, String> {
@@ -26,6 +67,48 @@ pub async fn assemble_api_router() -> Result<ApiAssembly, String> {
         .map_err(|error| error.to_string())?;
     let state = runtime.state;
 
+    let router = router_from_state(&config, state);
+    let contribution = contribution_from(
+        router,
+        Arc::new(sdkwork_web_bootstrap::AlwaysReady),
+    )?;
+
+    Ok(ApiAssembly {
+        contribution,
+        bind_address,
+        runtime: runtime.handle,
+    })
+}
+
+/// Assemble the Local Router contribution against a caller-provided database
+/// pool so the platform cloud gateway can share its process-wide PostgreSQL
+/// pool. The gateway retains the owner runtime handle; no listener is bound
+/// inside this process.
+pub async fn assemble_api_router_with_pool(pool: DatabasePool) -> Result<ApiAssembly, String> {
+    let config = load_config()?;
+    let bind_address = config.bind_addr();
+    let runtime = bootstrap(config.clone())
+        .await
+        .map_err(|error| error.to_string())?;
+    let state = runtime.state;
+
+    let router = router_from_state(&config, state);
+    let contribution = contribution_from(
+        router,
+        Arc::new(DatabasePoolReadinessCheck::new(pool)),
+    )?;
+
+    Ok(ApiAssembly {
+        contribution,
+        bind_address,
+        runtime: runtime.handle,
+    })
+}
+
+fn router_from_state(
+    config: &sdkwork_lr_config::RuntimeConfig,
+    state: sdkwork_routes_local_router_support::AppState,
+) -> Router {
     let open_routes = sdkwork_routes_local_router_open_api::routes(&config.base_paths)
         .layer(middleware::from_fn_with_state(
             state.clone(),
@@ -42,7 +125,7 @@ pub async fn assemble_api_router() -> Result<ApiAssembly, String> {
         middleware::from_fn_with_state(state.clone(), auth::admin_auth_middleware),
     );
 
-    let router = Router::new()
+    Router::new()
         .merge(open_routes)
         .merge(app_routes)
         .merge(backend_routes)
@@ -50,13 +133,7 @@ pub async fn assemble_api_router() -> Result<ApiAssembly, String> {
             config.server.max_body_size_bytes(),
         ))
         .layer(build_cors_layer(&config.cors))
-        .with_state(state);
-
-    Ok(ApiAssembly {
-        router,
-        bind_address,
-        runtime: runtime.handle,
-    })
+        .with_state(state)
 }
 
 fn load_config() -> Result<sdkwork_lr_config::RuntimeConfig, String> {

@@ -1611,6 +1611,7 @@ dependencies = [
  "axum",
  "bytes",
  "parking_lot",
+ "sdkwork-database-sqlx",
  "sdkwork-lr-config",
  "sdkwork-lr-core",
  "sdkwork-lr-proxy",
@@ -1852,6 +1853,7 @@ version = "0.1.0"
 dependencies = [
  "axum",
  "sdkwork-routes-local-router-support",
+ "sdkwork-web-core",
 ]
 
 [[package]]
@@ -1860,6 +1862,7 @@ version = "0.1.0"
 dependencies = [
  "axum",
  "sdkwork-routes-local-router-support",
+ "sdkwork-web-core",
 ]
 
 [[package]]
@@ -1883,6 +1886,7 @@ dependencies = [
  "sdkwork-lr-transform",
  "sdkwork-models",
  "sdkwork-routes-local-router-support",
+ "sdkwork-web-core",
  "serde_json",
  "tokio",
  "tracing",

@@ -10,5 +10,6 @@ name = "sdkwork_routes_local_router_app_api"
 path = "src/lib.rs"
 
 [dependencies]
+sdkwork-web-core.workspace = true
 axum.workspace = true
 sdkwork-routes-local-router-support = { path = "../sdkwork-routes-local-router-support" }

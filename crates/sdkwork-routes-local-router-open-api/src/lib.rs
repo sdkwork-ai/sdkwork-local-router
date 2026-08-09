@@ -1,5 +1,7 @@
 mod passthrough;
 
+pub mod http_route_manifest;
+
 use axum::Router;
 use sdkwork_routes_local_router_support::AppState;
 
@@ -10,6 +12,8 @@ pub fn routes(base_paths: &sdkwork_lr_config::BasePathConfig) -> Router<AppState
         &base_paths.google,
     )
 }
+
+pub use http_route_manifest::gateway_route_manifest;
 
 pub fn gateway_mount(base_paths: &sdkwork_lr_config::BasePathConfig, state: AppState) -> Router {
     routes(base_paths).with_state(state)

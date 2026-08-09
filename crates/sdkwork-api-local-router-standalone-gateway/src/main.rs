@@ -14,7 +14,7 @@ async fn main() -> Result<(), Box<dyn std::error::Error + Send + Sync>> {
     let bind_address = assembly.bind_address.clone();
     let runtime = assembly.runtime;
     let app = service_router(
-        assembly.router,
+        assembly.contribution.router,
         ServiceRouterConfig::default().with_always_ready(),
     );
     let listener = tokio::net::TcpListener::bind(&bind_address).await?;
