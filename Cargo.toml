@@ -41,7 +41,7 @@ hyper-rustls = { version = "0.27", default-features = false, features = ["http1"
 hyper-util = { version = "0.1", features = ["client-legacy", "http1", "tokio"] }
 parking_lot = "0.12"
 regex = "1"
-sdkwork-models = { git = "https://github.com/Sdkwork-Cloud/sdkwork-models.git" }
+sdkwork-models = { git = "https://github.com/sdkwork-ai/sdkwork-models.git" }
 sdkwork-web-axum = { path = "../sdkwork-web-framework/crates/sdkwork-web-axum" }
 sdkwork-web-core = { path = "../sdkwork-web-framework/crates/sdkwork-web-core" }
 serde = { version = "1.0", features = ["derive"] }

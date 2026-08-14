@@ -1841,7 +1841,7 @@ dependencies = [
 [[package]]
 name = "sdkwork-models"
 version = "0.1.0"
-source = "git+https://github.com/Sdkwork-Cloud/sdkwork-models.git#9461f8c4b503e085bc4265110fc7363bf31c3718"
+source = "git+https://github.com/sdkwork-ai/sdkwork-models.git#9461f8c4b503e085bc4265110fc7363bf31c3718"
 dependencies = [
  "serde",
  "serde_json",

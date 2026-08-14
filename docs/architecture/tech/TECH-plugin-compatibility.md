@@ -16,7 +16,7 @@ implementations live in `sdkwork-lr-transform`.
 - `sdkwork-local-router`: runtime loader that combines route surface, upstream
   account, model metadata, and plugin registry.
 - `sdkwork-models`: git dependency sourced from
-  `https://github.com/Sdkwork-Cloud/sdkwork-models.git`, used for model,
+  `https://github.com/sdkwork-ai/sdkwork-models.git`, used for model,
   vendor, protocol, and client API compatibility metadata.
 
 ## SDK Generation Standard
