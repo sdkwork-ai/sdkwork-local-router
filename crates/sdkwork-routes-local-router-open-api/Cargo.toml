@@ -26,8 +26,8 @@ sdkwork-lr-plugin.workspace = true
 sdkwork-lr-proxy.workspace = true
 sdkwork-lr-observability.workspace = true
 sdkwork-lr-transform.workspace = true
-sdkwork-lr-store = { path = "../sdkwork-lr-store" }
-sdkwork-routes-local-router-support = { path = "../sdkwork-routes-local-router-support" }
+sdkwork-lr-store = { workspace = true }
+sdkwork-routes-local-router-support = { workspace = true }
 tracing.workspace = true
 tokio.workspace = true
 urlencoding.workspace = true
