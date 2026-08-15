@@ -28,7 +28,7 @@ sdkwork-lr-core.workspace = true
 sdkwork-lr-plugin.workspace = true
 sdkwork-lr-proxy.workspace = true
 sdkwork-lr-transform.workspace = true
-sdkwork-lr-store = { path = "../sdkwork-lr-store" }
+sdkwork-lr-store = { workspace = true }
 sdkwork-lr-observability.workspace = true
 sdkwork-models.workspace = true
 sdkwork-web-axum.workspace = true

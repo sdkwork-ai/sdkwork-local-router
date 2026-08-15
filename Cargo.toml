@@ -23,6 +23,8 @@ version = "0.1.0"
 license = "AGPL-3.0-or-later"
 
 [workspace.dependencies]
+sdkwork_local_router_database_host = { path = "crates/sdkwork-local-router-database-host", package = "sdkwork-local-router-database-host" }
+
 sdkwork-database-id = { path = "../sdkwork-database/crates/sdkwork-database-id" }
 sdkwork-database-sqlx = { path = "../sdkwork-database/crates/sdkwork-database-sqlx", features = ["postgres", "sqlite"] }
 sdkwork-database-spi = { path = "../sdkwork-database/crates/sdkwork-database-spi" }
