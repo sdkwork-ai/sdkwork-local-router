@@ -62,7 +62,8 @@
     "requiredPorts": [
       {
         "name": "applicationApiAssembly",
-        "export": "sdkwork-api-assembly"
+        "export": "sdkwork_api_local_router_assembly::assemble_api_router",
+        "provider": "sdkwork-api-local-router-assembly"
       }
     ],
     "runtimeEntrypoints": [
