@@ -72,4 +72,5 @@ sdkwork-routes-local-router-open-api = { path = "crates/sdkwork-routes-local-rou
 sdkwork-routes-local-router-app-api = { path = "crates/sdkwork-routes-local-router-app-api" }
 sdkwork-routes-local-router-backend-api = { path = "crates/sdkwork-routes-local-router-backend-api" }
 sdkwork-api-local-router-assembly = { path = "crates/sdkwork-api-local-router-assembly" }
+sdkwork-iam-web-adapter = { path = "../sdkwork-iam/crates/sdkwork-iam-web-adapter" }
 sdkwork-web-bootstrap = { path = "../sdkwork-web-framework/crates/sdkwork-web-bootstrap" }

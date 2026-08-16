@@ -1,5 +1,8 @@
 use sdkwork_api_local_router_assembly::assemble_api_router;
-use sdkwork_web_bootstrap::{service_router, ServiceRouterConfig};
+use sdkwork_iam_web_adapter::{
+    build_web_framework_builder, iam_web_request_context_resolver_from_env,
+};
+use sdkwork_web_bootstrap::{infra_public_path_prefixes, ComposedApiAssembly};
 
 #[tokio::main]
 async fn main() -> Result<(), Box<dyn std::error::Error + Send + Sync>> {
@@ -13,10 +16,15 @@ async fn main() -> Result<(), Box<dyn std::error::Error + Send + Sync>> {
     let assembly = assemble_api_router().await?;
     let bind_address = assembly.bind_address.clone();
     let runtime = assembly.runtime;
-    let app = service_router(
-        assembly.contribution.router,
-        ServiceRouterConfig::default().with_always_ready(),
+    let contribution = assembly.contribution;
+    let framework = build_web_framework_builder(
+        iam_web_request_context_resolver_from_env().await,
+        contribution.route_manifest.clone(),
+        infra_public_path_prefixes(),
     );
+    let app = ComposedApiAssembly::try_compose("SDKWork Local Router API", vec![contribution])?
+        .into_hosted(framework)
+        .router;
     let listener = tokio::net::TcpListener::bind(&bind_address).await?;
     eprintln!("sdkwork-api-local-router-standalone-gateway listening on {bind_address}");
     axum::serve(listener, app)
