@@ -36,7 +36,9 @@
     "_sdkwork:test": "node ../sdkwork-specs/tools/check-database-framework-standard.mjs --root . && cargo test --workspace",
     "_sdkwork:check": "pnpm check:pnpm-script-standard && pnpm check:agent-workflow-standard && pnpm check:source-config-standard && pnpm run check:app-composition && pnpm db:validate && pnpm topology:validate && pnpm workflow:validate && cargo fmt -- --check && cargo clippy --workspace --tests -- -D warnings",
     "_sdkwork:verify": "pnpm check && pnpm test && pnpm api:assembly:validate",
-    "_sdkwork:clean": "cargo clean && node scripts/clean.mjs"
+    "_sdkwork:clean": "cargo clean && node scripts/clean.mjs",
+    "db:postgres:plan": "cargo run --manifest-path ../sdkwork-database/Cargo.toml -p sdkwork-database-cli -- --app-root . plan --engine postgres",
+    "db:postgres:init": "cargo run --manifest-path ../sdkwork-database/Cargo.toml -p sdkwork-database-cli -- --app-root . init --engine postgres"
   },
   "devDependencies": {
     "@sdkwork/app-topology": "workspace:*"
