@@ -36,3 +36,28 @@ Validate this source configuration from the repository root:
 ```powershell
 node ..\sdkwork-specs\tools\check-source-config-standard.mjs --root .
 ```
+
+<!-- SDKWORK-DEPLOY-LAYOUT: v1 -->
+## Installed Runtime Paths
+
+Authority: `APPLICATION_DEPLOY_LAYOUT_SPEC.md` (`../sdkwork-specs/`).
+
+| Item | Value |
+| --- | --- |
+| `appId` | `sdkwork-local-router` |
+| `runtimeCode` | `local_router` |
+| Config root | `/etc/sdkwork/local_router/` |
+| Runtime TOML | `/etc/sdkwork/local_router/config.toml` |
+| Secrets | `/etc/sdkwork/local_router/secrets/` |
+| Override | `SDKWORK_LOCAL_ROUTER_CONFIG_FILE` |
+
+Source profiles live under `etc/` (`sdkwork.deployment.config.json` index). Deploy manifest: `deployments/deploy.yaml`. Web data-plane source: `deployments/webserver/` (`SDKWORK_WEBSERVER_SPEC.md` layout v2).
+
+```bash
+node ../sdkwork-specs/tools/check-source-config-standard.mjs --root .
+node ../sdkwork-specs/tools/check-application-deploy-layout.mjs --root .
+node ../sdkwork-specs/tools/check-webserver-toml-standard.mjs --root deployments/webserver
+```
+<!-- /SDKWORK-DEPLOY-LAYOUT -->
+
+

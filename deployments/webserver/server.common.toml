@@ -1,0 +1,5 @@
+specVersion = 1
+kind = "sdkwork.webserver.server"
+id = "local_router"
+enabled = false
+description = "sdkwork-local-router webserver placeholder (align-application-deploy-layout)"
