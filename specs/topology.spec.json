@@ -73,12 +73,91 @@
     }
   },
   "cloudPublicHosts": {
-    "application.public-ingress": {
-      "httpHost": "api.sdkwork.com",
-      "httpPath": "/apps/sdkwork-local-router"
-    },
     "platform.api-gateway": {
-      "httpHost": "api.sdkwork.com"
+      "httpHost": "api.sdkwork.com",
+      "environments": {
+        "development": {
+          "httpHosts": [
+            "api-dev.sdkwork.com",
+            "api-dev.birdcoder.com",
+            "api-dev.dtupay.com",
+            "api-dev.sdkwork.cn",
+            "api-dev.birdcoder.cn",
+            "api-dev.dtupay.cn"
+          ]
+        },
+        "test": {
+          "httpHosts": [
+            "api-test.sdkwork.com",
+            "api-test.birdcoder.com",
+            "api-test.dtupay.com",
+            "api-test.sdkwork.cn",
+            "api-test.birdcoder.cn",
+            "api-test.dtupay.cn"
+          ]
+        },
+        "staging": {
+          "httpHosts": [
+            "api-staging.sdkwork.com",
+            "api-staging.birdcoder.com",
+            "api-staging.dtupay.com",
+            "api-staging.sdkwork.cn",
+            "api-staging.birdcoder.cn",
+            "api-staging.dtupay.cn"
+          ]
+        }
+      },
+      "httpHosts": [
+        "api.sdkwork.com",
+        "api.birdcoder.com",
+        "api.dtupay.com",
+        "api.sdkwork.cn",
+        "api.birdcoder.cn",
+        "api.dtupay.cn"
+      ]
+    },
+    "application.public-ingress": {
+      "httpHost": "local-router.sdkwork.com",
+      "environments": {
+        "development": {
+          "httpHosts": [
+            "local-router-dev.sdkwork.com",
+            "local-router-dev.birdcoder.com",
+            "local-router-dev.dtupay.com",
+            "local-router-dev.sdkwork.cn",
+            "local-router-dev.birdcoder.cn",
+            "local-router-dev.dtupay.cn"
+          ]
+        },
+        "test": {
+          "httpHosts": [
+            "local-router-test.sdkwork.com",
+            "local-router-test.birdcoder.com",
+            "local-router-test.dtupay.com",
+            "local-router-test.sdkwork.cn",
+            "local-router-test.birdcoder.cn",
+            "local-router-test.dtupay.cn"
+          ]
+        },
+        "staging": {
+          "httpHosts": [
+            "local-router-staging.sdkwork.com",
+            "local-router-staging.birdcoder.com",
+            "local-router-staging.dtupay.com",
+            "local-router-staging.sdkwork.cn",
+            "local-router-staging.birdcoder.cn",
+            "local-router-staging.dtupay.cn"
+          ]
+        }
+      },
+      "httpHosts": [
+        "local-router.sdkwork.com",
+        "local-router.birdcoder.com",
+        "local-router.dtupay.com",
+        "local-router.sdkwork.cn",
+        "local-router.birdcoder.cn",
+        "local-router.dtupay.cn"
+      ]
     }
   },
   "components": {
