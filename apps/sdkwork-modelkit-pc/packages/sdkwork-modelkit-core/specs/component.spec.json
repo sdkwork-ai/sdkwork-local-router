@@ -90,9 +90,9 @@
     "configKeys": [],
     "sdkDependencies": [
       {
-        "workspace": "sdkwork-modelkit-sdk-typescript",
-        "surface": "open-api",
-        "credentialMode": "protected-open-api-flexible"
+        "workspace": "sdkwork-modelkit-app-sdk",
+        "surface": "app-api",
+        "credentialMode": "authenticated-app-api"
       }
     ],
     "permissionComposition": {
@@ -100,7 +100,7 @@
       "moduleCatalogRefs": [
         {
           "moduleId": "modelkit",
-          "manifestRef": "../../../../../../sdkwork-modelkit/specs/iam.module.manifest.json",
+          "manifestRef": "../../../../../sdkwork-modelkit/specs/iam.module.manifest.json",
           "inheritPermissions": true,
           "inheritRoles": true
         }

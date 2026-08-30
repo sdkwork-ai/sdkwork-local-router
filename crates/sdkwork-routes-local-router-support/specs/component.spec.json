@@ -32,7 +32,7 @@
     }
   ],
   "contracts": {
-    "layerRole": "http-adapter",
+    "layerRole": "backend-provider",
     "publicExports": ["."],
     "providedPorts": ["AppState", "RateLimiter"],
     "requiredPorts": ["sdkwork-lr-core", "sdkwork-lr-store"],
