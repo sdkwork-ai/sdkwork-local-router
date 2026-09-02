@@ -11,7 +11,7 @@ use axum::Router;
 use sdkwork_database_sqlx::DatabasePool;
 use sdkwork_routes_local_router_support::{auth, rate_limit::rate_limit_middleware};
 use sdkwork_web_bootstrap::{
-    ApiAssemblyContribution, DatabasePoolReadinessCheck, ReadinessCheck,
+    ApiAssemblyContribution, DatabasePoolReadinessCheck, ReadinessCheck, WebModule,
 };
 use sdkwork_web_core::HttpRouteManifest;
 use std::sync::Arc;
@@ -68,10 +68,7 @@ pub async fn assemble_api_router() -> Result<ApiAssembly, String> {
     let state = runtime.state;
 
     let router = router_from_state(&config, state);
-    let contribution = contribution_from(
-        router,
-        Arc::new(sdkwork_web_bootstrap::AlwaysReady),
-    )?;
+    let contribution = contribution_from(router, Arc::new(sdkwork_web_bootstrap::AlwaysReady))?;
 
     Ok(ApiAssembly {
         contribution,
@@ -93,10 +90,7 @@ pub async fn assemble_api_router_with_pool(pool: DatabasePool) -> Result<ApiAsse
     let state = runtime.state;
 
     let router = router_from_state(&config, state);
-    let contribution = contribution_from(
-        router,
-        Arc::new(DatabasePoolReadinessCheck::new(pool)),
-    )?;
+    let contribution = contribution_from(router, Arc::new(DatabasePoolReadinessCheck::new(pool)))?;
 
     Ok(ApiAssembly {
         contribution,
@@ -196,4 +190,21 @@ fn build_cors_layer(cors_config: &sdkwork_lr_config::CorsConfig) -> CorsLayer {
         header::HeaderName::from_static("x-sdkwork-client-api"),
         header::HeaderName::from_static("access-token"),
     ])
+}
+
+/// Canonical Web Module definition for this application
+/// (API_ASSEMBLY_SPEC §4.1.1): the complete HTTP surface — every route,
+/// manifest, and OpenAPI document of this owner — as one installable module.
+pub async fn web_module() -> Result<WebModule, String> {
+    Ok(WebModule::from_contribution(
+        assemble_api_router().await?.contribution,
+    ))
+}
+
+/// Same as [`web_module`] but composed on a process-shared database pool
+/// (platform gateways, API_ASSEMBLY_SPEC §4.1.1).
+pub async fn web_module_with_pool(pool: DatabasePool) -> Result<WebModule, String> {
+    Ok(WebModule::from_contribution(
+        assemble_api_router_with_pool(pool).await?.contribution,
+    ))
 }

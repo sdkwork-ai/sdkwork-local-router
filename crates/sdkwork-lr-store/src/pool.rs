@@ -154,20 +154,24 @@ impl Store {
         user_id: i64,
     ) -> Result<Vec<ClientApiKeyRow>, StoreError> {
         match &self.pool {
-            DatabasePool::Sqlite(pool) => sqlx::query_as::<_, ClientApiKeyRow>(sqlx::AssertSqlSafe(format!(
-                "SELECT * FROM {CLIENT_API_KEYS_TABLE} WHERE user_id = ? ORDER BY id DESC"
-            )))
-            .bind(user_id)
-            .fetch_all(pool)
-            .await
-            .map_err(|e| StoreError::Query(e.to_string())),
-            DatabasePool::Postgres(pool) => sqlx::query_as::<_, ClientApiKeyRow>(sqlx::AssertSqlSafe(format!(
-                "SELECT * FROM {CLIENT_API_KEYS_TABLE} WHERE user_id = $1 ORDER BY id DESC"
-            )))
-            .bind(user_id)
-            .fetch_all(pool)
-            .await
-            .map_err(|e| StoreError::Query(e.to_string())),
+            DatabasePool::Sqlite(pool) => {
+                sqlx::query_as::<_, ClientApiKeyRow>(sqlx::AssertSqlSafe(format!(
+                    "SELECT * FROM {CLIENT_API_KEYS_TABLE} WHERE user_id = ? ORDER BY id DESC"
+                )))
+                .bind(user_id)
+                .fetch_all(pool)
+                .await
+                .map_err(|e| StoreError::Query(e.to_string()))
+            }
+            DatabasePool::Postgres(pool) => {
+                sqlx::query_as::<_, ClientApiKeyRow>(sqlx::AssertSqlSafe(format!(
+                    "SELECT * FROM {CLIENT_API_KEYS_TABLE} WHERE user_id = $1 ORDER BY id DESC"
+                )))
+                .bind(user_id)
+                .fetch_all(pool)
+                .await
+                .map_err(|e| StoreError::Query(e.to_string()))
+            }
         }
     }
 
@@ -177,24 +181,28 @@ impl Store {
         id: i64,
     ) -> Result<ClientApiKeyRow, StoreError> {
         match &self.pool {
-            DatabasePool::Sqlite(pool) => sqlx::query_as::<_, ClientApiKeyRow>(sqlx::AssertSqlSafe(format!(
-                "SELECT * FROM {CLIENT_API_KEYS_TABLE} WHERE user_id = ? AND id = ?"
-            )))
-            .bind(user_id)
-            .bind(id)
-            .fetch_optional(pool)
-            .await
-            .map_err(|e| StoreError::Query(e.to_string()))?
-            .ok_or_else(|| StoreError::NotFound(format!("client API key {id} not found"))),
-            DatabasePool::Postgres(pool) => sqlx::query_as::<_, ClientApiKeyRow>(sqlx::AssertSqlSafe(format!(
-                "SELECT * FROM {CLIENT_API_KEYS_TABLE} WHERE user_id = $1 AND id = $2"
-            )))
-            .bind(user_id)
-            .bind(id)
-            .fetch_optional(pool)
-            .await
-            .map_err(|e| StoreError::Query(e.to_string()))?
-            .ok_or_else(|| StoreError::NotFound(format!("client API key {id} not found"))),
+            DatabasePool::Sqlite(pool) => {
+                sqlx::query_as::<_, ClientApiKeyRow>(sqlx::AssertSqlSafe(format!(
+                    "SELECT * FROM {CLIENT_API_KEYS_TABLE} WHERE user_id = ? AND id = ?"
+                )))
+                .bind(user_id)
+                .bind(id)
+                .fetch_optional(pool)
+                .await
+                .map_err(|e| StoreError::Query(e.to_string()))?
+                .ok_or_else(|| StoreError::NotFound(format!("client API key {id} not found")))
+            }
+            DatabasePool::Postgres(pool) => {
+                sqlx::query_as::<_, ClientApiKeyRow>(sqlx::AssertSqlSafe(format!(
+                    "SELECT * FROM {CLIENT_API_KEYS_TABLE} WHERE user_id = $1 AND id = $2"
+                )))
+                .bind(user_id)
+                .bind(id)
+                .fetch_optional(pool)
+                .await
+                .map_err(|e| StoreError::Query(e.to_string()))?
+                .ok_or_else(|| StoreError::NotFound(format!("client API key {id} not found")))
+            }
         }
     }
 
@@ -234,20 +242,24 @@ impl Store {
     ) -> Result<Option<ClientApiKeyRow>, StoreError> {
         let key_hash = Self::client_api_key_hash(secret);
         let row = match &self.pool {
-            DatabasePool::Sqlite(pool) => sqlx::query_as::<_, ClientApiKeyRow>(sqlx::AssertSqlSafe(format!(
-                "SELECT * FROM {CLIENT_API_KEYS_TABLE} WHERE key_hash = ? AND enabled = 1"
-            )))
-            .bind(&key_hash)
-            .fetch_optional(pool)
-            .await
-            .map_err(|e| StoreError::Query(e.to_string()))?,
-            DatabasePool::Postgres(pool) => sqlx::query_as::<_, ClientApiKeyRow>(sqlx::AssertSqlSafe(format!(
-                "SELECT * FROM {CLIENT_API_KEYS_TABLE} WHERE key_hash = $1 AND enabled = TRUE"
-            )))
-            .bind(&key_hash)
-            .fetch_optional(pool)
-            .await
-            .map_err(|e| StoreError::Query(e.to_string()))?,
+            DatabasePool::Sqlite(pool) => {
+                sqlx::query_as::<_, ClientApiKeyRow>(sqlx::AssertSqlSafe(format!(
+                    "SELECT * FROM {CLIENT_API_KEYS_TABLE} WHERE key_hash = ? AND enabled = 1"
+                )))
+                .bind(&key_hash)
+                .fetch_optional(pool)
+                .await
+                .map_err(|e| StoreError::Query(e.to_string()))?
+            }
+            DatabasePool::Postgres(pool) => {
+                sqlx::query_as::<_, ClientApiKeyRow>(sqlx::AssertSqlSafe(format!(
+                    "SELECT * FROM {CLIENT_API_KEYS_TABLE} WHERE key_hash = $1 AND enabled = TRUE"
+                )))
+                .bind(&key_hash)
+                .fetch_optional(pool)
+                .await
+                .map_err(|e| StoreError::Query(e.to_string()))?
+            }
         };
         if let Some(ref client_api_key) = row {
             self.mark_client_api_key_used(client_api_key.id).await?;
@@ -290,20 +302,24 @@ impl Store {
         user_id: i64,
     ) -> Result<Vec<AccountRow>, StoreError> {
         let mut rows = match &self.pool {
-            DatabasePool::Sqlite(pool) => sqlx::query_as::<_, AccountRow>(sqlx::AssertSqlSafe(format!(
+            DatabasePool::Sqlite(pool) => {
+                sqlx::query_as::<_, AccountRow>(sqlx::AssertSqlSafe(format!(
                 "SELECT * FROM {ACCOUNTS_TABLE} WHERE user_id = ? ORDER BY priority ASC, name ASC"
             )))
-            .bind(user_id)
-            .fetch_all(pool)
-            .await
-            .map_err(|e| StoreError::Query(e.to_string()))?,
-            DatabasePool::Postgres(pool) => sqlx::query_as::<_, AccountRow>(sqlx::AssertSqlSafe(format!(
+                .bind(user_id)
+                .fetch_all(pool)
+                .await
+                .map_err(|e| StoreError::Query(e.to_string()))?
+            }
+            DatabasePool::Postgres(pool) => {
+                sqlx::query_as::<_, AccountRow>(sqlx::AssertSqlSafe(format!(
                 "SELECT * FROM {ACCOUNTS_TABLE} WHERE user_id = $1 ORDER BY priority ASC, name ASC"
             )))
-            .bind(user_id)
-            .fetch_all(pool)
-            .await
-            .map_err(|e| StoreError::Query(e.to_string()))?,
+                .bind(user_id)
+                .fetch_all(pool)
+                .await
+                .map_err(|e| StoreError::Query(e.to_string()))?
+            }
         };
         for row in &mut rows {
             row.upstream_api_key = self.encryption.decrypt(&row.upstream_api_key);
@@ -321,18 +337,18 @@ impl Store {
         id: i64,
     ) -> Result<AccountRow, StoreError> {
         let mut row = match &self.pool {
-            DatabasePool::Sqlite(pool) => sqlx::query_as::<_, AccountRow>(sqlx::AssertSqlSafe(format!(
-                "SELECT * FROM {ACCOUNTS_TABLE} WHERE user_id = ? AND id = ?"
-            )))
+            DatabasePool::Sqlite(pool) => sqlx::query_as::<_, AccountRow>(sqlx::AssertSqlSafe(
+                format!("SELECT * FROM {ACCOUNTS_TABLE} WHERE user_id = ? AND id = ?"),
+            ))
             .bind(user_id)
             .bind(id)
             .fetch_optional(pool)
             .await
             .map_err(|e| StoreError::Query(e.to_string()))?
             .ok_or_else(|| StoreError::NotFound(format!("account {} not found", id)))?,
-            DatabasePool::Postgres(pool) => sqlx::query_as::<_, AccountRow>(sqlx::AssertSqlSafe(format!(
-                "SELECT * FROM {ACCOUNTS_TABLE} WHERE user_id = $1 AND id = $2"
-            )))
+            DatabasePool::Postgres(pool) => sqlx::query_as::<_, AccountRow>(sqlx::AssertSqlSafe(
+                format!("SELECT * FROM {ACCOUNTS_TABLE} WHERE user_id = $1 AND id = $2"),
+            ))
             .bind(user_id)
             .bind(id)
             .fetch_optional(pool)
@@ -504,17 +520,17 @@ impl Store {
         name: &str,
     ) -> Result<Option<AccountRow>, StoreError> {
         let mut row = match &self.pool {
-            DatabasePool::Sqlite(pool) => sqlx::query_as::<_, AccountRow>(sqlx::AssertSqlSafe(format!(
-                "SELECT * FROM {ACCOUNTS_TABLE} WHERE user_id = ? AND name = ?"
-            )))
+            DatabasePool::Sqlite(pool) => sqlx::query_as::<_, AccountRow>(sqlx::AssertSqlSafe(
+                format!("SELECT * FROM {ACCOUNTS_TABLE} WHERE user_id = ? AND name = ?"),
+            ))
             .bind(user_id)
             .bind(name)
             .fetch_optional(pool)
             .await
             .map_err(|e| StoreError::Query(e.to_string()))?,
-            DatabasePool::Postgres(pool) => sqlx::query_as::<_, AccountRow>(sqlx::AssertSqlSafe(format!(
-                "SELECT * FROM {ACCOUNTS_TABLE} WHERE user_id = $1 AND name = $2"
-            )))
+            DatabasePool::Postgres(pool) => sqlx::query_as::<_, AccountRow>(sqlx::AssertSqlSafe(
+                format!("SELECT * FROM {ACCOUNTS_TABLE} WHERE user_id = $1 AND name = $2"),
+            ))
             .bind(user_id)
             .bind(name)
             .fetch_optional(pool)
