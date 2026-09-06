@@ -4,6 +4,6 @@ environment = "test"
 
 [[http.server]]
 listen = ["80"]
-serverName = ["local-router-test.sdkwork.com", "local-router-test.birdcoder.com", "local-router-test.dtupay.com", "local-router-test.sdkwork.cn", "local-router-test.birdcoder.cn", "local-router-test.dtupay.cn", "local-router-test.skubc.com", "local-router-test.skubc.cn", "local-router-test.zowalk.com", "local-router-test.zowalk.cn", "local-router-test.offer86.com", "local-router-test.offer86.cn", "local-router-test.86offer.com", "local-router-test.86offer.cn"]
+serverName = ["local-router-test.sdkwork.com", "local-router-test.birdcoder.com", "local-router-test.dtupay.com", "local-router-test.noaper.com", "local-router-test.sdkwork.cn", "local-router-test.birdcoder.cn", "local-router-test.dtupay.cn", "local-router-test.noaper.cn", "local-router-test.skubc.com", "local-router-test.skubc.cn", "local-router-test.zowalk.com", "local-router-test.zowalk.cn", "local-router-test.offer86.com", "local-router-test.offer86.cn", "local-router-test.86offer.com", "local-router-test.86offer.cn"]
 include = ["snippets/gateway-locations.nonproduction.conf"]
 
