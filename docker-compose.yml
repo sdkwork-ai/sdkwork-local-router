@@ -1,5 +1,13 @@
 version: "3.8"
 
+# Shared log rotation policy (OPERATIONS_SPEC.md §2.3): every service rotates
+# at 10MB, keeping 3 files, so container logs cannot fill the host disk.
+x-default-logging: &default-logging
+  driver: json-file
+  options:
+    max-size: "10m"
+    max-file: "3"
+
 services:
   sdkwork-local-router-postgres:
     build:
@@ -33,6 +41,7 @@ services:
       timeout: 5s
       retries: 3
       start_period: 10s
+    logging: *default-logging
   postgres:
     image: postgres:16-alpine
     container_name: sdkwork-postgres
@@ -50,5 +59,6 @@ services:
       interval: 10s
       timeout: 5s
       retries: 5
+    logging: *default-logging
 volumes:
   pg-data:
