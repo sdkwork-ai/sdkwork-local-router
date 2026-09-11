@@ -1,10 +1,14 @@
 [package]
+rust-version.workspace = true
 name = "sdkwork-local-router-database-host"
 version.workspace = true
 edition.workspace = true
 license.workspace = true
 description = "SDKWork Local Router database lifecycle bootstrap."
 
+
+[lints]
+workspace = true
 [lib]
 name = "sdkwork_local_router_database_host"
 path = "src/lib.rs"

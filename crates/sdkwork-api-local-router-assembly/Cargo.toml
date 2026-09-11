@@ -1,10 +1,14 @@
 [package]
+rust-version.workspace = true
 name = "sdkwork-api-local-router-assembly"
 edition.workspace = true
 license.workspace = true
 version.workspace = true
 description = "Generated API assembly for sdkwork-local-router application HTTP plane."
 
+
+[lints]
+workspace = true
 [lib]
 name = "sdkwork_api_local_router_assembly"
 path = "src/lib.rs"

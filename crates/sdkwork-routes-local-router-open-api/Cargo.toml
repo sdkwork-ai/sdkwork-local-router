@@ -1,10 +1,14 @@
 [package]
+rust-version.workspace = true
 name = "sdkwork-routes-local-router-open-api"
 version.workspace = true
 edition.workspace = true
 license.workspace = true
 description = "OpenAI, Anthropic, and Google-compatible Local Router Open API routes."
 
+
+[lints]
+workspace = true
 [lib]
 name = "sdkwork_routes_local_router_open_api"
 path = "src/lib.rs"

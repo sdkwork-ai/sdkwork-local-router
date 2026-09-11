@@ -1,9 +1,13 @@
 [package]
+rust-version.workspace = true
 name = "sdkwork-lr-store"
 version.workspace = true
 edition.workspace = true
 license.workspace = true
 
+
+[lints]
+workspace = true
 [dependencies]
 sdkwork_local_router_database_host.workspace = true
 sdkwork-database-config = { workspace = true }
