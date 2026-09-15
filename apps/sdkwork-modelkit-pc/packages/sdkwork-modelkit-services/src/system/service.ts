@@ -4,7 +4,11 @@ export * from './interface';
 
 let mockSettings: SystemSettings = {
   // General
-  workspaceDir: '/Users/admin/sdkwork-workspace',
+  // Left empty on purpose: the previous default pinned one author's macOS home
+  // directory (a `/Users/<name>/...` path) into a shipped settings mock, so the
+  // config form opened pointing at a directory that exists on no other machine.
+  // The user picks a real workspace directory here.
+  workspaceDir: '',
   debugLevel: 'info',
   telemetryEnabled: true,
   autoUpdate: true,
