@@ -28,6 +28,7 @@
     "@google/genai": "^2.6.0",
     "@hello-pangea/dnd": "^18.0.1",
     "@monaco-editor/react": "^4.7.0",
+    "@sdkwork/iam-credential-entry": "workspace:*",
     "@sdkwork/modelkit-core": "workspace:*",
     "@sdkwork/modelkit-services": "workspace:*",
     "@sdkwork/modelkit-shop": "workspace:*",
