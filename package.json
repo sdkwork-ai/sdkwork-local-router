@@ -32,7 +32,7 @@
     "check:agent-workflow-standard": "node ../sdkwork-specs/tools/check-agent-workflow-standard.mjs --root .",
     "check:source-config-standard": "node ../sdkwork-specs/tools/check-source-config-standard.mjs --root .",
     "check:pnpm-script-standard": "node ../sdkwork-specs/tools/check-pnpm-script-standard.mjs --root . --product-prefix local-router",
-    "workflow:validate": "node ../sdkwork-github-workflow/scripts/sdkwork-workflow.mjs validate --config sdkwork.workflow.json",
+    "workflow:validate": "node ../sdkwork-github-workflow/scripts/agent-workflow.mjs validate --config agent.workflow.json",
     "_sdkwork:build": "cargo build --workspace",
     "_sdkwork:test": "node ../sdkwork-specs/tools/check-database-framework-standard.mjs --root . && cargo test --workspace",
     "_sdkwork:check": "pnpm check:pnpm-script-standard && pnpm check:agent-workflow-standard && pnpm check:source-config-standard && pnpm run check:app-composition && pnpm db:validate && pnpm topology:validate && pnpm workflow:validate && cargo fmt -- --check && cargo clippy --workspace --tests -- -D warnings",
