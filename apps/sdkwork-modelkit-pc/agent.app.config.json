@@ -1,24 +1,24 @@
 {
   "schemaVersion": 3,
-  "kind": "sdkwork.app",
+  "kind": "agent.app",
   "app": {
-    "key": "sdkwork-local-router",
-    "name": "SDKWork Local Router",
-    "displayName": "SDKWork Local Router",
-    "description": "SDKWork Local Router SDKWork application.",
+    "key": "sdkwork-local-router-sdkwork-modelkit-pc",
+    "name": "SDKWork Local Router SDKWork Modelkit PC",
+    "displayName": "SDKWork Local Router SDKWork Modelkit PC",
+    "description": "SDKWork Local Router SDKWork Modelkit PC SDKWork application.",
     "vendor": "SDKWork",
-    "officialWebsiteUrl": "https://sdkwork.com/apps/sdkwork-local-router",
+    "officialWebsiteUrl": "https://sdkwork.com/apps/sdkwork-local-router-sdkwork-modelkit-pc",
     "supportUrl": "https://sdkwork.com/support",
     "privacyPolicyUrl": "https://sdkwork.com/privacy",
     "termsOfServiceUrl": "https://sdkwork.com/terms",
-    "iconUrl": "https://cdn.sdkwork.com/apps/sdkwork-local-router/assets/icon-1024.png",
-    "appType": "APP_HTML",
-    "versionSource": "manifest",
+    "iconUrl": "https://cdn.sdkwork.com/apps/sdkwork-local-router-sdkwork-modelkit-pc/assets/icon-1024.png",
+    "appType": "APP_REACT",
+    "versionSource": "package.json",
     "identifiers": {
       "packageName": null,
       "bundleId": null,
-      "desktopAppId": "com.sdkwork.sdkwork.local.router.desktop",
-      "containerImage": "registry.sdkwork.com/apps/sdkwork-local-router"
+      "desktopAppId": "com.sdkwork.sdkwork.local.router.sdkwork.modelkit.pc.desktop",
+      "containerImage": "registry.sdkwork.com/apps/sdkwork-local-router-sdkwork-modelkit-pc"
     }
   },
   "backend": {
@@ -27,18 +27,12 @@
     "grantMode": "current",
     "platform": "WEB",
     "appId": null,
-    "tenantId": "100001",
     "organizationId": "0",
-    "accessTokenPermissionScope": [
-      "iam.users.read",
-      "iam.organizations.read",
-      "iam.roles.read",
-      "iam.permissions.read"
-    ]
+    "tenantId": "100001"
   },
   "runtime": {
     "family": "web",
-    "framework": "web",
+    "framework": "react",
     "runtimes": [
       "WEB",
       "BROWSER"
@@ -58,10 +52,10 @@
   "media": {
     "icons": {
       "primary": {
-        "id": "sdkwork-local-router-primary-icon",
+        "id": "sdkwork-local-router-sdkwork-modelkit-pc-primary-icon",
         "type": "ICON",
         "purpose": "PRIMARY",
-        "url": "https://cdn.sdkwork.com/apps/sdkwork-local-router/assets/icon-1024.png",
+        "url": "https://cdn.sdkwork.com/apps/sdkwork-local-router-sdkwork-modelkit-pc/assets/icon-1024.png",
         "platform": "APP",
         "locale": "en-US",
         "width": 1024,
@@ -77,15 +71,15 @@
       },
       "platform": [],
       "metadata": {
-        "generatedBy": "apps/scripts/initialize-sdkwork-app-standard-v3.mjs"
+        "generatedPlaceholder": true
       }
     },
     "screenshots": [
       {
-        "id": "sdkwork-local-router-web-screenshot",
+        "id": "sdkwork-local-router-sdkwork-modelkit-pc-web-screenshot",
         "type": "SCREENSHOT",
         "purpose": "CATALOG_SCREENSHOT",
-        "url": "https://cdn.sdkwork.com/apps/sdkwork-local-router/media/web-screenshot.png",
+        "url": "https://cdn.sdkwork.com/apps/sdkwork-local-router-sdkwork-modelkit-pc/media/web-screenshot.png",
         "platform": "WEB",
         "locale": "en-US",
         "deviceClass": "BROWSER",
@@ -95,21 +89,21 @@
         "format": "PNG",
         "fileSizeBytes": 1048576,
         "alphaChannel": false,
-        "caption": "SDKWork Local Router product screenshot.",
+        "caption": "SDKWork Local Router SDKWork Modelkit PC product screenshot.",
         "sortOrder": 0,
         "enabled": true,
         "metadata": {
           "generatedPlaceholder": true,
-          "altText": "SDKWork Local Router app screenshot."
+          "altText": "SDKWork Local Router SDKWork Modelkit PC app screenshot."
         }
       }
     ],
     "previews": [
       {
-        "id": "sdkwork-local-router-catalog-preview",
+        "id": "sdkwork-local-router-sdkwork-modelkit-pc-catalog-preview",
         "type": "PREVIEW_IMAGE",
         "purpose": "CATALOG_PREVIEW",
-        "url": "https://cdn.sdkwork.com/apps/sdkwork-local-router/media/preview-cover.png",
+        "url": "https://cdn.sdkwork.com/apps/sdkwork-local-router-sdkwork-modelkit-pc/media/preview-cover.png",
         "platform": "WEB",
         "locale": "en-US",
         "width": 1600,
@@ -117,12 +111,12 @@
         "format": "PNG",
         "fileSizeBytes": 786432,
         "alphaChannel": false,
-        "caption": "SDKWork Local Router preview.",
+        "caption": "SDKWork Local Router SDKWork Modelkit PC preview.",
         "sortOrder": 0,
         "enabled": true,
         "metadata": {
           "generatedPlaceholder": true,
-          "altText": "SDKWork Local Router preview cover."
+          "altText": "SDKWork Local Router SDKWork Modelkit PC preview cover."
         }
       }
     ],
@@ -143,32 +137,32 @@
       "WEB"
     ],
     "defaultPackageId": "web-universal-cloud-browser-zip",
-    "storeUrl": "https://sdkwork.com/apps/sdkwork-local-router",
+    "storeUrl": "https://sdkwork.com/apps/sdkwork-local-router-sdkwork-modelkit-pc",
     "stores": [],
     "config": {
-      "workspaceRoot": "apps/sdkwork-local-router",
-      "framework": "web",
+      "workspaceRoot": "apps/sdkwork-local-router/apps/sdkwork-modelkit-pc",
+      "framework": "react",
       "managedBy": "apps/scripts/initialize-sdkwork-app-standard-v3.mjs"
     }
   },
   "artifacts": {
     "installConfig": {
       "defaultPackageId": "web-universal-cloud-browser-zip",
-      "installCommand": "sdkwork install sdkwork-local-router",
-      "launchCommand": "sdkwork open sdkwork-local-router",
-      "uninstallCommand": "sdkwork uninstall sdkwork-local-router",
+      "installCommand": "sdkwork install sdkwork-local-router-sdkwork-modelkit-pc",
+      "launchCommand": "sdkwork open sdkwork-local-router-sdkwork-modelkit-pc",
+      "uninstallCommand": "sdkwork uninstall sdkwork-local-router-sdkwork-modelkit-pc",
       "packages": [
         {
           "id": "web-universal-cloud-browser-zip",
-          "name": "SDKWork Local Router Web Bundle",
+          "name": "SDKWork Local Router SDKWork Modelkit PC Web Bundle",
           "sourceType": "WEB_URL",
           "packageFormat": "ZIP",
           "platform": "WEB",
-          "url": "https://cdn.sdkwork.com/apps/sdkwork-local-router/STABLE/0.1.0/web.zip",
+          "url": "https://cdn.sdkwork.com/apps/sdkwork-local-router-sdkwork-modelkit-pc/STABLE/0.0.0/web.zip",
           "enabled": true,
           "metadata": {},
           "checksumAlgorithm": "SHA-256",
-          "checksum": "d7e563bfd7e563bfd7e563bfd7e563bfd7e563bfd7e563bfd7e563bfd7e563bf",
+          "checksum": "5720d0db5720d0db5720d0db5720d0db5720d0db5720d0db5720d0db5720d0db",
           "architecture": "universal",
           "deploymentProfile": "cloud",
           "runtimeTarget": "browser",
@@ -178,16 +172,16 @@
         },
         {
           "id": "windows-x64-standalone-desktop-zip",
-          "name": "SDKWork Local Router Windows Bundle",
+          "name": "SDKWork Local Router SDKWork Modelkit PC Windows Bundle",
           "sourceType": "BINARY_URL",
           "packageFormat": "ZIP",
           "platform": "DESKTOP_WINDOWS",
-          "url": "https://cdn.sdkwork.com/apps/sdkwork-local-router/STABLE/0.1.0/windows/x64/app.zip",
+          "url": "https://cdn.sdkwork.com/apps/sdkwork-local-router-sdkwork-modelkit-pc/STABLE/0.0.0/windows/x64/app.zip",
           "enabled": true,
           "metadata": {},
           "architecture": "x64",
           "checksumAlgorithm": "SHA-256",
-          "checksum": "5a84a8855a84a8855a84a8855a84a8855a84a8855a84a8855a84a8855a84a885",
+          "checksum": "c2b6dee9c2b6dee9c2b6dee9c2b6dee9c2b6dee9c2b6dee9c2b6dee9c2b6dee9",
           "deploymentProfile": "standalone",
           "runtimeTarget": "desktop",
           "profileBinding": "fixed",
@@ -196,16 +190,16 @@
         },
         {
           "id": "macos-universal-standalone-desktop-dmg",
-          "name": "SDKWork Local Router macOS Bundle",
+          "name": "SDKWork Local Router SDKWork Modelkit PC macOS Bundle",
           "sourceType": "BINARY_URL",
           "packageFormat": "DMG",
           "platform": "DESKTOP_MACOS",
-          "url": "https://cdn.sdkwork.com/apps/sdkwork-local-router/STABLE/0.1.0/macos/universal/app.dmg",
+          "url": "https://cdn.sdkwork.com/apps/sdkwork-local-router-sdkwork-modelkit-pc/STABLE/0.0.0/macos/universal/app.dmg",
           "enabled": true,
           "metadata": {},
           "architecture": "universal",
           "checksumAlgorithm": "SHA-256",
-          "checksum": "167039f5167039f5167039f5167039f5167039f5167039f5167039f5167039f5",
+          "checksum": "01c4b95901c4b95901c4b95901c4b95901c4b95901c4b95901c4b95901c4b959",
           "deploymentProfile": "standalone",
           "runtimeTarget": "desktop",
           "profileBinding": "fixed",
@@ -214,11 +208,11 @@
         },
         {
           "id": "linux-x64-standalone-desktop-appimage",
-          "name": "SDKWork Local Router Linux Bundle",
+          "name": "SDKWork Local Router SDKWork Modelkit PC Linux Bundle",
           "sourceType": "BINARY_URL",
           "packageFormat": "APPIMAGE",
           "platform": "DESKTOP_LINUX",
-          "url": "https://cdn.sdkwork.com/apps/sdkwork-local-router/STABLE/0.1.0/linux/generic/x64/app.AppImage",
+          "url": "https://cdn.sdkwork.com/apps/sdkwork-local-router-sdkwork-modelkit-pc/STABLE/0.0.0/linux/generic/x64/app.AppImage",
           "enabled": true,
           "metadata": {
             "linux": {
@@ -227,7 +221,7 @@
           },
           "architecture": "x64",
           "checksumAlgorithm": "SHA-256",
-          "checksum": "1665ef761665ef761665ef761665ef761665ef761665ef761665ef761665ef76",
+          "checksum": "01ba6eda01ba6eda01ba6eda01ba6eda01ba6eda01ba6eda01ba6eda01ba6eda",
           "deploymentProfile": "standalone",
           "runtimeTarget": "desktop",
           "profileBinding": "fixed",
@@ -236,26 +230,26 @@
         }
       ],
       "metadata": {
-        "workspaceRoot": "apps/sdkwork-local-router",
-        "framework": "web",
+        "workspaceRoot": "apps/sdkwork-local-router/apps/sdkwork-modelkit-pc",
+        "framework": "react",
         "packageManager": "pnpm",
         "migratedFromLegacyConfig": false
       }
     }
   },
   "release": {
-    "currentVersion": "0.1.0",
+    "currentVersion": "0.0.0",
     "defaultChannel": "STABLE",
     "latest": {
-      "STABLE": "0.1.0"
+      "STABLE": "0.0.0"
     },
     "notes": [
       {
-        "version": "0.1.0",
+        "version": "0.0.0",
         "releaseChannel": "STABLE",
-        "title": "SDKWork Local Router 0.1.0",
-        "summary": "SDKWork Local Router initialized standard release.",
-        "content": "Initial SDKWork App Standard v3 manifest for SDKWork Local Router.",
+        "title": "SDKWork Local Router SDKWork Modelkit PC 0.0.0",
+        "summary": "SDKWork Local Router SDKWork Modelkit PC initialized standard release.",
+        "content": "Initial SDKWork App Standard v3 manifest for SDKWork Local Router SDKWork Modelkit PC.",
         "highlights": [
           "SDKWork App Standard v3 configuration initialized",
           "platform_app projection metadata standardized",
@@ -270,7 +264,7 @@
         "publishedAt": "2026-05-07T00:00:00Z",
         "current": true,
         "forceUpdate": false,
-        "minSupportedVersion": "0.1.0",
+        "minSupportedVersion": "0.0.0",
         "metadata": {}
       }
     ]
@@ -284,7 +278,7 @@
     "build": {
       "targets": []
     },
-    "sourceRoot": "apps/sdkwork-local-router"
+    "sourceRoot": "apps/sdkwork-local-router/apps/sdkwork-modelkit-pc"
   },
   "metadata": {
     "standardOwner": "sdkwork-platform",

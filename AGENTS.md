@@ -20,7 +20,7 @@ The canonical standards entrypoint is `../sdkwork-specs/README.md`. Agent entryp
 - Runtime family: Rust/Axum application with cloud and standalone profiles
 - API assembly: `crates/sdkwork-api-local-router-assembly`
 - Standalone host: `crates/sdkwork-api-local-router-standalone-gateway`
-- Application declaration: `sdkwork.app.config.json`
+- Application declaration: `agent.app.config.json`
 - Source configuration entrypoint: `etc/sdkwork.deployment.config.json`
 - Runtime TOML example: `config.example.toml`
 - Component contract: `specs/component.spec.json`
@@ -34,7 +34,7 @@ same paths.
 
 - `AGENTS.md`: repository execution entrypoint.
 - `CLAUDE.md`, `GEMINI.md`, `CODEX.md`: compatibility shims that point back here.
-- `sdkwork.app.config.json`: application and release identity.
+- `agent.app.config.json`: application and release identity.
 - `etc/`: source-controlled deployment profiles governed by `SOURCE_CONFIG_SPEC.md`.
 - `specs/`: application-wide machine contracts.
 - `sdks/_route-manifests/`: materialized app-api, backend-api, and open-api route contracts.
@@ -52,7 +52,7 @@ Documentation Canon:
 ## Spec Resolution Order
 
 1. Read the nearest `AGENTS.md`.
-2. Read `sdkwork.app.config.json` when application identity, runtime, SDK wiring, release,
+2. Read `agent.app.config.json` when application identity, runtime, SDK wiring, release,
    packaging, or app-owned capabilities are in scope.
 3. Read the nearest module `specs/` and root `specs/` only when their contracts are touched.
 4. Read `.sdkwork/README.md` and only relevant local skill/plugin metadata when applicable.

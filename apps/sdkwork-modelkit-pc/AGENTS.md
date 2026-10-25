@@ -17,7 +17,7 @@ The canonical standards entrypoint is `../../../sdkwork-specs/README.md`. This e
 
 - Application id: `sdkwork-local-router-sdkwork-modelkit-pc`
 - Runtime family: React/Vite PC application
-- Application declaration: `sdkwork.app.config.json`
+- Application declaration: `agent.app.config.json`
 - Source configuration entrypoint: `etc/sdkwork.deployment.config.json`
 - Component contract: `specs/component.spec.json`
 
@@ -28,7 +28,7 @@ host boundaries and must not create a second HTTP API authority.
 ## Local Dictionary Structure
 
 - `AGENTS.md`: PC application execution entrypoint.
-- `sdkwork.app.config.json`: application and release identity.
+- `agent.app.config.json`: application and release identity.
 - `etc/`: source configuration governed by `SOURCE_CONFIG_SPEC.md`.
 - `packages/`: focused application packages.
 - `sdks/`: app-local SDK composition surfaces when declared.
@@ -40,7 +40,7 @@ host boundaries and must not create a second HTTP API authority.
 
 1. Read this `AGENTS.md`.
 2. Read `../../AGENTS.md` for repository-wide boundaries.
-3. Read this root's `sdkwork.app.config.json` for application identity or runtime work.
+3. Read this root's `agent.app.config.json` for application identity or runtime work.
 4. Read the nearest package manifest and `specs/` only for the affected package.
 5. Resolve the task row in `../../../sdkwork-specs/README.md` and read only selected specs.
 6. Inspect implementation files.

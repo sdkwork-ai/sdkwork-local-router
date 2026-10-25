@@ -6,7 +6,7 @@
     "name": "SDKWork Local Router",
     "repository": "sdkwork-ai/sdkwork-local-router",
     "sourcePath": ".",
-    "configPath": "sdkwork.app.config.json"
+    "configPath": "agent.app.config.json"
   },
   "release": {
     "artifactPrefix": "sdkwork-local-router",
