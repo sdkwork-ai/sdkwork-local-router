@@ -77,3 +77,6 @@ temp/
 !.env.cloud.staging
 !.env.cloud.demo
 !.env.cloud.production
+
+# Browser-download duplicates dropped into apps/ (never commit)
+/apps/*.zip
